@@ -790,6 +790,339 @@
   .promo-layout { display: grid; grid-template-columns: 1fr 320px; gap: 16px; }
   .promo-right { display: flex; flex-direction: column; gap: 14px; }
   @media (max-width: 900px) { .promo-layout { grid-template-columns: 1fr; } }
+
+  /* ===== TAMBAHAN: STUDIO MAIN PAGE LAYOUT ===== */
+  #page-main {
+    display: none;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    overflow: hidden;
+  }
+  #page-main.active { display: flex; }
+
+  /* Preview Canvas Area */
+  .studio-canvas {
+    flex: 1;
+    background: #050505;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .canvas-area {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Kamera video element */
+  #cameraVideo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+    border-radius: 0;
+  }
+  #cameraVideo.active { display: block; }
+
+  /* Placeholder saat kamera mati */
+  .canvas-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .canvas-placeholder.hidden { display: none; }
+  .canvas-placeholder .ph-icon { font-size: 56px; opacity: 0.15; }
+  .canvas-placeholder .ph-text { font-size: 14px; color: var(--text-muted); font-weight: 500; }
+
+  /* Overlay layer: template background di atas video */
+  #templateOverlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s;
+    display: flex;
+    align-items: flex-end;
+    justify-content: stretch;
+  }
+  #templateOverlay.visible { opacity: 1; }
+  .template-overlay-bg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+  }
+  .template-overlay-content {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    padding: 20px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.85));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .tov-emoji { font-size: 36px; }
+  .tov-title { font-size: 20px; font-weight: 900; color: white; text-shadow: 0 2px 8px rgba(0,0,0,0.8); }
+  .tov-sub { font-size: 12px; color: rgba(255,255,255,0.7); }
+
+  /* Promo overlay */
+  #promoOverlay {
+    position: absolute;
+    bottom: 70px;
+    right: 14px;
+    z-index: 5;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    pointer-events: none;
+    max-width: 240px;
+  }
+  #promoOverlay.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  #promoOverlay .live-promo-widget { width: 230px; font-size: 11px; }
+  #promoOverlay .fs-count-box { width: 26px; height: 26px; font-size: 13px; }
+  #promoOverlay .fs-price-new { font-size: 15px; }
+  #promoOverlay .fs-btn { font-size: 12px; padding: 8px; }
+  #promoOverlay .cd-num { width: 40px; height: 40px; font-size: 18px; }
+
+  /* Stiker overlay */
+  #stikerOverlay {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 5;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    max-width: 160px;
+    pointer-events: none;
+  }
+  .canvas-stiker {
+    font-size: 38px;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.8));
+    animation: stiker-float 3s ease-in-out infinite;
+  }
+  .canvas-stiker:nth-child(2) { animation-delay: 0.5s; }
+  .canvas-stiker:nth-child(3) { animation-delay: 1s; }
+  .canvas-stiker:nth-child(4) { animation-delay: 1.5s; }
+  .canvas-stiker:nth-child(5) { animation-delay: 2s; }
+  @keyframes stiker-float {
+    0%,100% { transform: translateY(0) rotate(-3deg); }
+    50% { transform: translateY(-6px) rotate(3deg); }
+  }
+
+  /* Animation overlay on canvas */
+  #animOverlay {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    pointer-events: none;
+    display: none;
+  }
+  #animOverlay.visible { display: block; }
+  #animOverlay.anim-fade { animation: canvas-fade 1.5s infinite; }
+  @keyframes canvas-fade { 0%,100%{opacity:1} 50%{opacity:0} }
+  #animOverlay.anim-blink { animation: canvas-blink 0.7s infinite; }
+  @keyframes canvas-blink { 0%,49%{background:rgba(0,0,0,0.8)} 50%,100%{background:transparent} }
+  #animOverlay.anim-pulse-s { animation: canvas-pulse 0.8s infinite; }
+  @keyframes canvas-pulse { 0%,100%{box-shadow:inset 0 0 0 0 rgba(37,244,238,0.3)} 50%{box-shadow:inset 0 0 0 12px rgba(37,244,238,0.3)} }
+  #animOverlay.anim-glitch-s { animation: canvas-glitch 0.4s infinite; }
+  @keyframes canvas-glitch { 0%{filter:none} 20%{filter:hue-rotate(90deg) saturate(2)} 40%{filter:none} 60%{filter:hue-rotate(200deg) saturate(2)} 80%{filter:none} }
+  #animOverlay.anim-scanline::after {
+    content:'';
+    position:absolute; inset:0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 4px);
+    animation: scanline-move 4s linear infinite;
+  }
+  @keyframes scanline-move { from{background-position:0 0} to{background-position:0 40px} }
+
+  /* Canvas bottom bar */
+  .canvas-bottom-bar {
+    height: 52px;
+    background: rgba(10,10,10,0.95);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    gap: 8px;
+    z-index: 10;
+  }
+
+  .cam-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 16px; border-radius: 8px;
+    font-size: 13px; font-weight: 700;
+    cursor: pointer; border: none;
+    transition: all 0.2s;
+  }
+  .cam-btn.off {
+    background: var(--bg-card); color: var(--text-secondary);
+    border: 1px solid var(--border);
+  }
+  .cam-btn.off:hover { background: var(--bg-card-hover); color: white; }
+  .cam-btn.on {
+    background: linear-gradient(135deg, #00c851, #00a040);
+    color: white;
+    box-shadow: 0 0 16px rgba(0,200,81,0.4);
+  }
+  .cam-btn.on:hover { transform: scale(1.03); }
+
+  .canvas-bottom-stats {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 11px; color: var(--text-muted);
+  }
+  .stat-dot { width: 6px; height: 6px; border-radius: 50%; background: #00c851; animation: blink-stat 1.5s infinite; }
+  @keyframes blink-stat { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .canvas-active-badges {
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  }
+  .active-badge {
+    font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px;
+    background: var(--bg-card); border: 1px solid var(--border);
+    color: var(--text-secondary); display: flex; align-items: center; gap: 4px;
+  }
+  .active-badge.on { background: rgba(37,244,238,0.12); border-color: var(--accent2); color: var(--accent2); }
+  .active-badge.promo-on { background: rgba(255,215,0,0.12); border-color: var(--gold); color: var(--gold); }
+  .active-badge.tmpl-on { background: rgba(254,44,85,0.12); border-color: var(--accent); color: var(--accent); }
+  .active-badge.stik-on { background: rgba(255,150,50,0.12); border-color: #ff9632; color: #ff9632; }
+
+  /* Right panel */
+  .studio-right-panel {
+    width: 260px;
+    min-width: 260px;
+    background: var(--bg-panel);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .rp-section {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .rp-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  /* Scene mini preview */
+  .scene-preview-thumb {
+    width: 100%; height: 120px;
+    background: #050505;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #miniCamVideo {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; display: none;
+  }
+  #miniCamVideo.active { display: block; }
+  .scene-mini-placeholder { font-size: 28px; opacity: 0.15; }
+
+  /* Mini template overlay */
+  #miniTemplateOverlay {
+    position: absolute; inset: 0; z-index: 2;
+    pointer-events: none; opacity: 0; transition: opacity 0.3s;
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+    padding: 8px;
+  }
+  #miniTemplateOverlay.visible { opacity: 1; }
+  .mto-bg { position: absolute; inset: 0; }
+  .mto-text { position: relative; z-index: 3; font-size: 10px; font-weight: 800; color: white; text-align: center; text-shadow: 0 1px 4px rgba(0,0,0,0.9); }
+  .mto-emoji { position: relative; z-index: 3; font-size: 18px; }
+
+  /* Mini promo */
+  #miniPromoOverlay {
+    position: absolute; bottom: 6px; right: 6px; z-index: 5;
+    font-size: 8px; background: rgba(254,44,85,0.9);
+    color: white; font-weight: 800; padding: 2px 6px; border-radius: 4px;
+    display: none;
+  }
+  #miniPromoOverlay.visible { display: block; }
+
+  /* Mini stiker */
+  #miniStikerOverlay {
+    position: absolute; top: 4px; left: 4px; z-index: 5;
+    display: flex; flex-wrap: wrap; gap: 3px; max-width: 80px;
+  }
+  .mini-stiker { font-size: 16px; line-height: 1; }
+
+  /* Layer list */
+  .layer-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px; border-radius: 8px;
+    background: var(--bg-card); border: 1px solid var(--border);
+    margin-bottom: 6px; font-size: 12px;
+  }
+  .layer-item.active-layer { border-color: rgba(37,244,238,0.4); }
+  .layer-icon { font-size: 16px; }
+  .layer-info { flex: 1; }
+  .layer-name { font-weight: 600; font-size: 12px; }
+  .layer-status { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+  .layer-vis {
+    width: 20px; height: 20px; border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; cursor: pointer;
+    background: var(--bg-dark); color: var(--text-muted);
+    border: 1px solid var(--border);
+  }
+
+  /* Stats */
+  .rp-stats { display: flex; flex-direction: column; gap: 8px; }
+  .rp-stat-row { display: flex; justify-content: space-between; align-items: center; }
+  .rp-stat-label { font-size: 12px; color: var(--text-secondary); }
+  .rp-stat-val { font-size: 12px; font-weight: 700; color: white; }
+  .rp-stat-val.green { color: #00c851; }
+  .rp-stat-val.red { color: var(--accent); }
+  .rp-stat-val.gold { color: var(--gold); }
+
+  /* Camera error */
+  #camError {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 10;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+    padding: 28px;
+  }
+  #camError.visible { display: flex; }
+  #camError .err-icon { font-size: 44px; }
+  #camError .err-title { font-size: 15px; font-weight: 700; color: white; }
+  #camError .err-msg { font-size: 12px; color: var(--text-secondary); line-height: 1.7; max-width: 320px; }
+  #camError .err-steps { text-align: left; font-size: 12px; color: var(--text-secondary); line-height: 2; background: var(--bg-card); border-radius: 10px; padding: 12px 16px; border: 1px solid var(--border); }
+  #camError .err-retry {
+    margin-top: 4px; padding: 10px 28px; border-radius: 8px;
+    background: linear-gradient(135deg, #00c851, #00a040);
+    color: white; font-weight: 700; font-size: 13px;
+    cursor: pointer; border: none; transition: all 0.2s;
+  }
+  #camError .err-retry:hover { transform: scale(1.04); }
 </style>
 </head>
 <body>
@@ -853,18 +1186,188 @@
   <div class="top-bar">
     <div class="top-bar-title" id="topBarTitle">TikTok LIVE Studio</div>
     <div style="display:flex;align-items:center;gap:12px">
-      <div style="font-size:12px;color:var(--text-secondary)">FPS: 60 • CPU: 2.36%</div>
+      <div style="font-size:12px;color:var(--text-secondary)" id="fpsDisplay">FPS: 60 • CPU: 2.36%</div>
       <div class="live-badge">● LIVE</div>
       <div style="font-size:12px;color:var(--gold)">⭐ 93 &nbsp; $0.35</div>
     </div>
   </div>
 
-  <!-- PAGE: MAIN -->
-  <div class="page active" id="page-main" style="align-items:center;justify-content:center;gap:16px">
-    <div style="text-align:center;color:var(--text-muted)">
-      <div style="font-size:64px;margin-bottom:16px">🎥</div>
-      <div style="font-size:18px;font-weight:700;color:var(--text-secondary)">Tampilan Studio</div>
-      <div style="font-size:13px;margin-top:8px">Pilih <strong style="color:var(--accent)">Fitur Editing</strong> di sidebar untuk mulai</div>
+  <!-- PAGE: MAIN (STUDIO dengan Preview) -->
+  <div class="page active" id="page-main">
+    <!-- Canvas Preview Area -->
+    <div class="studio-canvas">
+      <div class="canvas-area">
+        <!-- Camera video -->
+        <video id="cameraVideo" autoplay muted playsinline></video>
+
+        <!-- Placeholder -->
+        <div class="canvas-placeholder" id="canvasPlaceholder">
+          <div class="ph-icon">🎥</div>
+          <div class="ph-text">Nyalakan kamera untuk mulai preview</div>
+        </div>
+
+        <!-- Template overlay di canvas -->
+        <div id="templateOverlay">
+          <div class="template-overlay-bg" id="templateOverlayBg"></div>
+          <div class="template-overlay-content">
+            <div class="tov-emoji" id="tovEmoji"></div>
+            <div class="tov-title" id="tovTitle"></div>
+            <div class="tov-sub" id="tovSub"></div>
+          </div>
+        </div>
+
+        <!-- Promo overlay di canvas -->
+        <div id="promoOverlay"></div>
+
+        <!-- Stiker overlay di canvas -->
+        <div id="stikerOverlay"></div>
+
+        <!-- Animation overlay -->
+        <div id="animOverlay"></div>
+
+        <!-- Camera error -->
+        <div id="camError">
+          <div class="err-icon">📷</div>
+          <div class="err-title">Izinkan Akses Kamera</div>
+          <div class="err-msg">Browser meminta izin kamera. Ikuti langkah berikut:</div>
+          <div class="err-steps">
+            🔒 Klik ikon <b>kunci/kamera</b> di address bar<br>
+            📋 Pilih <b>"Izinkan"</b> untuk kamera<br>
+            🔄 Klik <b>Coba Lagi</b> di bawah ini
+          </div>
+          <button class="err-retry" onclick="retryCamera()">🔄 Coba Lagi</button>
+          <div id="camErrDetail" style="font-size:11px;color:var(--text-muted);margin-top:4px"></div>
+        </div>
+      </div>
+
+      <!-- Bottom bar kamera + status -->
+      <div class="canvas-bottom-bar">
+        <button class="cam-btn off" id="camBtn" onclick="toggleCamera()">
+          <span id="camBtnIcon">📷</span>
+          <span id="camBtnText">Nyalakan Kamera</span>
+        </button>
+
+        <div class="canvas-active-badges">
+          <div class="active-badge" id="badgeAnim">✨ —</div>
+          <div class="active-badge" id="badgePromo">🛒 —</div>
+          <div class="active-badge" id="badgeTmpl">🖼️ —</div>
+          <div class="active-badge" id="badgeStiker">🎭 —</div>
+        </div>
+
+        <div class="canvas-bottom-stats">
+          <div class="stat-dot"></div>
+          <span id="canvasStats">1280×720 • 30fps</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="studio-right-panel">
+      <!-- Mini scene preview -->
+      <div class="rp-section">
+        <div class="rp-title">Scene Preview</div>
+        <div class="scene-preview-thumb">
+          <video id="miniCamVideo" autoplay muted playsinline></video>
+          <div class="scene-mini-placeholder" id="miniPlaceholder">🎬</div>
+          <div id="miniTemplateOverlay">
+            <div class="mto-bg" id="mtoBackground"></div>
+            <div class="mto-emoji" id="mtoEmoji"></div>
+            <div class="mto-text" id="mtoText"></div>
+          </div>
+          <div id="miniPromoOverlay">⚡ Promo Aktif</div>
+          <div id="miniStikerOverlay"></div>
+        </div>
+      </div>
+
+      <!-- Layers -->
+      <div class="rp-section">
+        <div class="rp-title">Layers Aktif</div>
+        <div id="layerList">
+          <div class="layer-item">
+            <div class="layer-icon">📷</div>
+            <div class="layer-info">
+              <div class="layer-name">Kamera</div>
+              <div class="layer-status" id="layerCamStatus">Nonaktif</div>
+            </div>
+            <div class="layer-vis">👁</div>
+          </div>
+          <div class="layer-item" id="layerAnimItem" style="opacity:0.4">
+            <div class="layer-icon">✨</div>
+            <div class="layer-info">
+              <div class="layer-name">Animation</div>
+              <div class="layer-status" id="layerAnimStatus">—</div>
+            </div>
+            <div class="layer-vis">👁</div>
+          </div>
+          <div class="layer-item" id="layerTmplItem" style="opacity:0.4">
+            <div class="layer-icon">🖼️</div>
+            <div class="layer-info">
+              <div class="layer-name">Template</div>
+              <div class="layer-status" id="layerTmplStatus">—</div>
+            </div>
+            <div class="layer-vis">👁</div>
+          </div>
+          <div class="layer-item" id="layerPromoItem" style="opacity:0.4">
+            <div class="layer-icon">🛒</div>
+            <div class="layer-info">
+              <div class="layer-name">Promosi</div>
+              <div class="layer-status" id="layerPromoStatus">—</div>
+            </div>
+            <div class="layer-vis">👁</div>
+          </div>
+          <div class="layer-item" id="layerStikerItem" style="opacity:0.4">
+            <div class="layer-icon">🎭</div>
+            <div class="layer-info">
+              <div class="layer-name">Stiker</div>
+              <div class="layer-status" id="layerStikerStatus">—</div>
+            </div>
+            <div class="layer-vis">👁</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="rp-section">
+        <div class="rp-title">Statistik LIVE</div>
+        <div class="rp-stats">
+          <div class="rp-stat-row">
+            <span class="rp-stat-label">👀 Penonton</span>
+            <span class="rp-stat-val green" id="statViewers">1,243</span>
+          </div>
+          <div class="rp-stat-row">
+            <span class="rp-stat-label">❤️ Like</span>
+            <span class="rp-stat-val red" id="statLikes">8,921</span>
+          </div>
+          <div class="rp-stat-row">
+            <span class="rp-stat-label">🛒 Pesanan</span>
+            <span class="rp-stat-val gold">47</span>
+          </div>
+          <div class="rp-stat-row">
+            <span class="rp-stat-label">💬 Komentar</span>
+            <span class="rp-stat-val" style="color:var(--accent2)">382</span>
+          </div>
+          <div class="rp-stat-row">
+            <span class="rp-stat-label">📶 Kualitas</span>
+            <span class="rp-stat-val green">Sangat Baik</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="rp-section">
+        <div class="rp-title">Aksi Cepat</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;gap:6px">
+            <button onclick="showPage('animation')" style="flex:1;padding:8px;background:rgba(37,244,238,0.1);border:1px solid rgba(37,244,238,0.3);border-radius:8px;color:var(--accent2);font-size:11px;font-weight:700;cursor:pointer">✨ Animasi</button>
+            <button onclick="showPage('scarcity')" style="flex:1;padding:8px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);border-radius:8px;color:var(--gold);font-size:11px;font-weight:700;cursor:pointer">🛒 Promo</button>
+          </div>
+          <div style="display:flex;gap:6px">
+            <button onclick="showPage('template')" style="flex:1;padding:8px;background:rgba(254,44,85,0.1);border:1px solid rgba(254,44,85,0.3);border-radius:8px;color:var(--accent);font-size:11px;font-weight:700;cursor:pointer">🖼️ Template</button>
+            <button onclick="showPage('stiker')" style="flex:1;padding:8px;background:rgba(255,150,50,0.1);border:1px solid rgba(255,150,50,0.3);border-radius:8px;color:#ff9632;font-size:11px;font-weight:700;cursor:pointer">🎭 Stiker</button>
+          </div>
+          <button onclick="clearAll()" style="width:100%;padding:8px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;color:var(--text-muted);font-size:11px;font-weight:600;cursor:pointer;margin-top:4px">🗑️ Hapus Semua Efek</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1132,7 +1635,7 @@
               <div class="config-toggle-label">Efek animasi</div>
               <div class="toggle-switch" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div>
             </div>
-            <button class="go-live-btn" onclick="showToast('🛒 Promosi aktif di LIVE kamu!')">🚀 Aktifkan Promosi</button>
+            <button class="go-live-btn" onclick="activatePromoOnCanvas()">🚀 Aktifkan Promosi</button>
           </div>
         </div>
       </div>
@@ -1254,6 +1757,7 @@ function selectAnim(card, name) {
 }
 function applyAnim() {
   if (!selectedAnim) { showToast('Pilih animasi dulu!', '⚠️'); return; }
+  applyAnimToCanvas(selectedAnim);
   showToast(`✨ Animasi "${selectedAnim}" diterapkan!`);
 }
 function filterAnim(btn, cat) {
@@ -1262,6 +1766,31 @@ function filterAnim(btn, cat) {
   document.querySelectorAll('.anim-card').forEach(c => {
     c.style.display = (cat === 'all' || c.dataset.cat === cat) ? 'block' : 'none';
   });
+}
+
+// ===== ANIMATION ON CANVAS =====
+const animMap = {
+  'Fade Black': 'anim-fade',
+  'Blink': 'anim-blink',
+  'Pulse': 'anim-pulse-s',
+  'Glitch': 'anim-glitch-s',
+  'Typewriter': 'anim-scanline',
+  // Others show a scanline generic
+};
+function applyAnimToCanvas(name) {
+  const overlay = document.getElementById('animOverlay');
+  overlay.className = '';
+  overlay.classList.add('visible');
+  const cls = animMap[name] || 'anim-scanline';
+  overlay.classList.add(cls);
+  // Update badge
+  const badge = document.getElementById('badgeAnim');
+  badge.textContent = '✨ ' + name;
+  badge.className = 'active-badge on';
+  // Update layer
+  document.getElementById('layerAnimItem').style.opacity = '1';
+  document.getElementById('layerAnimItem').classList.add('active-layer');
+  document.getElementById('layerAnimStatus').textContent = name;
 }
 
 // ===== SCARCITY PROMO =====
@@ -1325,28 +1854,48 @@ const promoWidgets = {
     </div></div>`
 };
 
+let currentPromoType = 'flash-sale';
 function selectPromo(card, type) {
   document.querySelectorAll('.promo-card').forEach(c => c.classList.remove('selected'));
   card.classList.add('selected');
+  currentPromoType = type;
   document.getElementById('promoPreviewArea').innerHTML = promoWidgets[type];
+}
+
+function activatePromoOnCanvas() {
+  const overlay = document.getElementById('promoOverlay');
+  overlay.innerHTML = promoWidgets[currentPromoType];
+  overlay.classList.add('visible');
+  // Update badge
+  const typeLabels = {'flash-sale':'Flash Sale','potongan':'Diskon','double-date':'12.12','countdown':'Countdown','stock':'Stok Terbatas'};
+  const badge = document.getElementById('badgePromo');
+  badge.textContent = '🛒 ' + (typeLabels[currentPromoType] || currentPromoType);
+  badge.className = 'active-badge promo-on';
+  // Mini indicator
+  document.getElementById('miniPromoOverlay').classList.add('visible');
+  // Layer
+  document.getElementById('layerPromoItem').style.opacity = '1';
+  document.getElementById('layerPromoItem').classList.add('active-layer');
+  document.getElementById('layerPromoStatus').textContent = typeLabels[currentPromoType] || currentPromoType;
+  showToast('🛒 Promosi aktif di LIVE kamu!');
 }
 
 function toggleSwitch(el) { el.classList.toggle('on'); }
 
 // ===== TEMPLATES =====
 const templates = [
-  { id:'t1', name:'Flash Sale Merah', cat:'sale', cls:'tmpl-flash-sale', badge:'badge-hot', badgeText:'HOT', title:'⚡ FLASH SALE', sub:'Harga terendah hari ini!', emoji:'🔥' },
-  { id:'t2', name:'Hari Gajian Hijau', cat:'promo', cls:'tmpl-payday', badge:'badge-promo', badgeText:'PROMO', title:'💸 HARI GAJIAN', sub:'Belanja sekarang, bayar nanti!', emoji:'💰' },
-  { id:'t3', name:'Countdown Biru', cat:'event', cls:'tmpl-countdown', badge:'badge-new', badgeText:'NEW', title:'⏰ COUNTDOWN', sub:'Waktu terbatas!', emoji:'⏱️' },
-  { id:'t4', name:'11.11 Pink', cat:'event', cls:'tmpl-double11', badge:'badge-hot', badgeText:'HOT', title:'11.11 SALE', sub:'Tanggal kembar, harga kembar murah!', emoji:'🎉' },
-  { id:'t5', name:'12.12 Orange', cat:'event', cls:'tmpl-double12', badge:'badge-hot', badgeText:'HOT', title:'12.12 SALE', sub:'Harbolnas terbesar!', emoji:'🛍️' },
-  { id:'t6', name:'Harbolnas Teal', cat:'sale', cls:'tmpl-harbolnas', badge:'badge-promo', badgeText:'SALE', title:'🛒 HARBOLNAS', sub:'Hari Belanja Online Nasional', emoji:'🎊' },
-  { id:'t7', name:'Lebaran Gold', cat:'holiday', cls:'tmpl-lebaran', badge:'badge-promo', badgeText:'LEBARAN', title:'🌙 LEBARAN SALE', sub:'Promo spesial Hari Raya', emoji:'🎁' },
-  { id:'t8', name:'Birthday Ungu', cat:'event', cls:'tmpl-birthday', badge:'badge-new', badgeText:'NEW', title:'🎂 BIRTHDAY SALE', sub:'Ulang tahun toko kami!', emoji:'🎈' },
-  { id:'t9', name:'New Year Dark', cat:'holiday', cls:'tmpl-new-year', badge:'badge-hot', badgeText:'2026', title:'🎆 NEW YEAR SALE', sub:'Rayakan tahun baru dengan belanja!', emoji:'🥂' },
-  { id:'t10', name:'Weekend Hijau', cat:'promo', cls:'tmpl-weekend', badge:'badge-promo', badgeText:'PROMO', title:'🎯 WEEKEND SALE', sub:'Promo sabtu & minggu!', emoji:'🤑' },
-  { id:'t11', name:'Midnight Dark', cat:'sale', cls:'tmpl-midnight', badge:'badge-new', badgeText:'NEW', title:'🌙 MIDNIGHT SALE', sub:'Belanja tengah malam lebih hemat', emoji:'🌚' },
-  { id:'t12', name:'Mega Sale Orange', cat:'sale', cls:'tmpl-mega-sale', badge:'badge-hot', badgeText:'MEGA', title:'🔥 MEGA SALE', sub:'Diskon hingga 90%!', emoji:'💥' },
+  { id:'t1', name:'Flash Sale Merah', cat:'sale', cls:'tmpl-flash-sale', badge:'badge-hot', badgeText:'HOT', title:'⚡ FLASH SALE', sub:'Harga terendah hari ini!', emoji:'🔥', bg:'linear-gradient(135deg,#1a0000,#3d0000)' },
+  { id:'t2', name:'Hari Gajian Hijau', cat:'promo', cls:'tmpl-payday', badge:'badge-promo', badgeText:'PROMO', title:'💸 HARI GAJIAN', sub:'Belanja sekarang, bayar nanti!', emoji:'💰', bg:'linear-gradient(135deg,#001a00,#003d00)' },
+  { id:'t3', name:'Countdown Biru', cat:'event', cls:'tmpl-countdown', badge:'badge-new', badgeText:'NEW', title:'⏰ COUNTDOWN', sub:'Waktu terbatas!', emoji:'⏱️', bg:'linear-gradient(135deg,#00001a,#00003d)' },
+  { id:'t4', name:'11.11 Pink', cat:'event', cls:'tmpl-double11', badge:'badge-hot', badgeText:'HOT', title:'11.11 SALE', sub:'Tanggal kembar, harga kembar murah!', emoji:'🎉', bg:'linear-gradient(135deg,#1a000d,#3d0020)' },
+  { id:'t5', name:'12.12 Orange', cat:'event', cls:'tmpl-double12', badge:'badge-hot', badgeText:'HOT', title:'12.12 SALE', sub:'Harbolnas terbesar!', emoji:'🛍️', bg:'linear-gradient(135deg,#1a0d00,#3d2000)' },
+  { id:'t6', name:'Harbolnas Teal', cat:'sale', cls:'tmpl-harbolnas', badge:'badge-promo', badgeText:'SALE', title:'🛒 HARBOLNAS', sub:'Hari Belanja Online Nasional', emoji:'🎊', bg:'linear-gradient(135deg,#001a1a,#003d3d)' },
+  { id:'t7', name:'Lebaran Gold', cat:'holiday', cls:'tmpl-lebaran', badge:'badge-promo', badgeText:'LEBARAN', title:'🌙 LEBARAN SALE', sub:'Promo spesial Hari Raya', emoji:'🎁', bg:'linear-gradient(135deg,#1a1700,#3d3800)' },
+  { id:'t8', name:'Birthday Ungu', cat:'event', cls:'tmpl-birthday', badge:'badge-new', badgeText:'NEW', title:'🎂 BIRTHDAY SALE', sub:'Ulang tahun toko kami!', emoji:'🎈', bg:'linear-gradient(135deg,#1a001a,#3d003d)' },
+  { id:'t9', name:'New Year Dark', cat:'holiday', cls:'tmpl-new-year', badge:'badge-hot', badgeText:'2026', title:'🎆 NEW YEAR SALE', sub:'Rayakan tahun baru dengan belanja!', emoji:'🥂', bg:'linear-gradient(135deg,#0a0a0a,#1a1a2e)' },
+  { id:'t10', name:'Weekend Hijau', cat:'promo', cls:'tmpl-weekend', badge:'badge-promo', badgeText:'PROMO', title:'🎯 WEEKEND SALE', sub:'Promo sabtu & minggu!', emoji:'🤑', bg:'linear-gradient(135deg,#0a1a00,#15360d)' },
+  { id:'t11', name:'Midnight Dark', cat:'sale', cls:'tmpl-midnight', badge:'badge-new', badgeText:'NEW', title:'🌙 MIDNIGHT SALE', sub:'Belanja tengah malam lebih hemat', emoji:'🌚', bg:'linear-gradient(135deg,#0a0a1a,#0a001a)' },
+  { id:'t12', name:'Mega Sale Orange', cat:'sale', cls:'tmpl-mega-sale', badge:'badge-hot', badgeText:'MEGA', title:'🔥 MEGA SALE', sub:'Diskon hingga 90%!', emoji:'💥', bg:'linear-gradient(135deg,#1a0a00,#3d1500)' },
 ];
 
 function renderTemplates(filter='all') {
@@ -1367,10 +1916,12 @@ function renderTemplates(filter='all') {
 }
 
 let selectedTmpl = null;
+let selectedTmplData = null;
 function selectTemplate(card, id, name) {
   document.querySelectorAll('.tmpl-card').forEach(c => c.classList.remove('selected'));
   card.classList.add('selected');
   selectedTmpl = id;
+  selectedTmplData = templates.find(t => t.id === id);
   document.getElementById('selectedTmplName').textContent = name;
 }
 function filterTmpl(btn, cat) {
@@ -1379,8 +1930,33 @@ function filterTmpl(btn, cat) {
   renderTemplates(cat);
 }
 function applyTemplate() {
-  if (!selectedTmpl) { showToast('Pilih template dulu!', '⚠️'); return; }
-  showToast(`🖼️ Template "${document.getElementById('selectedTmplName').textContent}" digunakan!`);
+  if (!selectedTmpl || !selectedTmplData) { showToast('Pilih template dulu!', '⚠️'); return; }
+  const t = selectedTmplData;
+  // Apply to canvas overlay
+  const overlay = document.getElementById('templateOverlay');
+  const bg = document.getElementById('templateOverlayBg');
+  bg.style.background = t.bg;
+  bg.style.opacity = '0.45';
+  document.getElementById('tovEmoji').textContent = t.emoji;
+  document.getElementById('tovTitle').textContent = t.title;
+  document.getElementById('tovSub').textContent = t.sub;
+  overlay.classList.add('visible');
+  // Apply to mini scene
+  const miniOverlay = document.getElementById('miniTemplateOverlay');
+  document.getElementById('mtoBackground').style.background = t.bg;
+  document.getElementById('mtoBackground').style.opacity = '0.5';
+  document.getElementById('mtoEmoji').textContent = t.emoji;
+  document.getElementById('mtoText').textContent = t.title;
+  miniOverlay.classList.add('visible');
+  // Badge
+  const badge = document.getElementById('badgeTmpl');
+  badge.textContent = '🖼️ ' + t.name;
+  badge.className = 'active-badge tmpl-on';
+  // Layer
+  document.getElementById('layerTmplItem').style.opacity = '1';
+  document.getElementById('layerTmplItem').classList.add('active-layer');
+  document.getElementById('layerTmplStatus').textContent = t.name;
+  showToast(`🖼️ Template "${t.name}" digunakan!`);
 }
 
 // ===== STIKER =====
@@ -1475,8 +2051,207 @@ let currentStikerFilter = 'all';
 
 function applyStiker() {
   if (selectedStiker.length === 0) { showToast('Pilih stiker dulu!', '⚠️'); return; }
+  // Apply to canvas overlay
+  const overlay = document.getElementById('stikerOverlay');
+  overlay.innerHTML = selectedStiker.map(id => {
+    const s = stikersData.find(x => x.id === id);
+    return `<div class="canvas-stiker" title="${s.name}">${s.emoji}</div>`;
+  }).join('');
+  // Mini scene
+  const miniOverlay = document.getElementById('miniStikerOverlay');
+  miniOverlay.innerHTML = selectedStiker.map(id => {
+    const s = stikersData.find(x => x.id === id);
+    return `<span class="mini-stiker">${s.emoji}</span>`;
+  }).join('');
+  // Badge
+  const badge = document.getElementById('badgeStiker');
+  badge.textContent = `🎭 ${selectedStiker.length} Stiker`;
+  badge.className = 'active-badge stik-on';
+  // Layer
+  document.getElementById('layerStikerItem').style.opacity = '1';
+  document.getElementById('layerStikerItem').classList.add('active-layer');
+  document.getElementById('layerStikerStatus').textContent = `${selectedStiker.length} aktif`;
   showToast(`🎭 ${selectedStiker.length} stiker ditambahkan ke LIVE!`);
 }
+
+// ===== CLEAR ALL =====
+function clearAll() {
+  // Template
+  document.getElementById('templateOverlay').classList.remove('visible');
+  document.getElementById('miniTemplateOverlay').classList.remove('visible');
+  document.getElementById('badgeTmpl').textContent = '🖼️ —';
+  document.getElementById('badgeTmpl').className = 'active-badge';
+  document.getElementById('layerTmplItem').style.opacity = '0.4';
+  document.getElementById('layerTmplItem').classList.remove('active-layer');
+  document.getElementById('layerTmplStatus').textContent = '—';
+  // Promo
+  document.getElementById('promoOverlay').classList.remove('visible');
+  document.getElementById('miniPromoOverlay').classList.remove('visible');
+  document.getElementById('badgePromo').textContent = '🛒 —';
+  document.getElementById('badgePromo').className = 'active-badge';
+  document.getElementById('layerPromoItem').style.opacity = '0.4';
+  document.getElementById('layerPromoItem').classList.remove('active-layer');
+  document.getElementById('layerPromoStatus').textContent = '—';
+  // Stiker
+  document.getElementById('stikerOverlay').innerHTML = '';
+  document.getElementById('miniStikerOverlay').innerHTML = '';
+  document.getElementById('badgeStiker').textContent = '🎭 —';
+  document.getElementById('badgeStiker').className = 'active-badge';
+  document.getElementById('layerStikerItem').style.opacity = '0.4';
+  document.getElementById('layerStikerItem').classList.remove('active-layer');
+  document.getElementById('layerStikerStatus').textContent = '—';
+  // Animation
+  const ao = document.getElementById('animOverlay');
+  ao.className = '';
+  document.getElementById('badgeAnim').textContent = '✨ —';
+  document.getElementById('badgeAnim').className = 'active-badge';
+  document.getElementById('layerAnimItem').style.opacity = '0.4';
+  document.getElementById('layerAnimItem').classList.remove('active-layer');
+  document.getElementById('layerAnimStatus').textContent = '—';
+  showToast('🗑️ Semua efek dihapus', '🗑️');
+}
+
+// ===== KAMERA =====
+let cameraStream = null;
+let cameraOn = false;
+
+async function toggleCamera() {
+  if (cameraOn) {
+    stopCamera();
+  } else {
+    await startCamera();
+  }
+}
+
+function retryCamera() {
+  document.getElementById('camError').classList.remove('visible');
+  startCamera();
+}
+
+async function startCamera() {
+  const btn = document.getElementById('camBtn');
+  const errDiv = document.getElementById('camError');
+  const errDetail = document.getElementById('camErrDetail');
+
+  // Cek apakah mediaDevices tersedia
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    errDetail.textContent = 'Error: Browser tidak mendukung akses kamera. Gunakan Chrome/Firefox versi terbaru.';
+    errDiv.classList.add('visible');
+    showToast('Browser tidak mendukung kamera', '🚫');
+    return;
+  }
+
+  btn.disabled = true;
+  document.getElementById('camBtnText').textContent = 'Menghubungkan...';
+
+  try {
+    // Coba dulu dengan constraints ideal, fallback ke minimal
+    let stream;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { width: { ideal: 1280 }, height: { ideal: 720 }, facingMode: 'user' },
+        audio: false
+      });
+    } catch(e) {
+      // Fallback: constraints minimal
+      stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+    }
+
+    cameraStream = stream;
+    errDiv.classList.remove('visible');
+
+    const videoEl = document.getElementById('cameraVideo');
+    const miniVideoEl = document.getElementById('miniCamVideo');
+
+    videoEl.srcObject = stream;
+    miniVideoEl.srcObject = stream;
+
+    // Pastikan play setelah metadata loaded
+    videoEl.onloadedmetadata = () => { videoEl.play().catch(()=>{}); };
+    miniVideoEl.onloadedmetadata = () => { miniVideoEl.play().catch(()=>{}); };
+
+    videoEl.classList.add('active');
+    miniVideoEl.classList.add('active');
+
+    document.getElementById('canvasPlaceholder').classList.add('hidden');
+    document.getElementById('miniPlaceholder').style.display = 'none';
+
+    cameraOn = true;
+    btn.className = 'cam-btn on';
+    document.getElementById('camBtnIcon').textContent = '📹';
+    document.getElementById('camBtnText').textContent = 'Kamera Aktif — Matikan';
+
+    // Info resolusi
+    const track = stream.getVideoTracks()[0];
+    const settings = track ? track.getSettings() : {};
+    const res = (settings.width && settings.height) ? `${settings.width}×${settings.height}` : '1280×720';
+    document.getElementById('layerCamStatus').textContent = `Aktif • ${res}`;
+    document.getElementById('canvasStats').textContent = `${res} • 30fps`;
+
+    showToast('📷 Kamera berhasil dinyalakan!');
+
+  } catch(err) {
+    console.error('Camera error:', err);
+    let detail = err.message || err.name || 'Unknown error';
+    if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+      detail = 'Izin kamera ditolak. Klik ikon kunci di address bar → Izinkan kamera.';
+    } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+      detail = 'Tidak ada kamera ditemukan di perangkat ini.';
+    } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
+      detail = 'Kamera sedang digunakan aplikasi lain. Tutup aplikasi lain dan coba lagi.';
+    } else if (err.name === 'OverconstrainedError') {
+      detail = 'Resolusi kamera tidak didukung. Mencoba ulang...';
+    } else if (err.name === 'SecurityError') {
+      detail = 'Akses kamera diblokir karena alasan keamanan (perlu HTTPS atau localhost).';
+    }
+    errDetail.textContent = detail;
+    errDiv.classList.add('visible');
+    document.getElementById('camBtnText').textContent = 'Nyalakan Kamera';
+    showToast('Gagal akses kamera — lihat petunjuk di layar', '⚠️');
+  }
+
+  btn.disabled = false;
+}
+
+function stopCamera() {
+  if (cameraStream) {
+    cameraStream.getTracks().forEach(t => t.stop());
+    cameraStream = null;
+  }
+  const videoEl = document.getElementById('cameraVideo');
+  const miniVideoEl = document.getElementById('miniCamVideo');
+  videoEl.srcObject = null;
+  miniVideoEl.srcObject = null;
+  videoEl.classList.remove('active');
+  miniVideoEl.classList.remove('active');
+
+  document.getElementById('canvasPlaceholder').classList.remove('hidden');
+  document.getElementById('miniPlaceholder').style.display = '';
+  document.getElementById('camError').classList.remove('visible');
+
+  cameraOn = false;
+  const btn = document.getElementById('camBtn');
+  btn.className = 'cam-btn off';
+  document.getElementById('camBtnIcon').textContent = '📷';
+  document.getElementById('camBtnText').textContent = 'Nyalakan Kamera';
+  document.getElementById('layerCamStatus').textContent = 'Nonaktif';
+  document.getElementById('canvasStats').textContent = '— • —';
+  showToast('📷 Kamera dimatikan', '📷');
+}
+
+// ===== LIVE STATS SIMULATION =====
+setInterval(() => {
+  const viewers = document.getElementById('statViewers');
+  const likes = document.getElementById('statLikes');
+  if (viewers) {
+    let v = parseInt(viewers.textContent.replace(',','')) + Math.floor(Math.random()*5 - 1);
+    viewers.textContent = v.toLocaleString();
+  }
+  if (likes) {
+    let l = parseInt(likes.textContent.replace(',','')) + Math.floor(Math.random()*10);
+    likes.textContent = l.toLocaleString();
+  }
+}, 3000);
 
 // ===== INIT =====
 renderTemplates();
