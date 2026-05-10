@@ -36,6 +36,32 @@
     overflow: hidden;
   }
 
+  /* ===== SIDEBAR TOGGLE BUTTONS ===== */
+  .sidebar-toggle {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 52px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 300;
+    font-size: 9px;
+    color: var(--text-muted);
+    transition: background 0.2s, color 0.2s, left 0.3s, right 0.3s;
+    user-select: none;
+  }
+  .sidebar-toggle:hover { background: var(--bg-card); color: var(--text-secondary); }
+  #toggleLeft  { left: 260px; border-left: none; border-radius: 0 6px 6px 0; }
+  #toggleRight { right: 260px; border-right: none; border-radius: 6px 0 0 6px; }
+
+  .sidebar-left-hidden #toggleLeft  { left: 0; border-left: 1px solid var(--border); border-radius: 0 6px 6px 0; }
+  .sidebar-right-hidden #toggleRight { right: 0; border-right: 1px solid var(--border); border-radius: 6px 0 0 6px; }
+
   /* ===== SIDEBAR ===== */
   .sidebar {
     width: 260px;
@@ -45,48 +71,46 @@
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    transition: width 0.3s ease, min-width 0.3s ease, border-color 0.3s;
+    flex-shrink: 0;
   }
+  .sidebar-left-hidden .sidebar {
+    width: 0 !important;
+    min-width: 0 !important;
+    overflow: hidden;
+    border-right-color: transparent;
+  }
+  .sidebar-inner { width: 260px; flex-shrink: 0; }
 
   .sidebar-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 16px;
-    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+    padding: 16px; border-bottom: 1px solid var(--border);
   }
-
   .tiktok-logo {
     width: 32px; height: 32px;
     background: linear-gradient(135deg, #fe2c55, #ff0050);
     border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
+    font-size: 18px; flex-shrink: 0;
   }
-
   .sidebar-title { font-size: 13px; font-weight: 700; letter-spacing: 0.3px; }
   .sidebar-sub { font-size: 10px; color: var(--text-muted); }
-
   .sidebar-section { padding: 12px 16px 4px; }
   .sidebar-section-label {
     font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
     color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;
   }
-
   .sidebar-btn {
     display: flex; align-items: center; gap: 10px;
     padding: 9px 12px; border-radius: var(--radius-sm);
     cursor: pointer; transition: all 0.2s;
     color: var(--text-secondary); font-size: 13px; font-weight: 500;
-    margin-bottom: 2px;
+    margin-bottom: 2px; white-space: nowrap;
   }
   .sidebar-btn:hover { background: var(--bg-card); color: var(--text-primary); }
   .sidebar-btn.active { background: rgba(254,44,85,0.15); color: var(--accent); }
   .sidebar-btn .icon { font-size: 16px; width: 20px; text-align: center; }
-
   .sidebar-divider { height: 1px; background: var(--border); margin: 8px 16px; }
-
-  /* Fitur Editing highlight */
   .fitur-editing-btn {
     margin: 8px 12px;
     background: linear-gradient(135deg, var(--accent), #ff6b8a);
@@ -98,26 +122,17 @@
     font-weight: 700; font-size: 13px;
     transition: all 0.25s;
     box-shadow: 0 4px 20px var(--accent-glow);
+    white-space: nowrap;
   }
   .fitur-editing-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 24px var(--accent-glow); }
-  .fitur-editing-btn.active { outline: 2px solid white; }
 
   /* ===== MAIN CONTENT ===== */
-  .main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
+  .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
   .top-bar {
-    height: 52px;
-    border-bottom: 1px solid var(--border);
+    height: 52px; border-bottom: 1px solid var(--border);
     display: flex; align-items: center; justify-content: space-between;
-    padding: 0 20px;
-    background: var(--bg-panel);
+    padding: 0 20px; background: var(--bg-panel); flex-shrink: 0;
   }
-
   .top-bar-title { font-size: 14px; font-weight: 700; }
   .live-badge {
     background: var(--accent); color: white;
@@ -135,85 +150,50 @@
   .page.active { display: flex; flex-direction: column; }
 
   /* ===== FITUR EDITING HOME ===== */
-  #page-fitur {
-    padding: 28px;
-    gap: 24px;
-  }
-
+  #page-fitur { padding: 28px; gap: 24px; }
   .page-header { margin-bottom: 8px; }
   .page-header h2 { font-size: 22px; font-weight: 800; }
   .page-header p { color: var(--text-secondary); font-size: 13px; margin-top: 4px; }
-
-  .feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
-  }
-
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
   .feature-card {
-    background: var(--bg-card);
-    border-radius: var(--radius);
-    padding: 24px 20px;
-    cursor: pointer;
-    border: 1.5px solid var(--border);
+    background: var(--bg-card); border-radius: var(--radius); padding: 24px 20px;
+    cursor: pointer; border: 1.5px solid var(--border);
     transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
-    position: relative;
-    overflow: hidden;
+    position: relative; overflow: hidden;
     display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
   }
   .feature-card::before {
     content:''; position:absolute; inset:0;
-    background: var(--card-glow, transparent);
-    opacity: 0; transition: opacity 0.3s;
+    background: var(--card-glow, transparent); opacity: 0; transition: opacity 0.3s;
   }
   .feature-card:hover { transform: translateY(-4px); border-color: var(--border-hover); }
   .feature-card:hover::before { opacity: 1; }
-
   .feature-card.anim { --card-glow: radial-gradient(circle at top left, rgba(37,244,238,0.08), transparent 60%); }
   .feature-card.promo { --card-glow: radial-gradient(circle at top left, rgba(255,215,0,0.08), transparent 60%); }
   .feature-card.tmpl { --card-glow: radial-gradient(circle at top left, rgba(254,44,85,0.08), transparent 60%); }
   .feature-card.stikr { --card-glow: radial-gradient(circle at top left, rgba(255,150,50,0.08), transparent 60%); }
-
   .feature-card:hover.anim { border-color: rgba(37,244,238,0.4); }
   .feature-card:hover.promo { border-color: rgba(255,215,0,0.4); }
   .feature-card:hover.tmpl { border-color: rgba(254,44,85,0.4); }
   .feature-card:hover.stikr { border-color: rgba(255,150,50,0.4); }
-
-  .feature-icon {
-    width: 52px; height: 52px; border-radius: 14px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 26px;
-  }
+  .feature-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px; }
   .feature-icon.anim { background: rgba(37,244,238,0.15); }
   .feature-icon.promo { background: rgba(255,215,0,0.15); }
   .feature-icon.tmpl { background: rgba(254,44,85,0.15); }
   .feature-icon.stikr { background: rgba(255,150,50,0.15); }
-
   .feature-name { font-size: 15px; font-weight: 700; }
   .feature-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
-  .feature-count {
-    font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px;
-    background: var(--border); color: var(--text-muted);
-  }
-  .feature-arrow {
-    position: absolute; right: 16px; top: 50%;
-    transform: translateY(-50%);
-    font-size: 18px; color: var(--text-muted);
-    transition: transform 0.2s, color 0.2s;
-  }
+  .feature-count { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: var(--border); color: var(--text-muted); }
+  .feature-arrow { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-size: 18px; color: var(--text-muted); transition: transform 0.2s, color 0.2s; }
   .feature-card:hover .feature-arrow { transform: translateY(-50%) translateX(4px); color: var(--text-primary); }
 
   /* ===== SUB PAGE HEADER ===== */
-  .sub-header {
-    padding: 20px 28px 0;
-    display: flex; align-items: center; gap: 12px;
-  }
+  .sub-header { padding: 20px 28px 0; display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
   .back-btn {
     width: 36px; height: 36px; border-radius: 10px;
     background: var(--bg-card); border: 1px solid var(--border);
     display: flex; align-items: center; justify-content: center;
-    cursor: pointer; font-size: 18px; transition: all 0.2s;
-    flex-shrink: 0;
+    cursor: pointer; font-size: 18px; transition: all 0.2s; flex-shrink: 0;
   }
   .back-btn:hover { background: var(--bg-card-hover); border-color: rgba(255,255,255,0.2); }
   .sub-header-text h3 { font-size: 18px; font-weight: 800; }
@@ -221,239 +201,90 @@
 
   /* ===== ANIMATION PAGE ===== */
   #page-animation { padding: 20px 28px 28px; gap: 20px; flex-direction: column; }
-
-  .anim-categories {
-    display: flex; gap: 8px; flex-wrap: wrap;
-    padding-bottom: 4px;
-  }
+  .anim-categories { display: flex; gap: 8px; flex-wrap: wrap; padding-bottom: 4px; }
   .anim-cat-btn {
     padding: 7px 16px; border-radius: 20px;
     background: var(--bg-card); border: 1.5px solid var(--border);
     color: var(--text-secondary); font-size: 13px; font-weight: 500;
     cursor: pointer; transition: all 0.2s;
   }
-  .anim-cat-btn:hover, .anim-cat-btn.active {
-    background: rgba(37,244,238,0.15);
-    border-color: var(--accent2); color: var(--accent2);
-  }
-
-  .anim-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 14px;
-  }
-
+  .anim-cat-btn:hover, .anim-cat-btn.active { background: rgba(37,244,238,0.15); border-color: var(--accent2); color: var(--accent2); }
+  .anim-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
   .anim-card {
-    background: var(--bg-card);
-    border-radius: var(--radius);
-    border: 1.5px solid var(--border);
-    overflow: hidden;
-    cursor: pointer;
-    transition: all 0.25s;
-    position: relative;
+    background: var(--bg-card); border-radius: var(--radius); border: 1.5px solid var(--border);
+    overflow: hidden; cursor: pointer; transition: all 0.25s; position: relative;
   }
   .anim-card:hover { border-color: var(--accent2); transform: translateY(-3px); }
   .anim-card.selected { border-color: var(--accent2); box-shadow: 0 0 0 2px rgba(37,244,238,0.3); }
-
-  .anim-preview {
-    height: 110px;
-    background: #111;
-    display: flex; align-items: center; justify-content: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .anim-preview .demo-box {
-    width: 60px; height: 60px; border-radius: 10px;
-    background: linear-gradient(135deg, var(--accent2), var(--accent));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 24px;
-  }
-
-  /* Animation demos */
+  .anim-preview { height: 110px; background: #111; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .anim-preview .demo-box { width: 60px; height: 60px; border-radius: 10px; background: linear-gradient(135deg, var(--accent2), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 24px; }
   .anim-card:hover .demo-box.fade { animation: demo-fade 1.2s infinite; }
   @keyframes demo-fade { 0%,100%{opacity:1} 50%{opacity:0.1} }
-
   .anim-card:hover .demo-box.blink { animation: demo-blink 0.6s infinite; }
   @keyframes demo-blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
-
   .anim-card:hover .demo-box.slide-in { animation: demo-slide 1.2s infinite; }
   @keyframes demo-slide { 0%{transform:translateX(-80px);opacity:0} 40%,60%{transform:translateX(0);opacity:1} 100%{transform:translateX(80px);opacity:0} }
-
   .anim-card:hover .demo-box.zoom-in { animation: demo-zoom 1.2s infinite; }
   @keyframes demo-zoom { 0%{transform:scale(0);opacity:0} 50%{transform:scale(1);opacity:1} 80%,100%{transform:scale(1);opacity:1} }
-
   .anim-card:hover .demo-box.bounce { animation: demo-bounce 1s infinite; }
   @keyframes demo-bounce { 0%,100%{transform:translateY(0)} 30%{transform:translateY(-20px)} 60%{transform:translateY(-10px)} }
-
   .anim-card:hover .demo-box.shake { animation: demo-shake 0.5s infinite; }
   @keyframes demo-shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-10px)} 75%{transform:translateX(10px)} }
-
   .anim-card:hover .demo-box.spin { animation: demo-spin 1s linear infinite; }
   @keyframes demo-spin { to{transform:rotate(360deg)} }
-
-  .anim-card:hover .demo-box.glitch {
-    animation: demo-glitch 0.3s infinite;
-  }
-  @keyframes demo-glitch {
-    0%{transform:translate(0)} 20%{transform:translate(-3px,2px);filter:hue-rotate(90deg)}
-    40%{transform:translate(3px,-2px)} 60%{transform:translate(-2px,3px);filter:hue-rotate(180deg)}
-    80%{transform:translate(2px,-1px)} 100%{transform:translate(0)}
-  }
-
+  .anim-card:hover .demo-box.glitch { animation: demo-glitch 0.3s infinite; }
+  @keyframes demo-glitch { 0%{transform:translate(0)} 20%{transform:translate(-3px,2px);filter:hue-rotate(90deg)} 40%{transform:translate(3px,-2px)} 60%{transform:translate(-2px,3px);filter:hue-rotate(180deg)} 80%{transform:translate(2px,-1px)} 100%{transform:translate(0)} }
   .anim-card:hover .demo-box.flip { animation: demo-flip 1.2s infinite; }
   @keyframes demo-flip { 0%,100%{transform:rotateY(0)} 50%{transform:rotateY(180deg)} }
-
   .anim-card:hover .demo-box.pulse { animation: demo-pulse 0.8s infinite; }
   @keyframes demo-pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.3)} }
-
-  .anim-card:hover .demo-box.typewriter::after {
-    content: 'LIVE'; animation: demo-type 1.5s steps(4) infinite;
-    font-size: 14px; font-weight: 800; color: white;
-  }
+  .anim-card:hover .demo-box.typewriter::after { content: 'LIVE'; animation: demo-type 1.5s steps(4) infinite; font-size: 14px; font-weight: 800; color: white; }
   .demo-box.typewriter { background: #111; border: 2px solid var(--accent2); }
   @keyframes demo-type { from{width:0} to{width:100%} }
-
   .anim-card:hover .demo-box.wave { animation: demo-wave 1s ease-in-out infinite; }
   @keyframes demo-wave { 0%,100%{transform:skewX(0)} 25%{transform:skewX(-10deg)} 75%{transform:skewX(10deg)} }
-
   .anim-info { padding: 10px 12px; }
   .anim-name { font-size: 13px; font-weight: 600; }
   .anim-tag { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
-
-  .anim-selected-badge {
-    position: absolute; top: 8px; right: 8px;
-    background: var(--accent2); color: #000;
-    font-size: 10px; font-weight: 700;
-    padding: 2px 8px; border-radius: 20px;
-    display: none;
-  }
+  .anim-selected-badge { position: absolute; top: 8px; right: 8px; background: var(--accent2); color: #000; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; display: none; }
   .anim-card.selected .anim-selected-badge { display: block; }
-
-  .anim-apply-bar {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px 18px;
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 12px;
-  }
+  .anim-apply-bar { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .anim-apply-info { font-size: 13px; color: var(--text-secondary); }
   .anim-apply-info strong { color: var(--accent2); }
-  .apply-btn {
-    padding: 9px 24px; border-radius: 8px;
-    background: linear-gradient(135deg, var(--accent2), #00c2bc);
-    color: #000; font-weight: 700; font-size: 13px;
-    cursor: pointer; border: none; transition: all 0.2s;
-  }
+  .apply-btn { padding: 9px 24px; border-radius: 8px; background: linear-gradient(135deg, var(--accent2), #00c2bc); color: #000; font-weight: 700; font-size: 13px; cursor: pointer; border: none; transition: all 0.2s; }
   .apply-btn:hover { transform: scale(1.04); }
 
   /* ===== SCARCITY PROMOTION PAGE ===== */
   #page-scarcity { padding: 20px 28px 28px; flex-direction: column; gap: 20px; }
-
-  .promo-types {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 14px;
-  }
-
-  .promo-card {
-    background: var(--bg-card);
-    border-radius: var(--radius);
-    border: 1.5px solid var(--border);
-    padding: 18px;
-    cursor: pointer;
-    transition: all 0.25s;
-    position: relative;
-    overflow: hidden;
-  }
+  .promo-types { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .promo-card { background: var(--bg-card); border-radius: var(--radius); border: 1.5px solid var(--border); padding: 18px; cursor: pointer; transition: all 0.25s; position: relative; overflow: hidden; }
   .promo-card:hover { transform: translateY(-3px); border-color: rgba(255,215,0,0.4); }
   .promo-card.selected { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(255,215,0,0.2); }
-
   .promo-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
   .promo-icon { font-size: 28px; }
-  .promo-badge-tag {
-    font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px;
-    letter-spacing: 0.5px;
-  }
+  .promo-badge-tag { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.5px; }
   .tag-hot { background: rgba(254,44,85,0.2); color: var(--accent); }
   .tag-new { background: rgba(37,244,238,0.2); color: var(--accent2); }
   .tag-trend { background: rgba(255,215,0,0.2); color: var(--gold); }
-
   .promo-name { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
   .promo-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
-
-  /* Live Preview Panel */
-  .promo-preview-wrapper {
-    background: var(--bg-card);
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    overflow: hidden;
-  }
-  .promo-preview-header {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-  }
+  .promo-preview-wrapper { background: var(--bg-card); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; }
+  .promo-preview-header { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
   .promo-preview-header span { font-size: 13px; font-weight: 600; }
-  .preview-device-select {
-    display: flex; gap: 6px;
-  }
-  .dev-btn {
-    padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 500;
-    background: var(--bg-dark); border: 1px solid var(--border);
-    cursor: pointer; color: var(--text-secondary); transition: all 0.2s;
-  }
+  .preview-device-select { display: flex; gap: 6px; }
+  .dev-btn { padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; background: var(--bg-dark); border: 1px solid var(--border); cursor: pointer; color: var(--text-secondary); transition: all 0.2s; }
   .dev-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
-
-  .promo-preview-area {
-    padding: 20px;
-    background: #0d0d0d;
-    display: flex; align-items: center; justify-content: center;
-    min-height: 200px;
-  }
-
-  /* Promo Display Cards */
-  .live-promo-widget {
-    background: #111;
-    border-radius: 12px;
-    padding: 14px;
-    width: 280px;
-    border: 1px solid #222;
-    font-family: 'Outfit', sans-serif;
-  }
-
-  .flash-sale-widget {
-    background: linear-gradient(135deg, #1a0a0a, #0a0a0a);
-    border: 1px solid #ff3333;
-  }
-  .fs-top {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  .fs-label {
-    background: var(--accent); color: white;
-    font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 4px;
-    letter-spacing: 1px; text-transform: uppercase;
-    animation: flash-pulse 1s infinite;
-  }
+  .promo-preview-area { padding: 20px; background: #0d0d0d; display: flex; align-items: center; justify-content: center; min-height: 200px; }
+  .live-promo-widget { background: #111; border-radius: 12px; padding: 14px; width: 280px; border: 1px solid #222; font-family: 'Outfit', sans-serif; }
+  .flash-sale-widget { background: linear-gradient(135deg, #1a0a0a, #0a0a0a); border: 1px solid #ff3333; }
+  .fs-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .fs-label { background: var(--accent); color: white; font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 4px; letter-spacing: 1px; text-transform: uppercase; animation: flash-pulse 1s infinite; }
   @keyframes flash-pulse { 0%,100%{opacity:1} 50%{opacity:0.7} }
   .fs-countdown { display: flex; gap: 4px; align-items: center; }
-  .fs-count-box {
-    background: var(--accent); color: white;
-    font-size: 16px; font-weight: 800;
-    width: 32px; height: 32px;
-    display: flex; align-items: center; justify-content: center;
-    border-radius: 4px; font-feature-settings: 'tnum';
-  }
+  .fs-count-box { background: var(--accent); color: white; font-size: 16px; font-weight: 800; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-feature-settings: 'tnum'; }
   .fs-sep { color: var(--accent); font-weight: 800; }
   .fs-product { display: flex; gap: 10px; align-items: center; }
-  .fs-img {
-    width: 60px; height: 60px; border-radius: 8px;
-    background: linear-gradient(135deg, #333, #222);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 28px; flex-shrink: 0;
-  }
+  .fs-img { width: 60px; height: 60px; border-radius: 8px; background: linear-gradient(135deg, #333, #222); display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; }
   .fs-info .fs-name { font-size: 13px; font-weight: 600; }
   .fs-price-row { display: flex; gap: 8px; align-items: center; margin-top: 4px; }
   .fs-price-new { color: var(--accent); font-size: 18px; font-weight: 800; }
@@ -464,24 +295,10 @@
   .fs-bar { height: 6px; border-radius: 3px; background: #222; overflow: hidden; }
   .fs-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), #ff6b6b); width: 78%; }
   .fs-bar-text { font-size: 10px; color: #888; margin-top: 3px; }
-  .fs-btn {
-    margin-top: 10px; width: 100%; padding: 10px;
-    background: linear-gradient(135deg, var(--accent), #ff6b8a);
-    color: white; font-weight: 700; font-size: 13px;
-    border-radius: 8px; text-align: center; cursor: pointer;
-    border: none;
-  }
-
-  /* Scarcity Stock Widget */
-  .stock-widget {
-    background: linear-gradient(135deg, #0a0f1a, #0a0a0a);
-    border: 1px solid #334;
-  }
+  .fs-btn { margin-top: 10px; width: 100%; padding: 10px; background: linear-gradient(135deg, var(--accent), #ff6b8a); color: white; font-weight: 700; font-size: 13px; border-radius: 8px; text-align: center; cursor: pointer; border: none; }
+  .stock-widget { background: linear-gradient(135deg, #0a0f1a, #0a0a0a); border: 1px solid #334; }
   .stock-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
-  .stock-badge {
-    background: #ff6b35; color: white; font-size: 11px; font-weight: 800;
-    padding: 3px 10px; border-radius: 4px; animation: flash-pulse 1.5s infinite;
-  }
+  .stock-badge { background: #ff6b35; color: white; font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 4px; animation: flash-pulse 1.5s infinite; }
   .stock-items { display: flex; flex-direction: column; gap: 8px; }
   .stock-item { display: flex; align-items: center; gap: 10px; }
   .stock-img { width: 44px; height: 44px; border-radius: 6px; background: #222; display: flex; align-items: center; justify-content: center; font-size: 20px; }
@@ -489,36 +306,19 @@
   .stock-name { font-size: 12px; font-weight: 600; }
   .stock-remaining { font-size: 11px; color: #ff6b35; font-weight: 700; }
   .stock-add { background: #ff6b35; color: white; font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 6px; cursor: pointer; white-space: nowrap; }
-
-  /* Countdown Widget */
-  .countdown-widget {
-    background: linear-gradient(135deg, #0a0a1a, #0a0a0a);
-    border: 1px solid #226;
-  }
+  .countdown-widget { background: linear-gradient(135deg, #0a0a1a, #0a0a0a); border: 1px solid #226; }
   .cd-header { text-align: center; margin-bottom: 12px; }
   .cd-title { font-size: 13px; font-weight: 700; color: var(--gold); }
   .cd-subtitle { font-size: 11px; color: #888; margin-top: 2px; }
   .cd-timer { display: flex; justify-content: center; gap: 8px; margin-bottom: 12px; }
   .cd-unit { text-align: center; }
-  .cd-num {
-    background: #111; border: 1px solid #333;
-    font-size: 24px; font-weight: 800; color: var(--gold);
-    width: 50px; height: 50px;
-    display: flex; align-items: center; justify-content: center;
-    border-radius: 8px; font-feature-settings: 'tnum';
-  }
+  .cd-num { background: #111; border: 1px solid #333; font-size: 24px; font-weight: 800; color: var(--gold); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-feature-settings: 'tnum'; }
   .cd-label { font-size: 9px; color: #666; margin-top: 4px; text-align: center; }
   .cd-sep { font-size: 24px; font-weight: 800; color: var(--gold); padding-top: 8px; }
   .cd-offer { background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.2); border-radius: 8px; padding: 10px; text-align: center; }
   .cd-offer-text { font-size: 12px; font-weight: 700; color: var(--gold); }
   .cd-offer-sub { font-size: 11px; color: #888; margin-top: 2px; }
-
-  /* Tanggal Kembar Widget */
-  .double-date-widget {
-    background: linear-gradient(135deg, #1a0a1a, #0a0a0a);
-    border: 1px solid #624;
-    text-align: center;
-  }
+  .double-date-widget { background: linear-gradient(135deg, #1a0a1a, #0a0a0a); border: 1px solid #624; text-align: center; }
   .dd-header { margin-bottom: 12px; }
   .dd-date { font-size: 36px; font-weight: 900; color: var(--accent); letter-spacing: 2px; }
   .dd-year { font-size: 11px; color: #888; }
@@ -531,12 +331,7 @@
   .dd-prod-price { font-size: 13px; font-weight: 800; color: var(--accent); }
   .dd-prod-old { font-size: 10px; color: #555; text-decoration: line-through; }
   .dd-prod-disc { background: var(--accent); color: white; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-top: 3px; display: inline-block; }
-
-  /* Potongan Harga Widget */
-  .discount-widget {
-    background: linear-gradient(135deg, #0a120a, #0a0a0a);
-    border: 1px solid #162;
-  }
+  .discount-widget { background: linear-gradient(135deg, #0a120a, #0a0a0a); border: 1px solid #162; }
   .dw-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
   .dw-label { background: #00c851; color: white; font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 4px; }
   .dw-limited { font-size: 11px; color: #00c851; animation: flash-pulse 1s infinite; }
@@ -550,99 +345,42 @@
   .dw-old { color: #555; font-size: 11px; text-decoration: line-through; }
   .dw-pct { background: rgba(0,200,81,0.2); color: #00c851; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
   .dw-add { background: #00c851; color: white; font-size: 11px; font-weight: 700; padding: 6px 12px; border-radius: 6px; cursor: pointer; white-space: nowrap; }
-
-  .promo-config-panel {
-    background: var(--bg-card);
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    padding: 18px;
-  }
+  .promo-config-panel { background: var(--bg-card); border-radius: var(--radius); border: 1px solid var(--border); padding: 18px; }
   .config-title { font-size: 14px; font-weight: 700; margin-bottom: 14px; }
   .config-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
   .config-label { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
-  .config-input {
-    background: var(--bg-dark);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: white;
-    font-size: 13px;
-    padding: 9px 12px;
-    outline: none;
-    transition: border-color 0.2s;
-    font-family: 'Outfit', sans-serif;
-    width: 100%;
-  }
+  .config-input { background: var(--bg-dark); border: 1px solid var(--border); border-radius: 8px; color: white; font-size: 13px; padding: 9px 12px; outline: none; transition: border-color 0.2s; font-family: 'Outfit', sans-serif; width: 100%; }
   .config-input:focus { border-color: var(--accent); }
   .config-toggle-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
   .config-toggle-label { font-size: 13px; }
-  .toggle-switch {
-    width: 40px; height: 22px; border-radius: 11px; background: #333;
-    position: relative; cursor: pointer; transition: background 0.2s;
-  }
+  .toggle-switch { width: 40px; height: 22px; border-radius: 11px; background: #333; position: relative; cursor: pointer; transition: background 0.2s; }
   .toggle-switch.on { background: var(--accent); }
-  .toggle-knob {
-    width: 18px; height: 18px; border-radius: 50%; background: white;
-    position: absolute; top: 2px; left: 2px;
-    transition: transform 0.2s;
-  }
+  .toggle-knob { width: 18px; height: 18px; border-radius: 50%; background: white; position: absolute; top: 2px; left: 2px; transition: transform 0.2s; }
   .toggle-switch.on .toggle-knob { transform: translateX(18px); }
-  .go-live-btn {
-    width: 100%; padding: 12px;
-    background: linear-gradient(135deg, var(--gold), #ffb300);
-    color: #000; font-weight: 800; font-size: 14px;
-    border-radius: 10px; border: none; cursor: pointer;
-    transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px;
-  }
+  .go-live-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, var(--gold), #ffb300); color: #000; font-weight: 800; font-size: 14px; border-radius: 10px; border: none; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
   .go-live-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,215,0,0.3); }
 
   /* ===== TEMPLATE BACKGROUND PAGE ===== */
   #page-template { padding: 20px 28px 28px; flex-direction: column; gap: 20px; }
-
   .template-filters { display: flex; gap: 8px; flex-wrap: wrap; }
-  .tmpl-filter {
-    padding: 7px 16px; border-radius: 20px;
-    background: var(--bg-card); border: 1.5px solid var(--border);
-    color: var(--text-secondary); font-size: 13px; font-weight: 500;
-    cursor: pointer; transition: all 0.2s;
-  }
-  .tmpl-filter:hover, .tmpl-filter.active {
-    background: rgba(254,44,85,0.15); border-color: var(--accent); color: var(--accent);
-  }
-
-  .template-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 14px;
-  }
-
-  .tmpl-card {
-    border-radius: var(--radius);
-    overflow: hidden;
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: all 0.25s;
-    position: relative;
-  }
+  .tmpl-filter { padding: 7px 16px; border-radius: 20px; background: var(--bg-card); border: 1.5px solid var(--border); color: var(--text-secondary); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+  .tmpl-filter:hover, .tmpl-filter.active { background: rgba(254,44,85,0.15); border-color: var(--accent); color: var(--accent); }
+  .template-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+  .tmpl-card { border-radius: var(--radius); overflow: hidden; cursor: pointer; border: 2px solid transparent; transition: all 0.25s; position: relative; }
   .tmpl-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.2); }
   .tmpl-card.selected { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-glow); }
-
   .tmpl-bg {
     height: 140px;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; padding: 12px;
-    position: relative; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: flex-start; padding: 14px 12px 12px;
+    text-align: center; position: relative; overflow: hidden;
   }
-
-  /* Template Backgrounds */
   .tmpl-flash-sale { background: linear-gradient(135deg, #1a0000, #3d0000, #1a0000); }
   .tmpl-flash-sale::before { content:''; position:absolute; inset:0; background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,0,0,0.05) 10px, rgba(255,0,0,0.05) 20px); }
-
   .tmpl-payday { background: linear-gradient(135deg, #001a00, #003d00, #001a00); }
   .tmpl-payday::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse at 50% 100%, rgba(0,200,0,0.15), transparent 70%); }
-
   .tmpl-countdown { background: linear-gradient(135deg, #00001a, #00003d, #00001a); }
   .tmpl-countdown::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse at 50% 0%, rgba(100,100,255,0.2), transparent 70%); }
-
   .tmpl-double11 { background: linear-gradient(135deg, #1a000d, #3d0020, #1a000d); }
   .tmpl-double12 { background: linear-gradient(135deg, #1a0d00, #3d2000, #1a0d00); }
   .tmpl-harbolnas { background: linear-gradient(135deg, #001a1a, #003d3d, #001a1a); }
@@ -652,201 +390,83 @@
   .tmpl-weekend { background: linear-gradient(135deg, #0a1a00, #15360d, #0a1a00); }
   .tmpl-midnight { background: linear-gradient(135deg, #0a0a1a, #0a001a, #0a0a1a); }
   .tmpl-mega-sale { background: linear-gradient(135deg, #1a0a00, #3d1500, #1a0a00); }
-
-  .tmpl-title {
-    font-size: 15px; font-weight: 900; color: white;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.8);
-    z-index: 1; position: relative;
-  }
+  .tmpl-bg::after { content:''; position:absolute; inset:0; background: linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 60%); pointer-events:none; z-index:0; }
+  .tmpl-title { font-size: 15px; font-weight: 900; color: white; text-shadow: 0 2px 8px rgba(0,0,0,0.9); z-index: 1; position: relative; }
   .tmpl-subtitle { font-size: 10px; color: rgba(255,255,255,0.7); margin-top: 4px; z-index: 1; position: relative; }
-  .tmpl-badge {
-    position: absolute; top: 8px; right: 8px; z-index: 2;
-    font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 10px;
-  }
+  .tmpl-badge { position: absolute; top: 8px; right: 8px; z-index: 2; font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
   .badge-hot { background: var(--accent); color: white; }
   .badge-new { background: var(--accent2); color: #000; }
   .badge-promo { background: var(--gold); color: #000; }
-
   .tmpl-info { background: var(--bg-card); padding: 10px 12px; }
   .tmpl-name { font-size: 13px; font-weight: 600; }
   .tmpl-meta { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-
-  .tmpl-selected-overlay {
-    position: absolute; inset: 0; background: rgba(254,44,85,0.3);
-    display: none; align-items: center; justify-content: center;
-    font-size: 32px;
-  }
+  .tmpl-selected-overlay { position: absolute; inset: 0; background: rgba(254,44,85,0.3); display: none; align-items: center; justify-content: center; font-size: 32px; z-index: 3; }
   .tmpl-card.selected .tmpl-selected-overlay { display: flex; }
-
-  .tmpl-action-bar {
-    background: var(--bg-card); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 14px 18px;
-    display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  }
+  .tmpl-action-bar { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .tmpl-action-info { font-size: 13px; color: var(--text-secondary); }
   .tmpl-action-info strong { color: var(--accent); }
-  .tmpl-use-btn {
-    padding: 10px 28px; border-radius: 8px;
-    background: linear-gradient(135deg, var(--accent), #ff6b8a);
-    color: white; font-weight: 700; font-size: 13px;
-    cursor: pointer; border: none; transition: all 0.2s;
-  }
+  .tmpl-use-btn { padding: 10px 28px; border-radius: 8px; background: linear-gradient(135deg, var(--accent), #ff6b8a); color: white; font-weight: 700; font-size: 13px; cursor: pointer; border: none; transition: all 0.2s; }
   .tmpl-use-btn:hover { transform: scale(1.04); }
 
   /* ===== STIKER PAGE ===== */
   #page-stiker { padding: 20px 28px 28px; flex-direction: column; gap: 20px; }
-
   .stiker-categories { display: flex; gap: 8px; flex-wrap: wrap; }
-  .stiker-cat {
-    padding: 7px 16px; border-radius: 20px;
-    background: var(--bg-card); border: 1.5px solid var(--border);
-    color: var(--text-secondary); font-size: 13px; font-weight: 500;
-    cursor: pointer; transition: all 0.2s;
-  }
-  .stiker-cat:hover, .stiker-cat.active {
-    background: rgba(255,150,50,0.15); border-color: #ff9632; color: #ff9632;
-  }
-
-  .stiker-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 12px;
-  }
-
-  .stiker-card {
-    background: var(--bg-card);
-    border-radius: var(--radius);
-    border: 2px solid transparent;
-    overflow: hidden;
-    cursor: pointer;
-    transition: all 0.25s;
-    text-align: center;
-  }
+  .stiker-cat { padding: 7px 16px; border-radius: 20px; background: var(--bg-card); border: 1.5px solid var(--border); color: var(--text-secondary); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+  .stiker-cat:hover, .stiker-cat.active { background: rgba(255,150,50,0.15); border-color: #ff9632; color: #ff9632; }
+  .stiker-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
+  .stiker-card { background: var(--bg-card); border-radius: var(--radius); border: 2px solid transparent; overflow: hidden; cursor: pointer; transition: all 0.25s; text-align: center; }
   .stiker-card:hover { transform: translateY(-3px) scale(1.02); border-color: rgba(255,150,50,0.4); }
   .stiker-card.selected { border-color: #ff9632; box-shadow: 0 0 0 2px rgba(255,150,50,0.2); }
-
-  .stiker-preview {
-    height: 100px; padding: 8px;
-    background: #111;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 52px;
-    transition: transform 0.2s;
-  }
+  .stiker-preview { height: 100px; padding: 8px; background: #111; display: flex; align-items: center; justify-content: center; font-size: 52px; transition: transform 0.2s; }
   .stiker-card:hover .stiker-preview { transform: scale(1.15); }
-
   .stiker-info { padding: 8px; background: var(--bg-card); }
   .stiker-name { font-size: 11px; font-weight: 600; }
   .stiker-count { font-size: 10px; color: var(--text-muted); }
-
-  .stiker-action-bar {
-    background: var(--bg-card); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 14px 18px;
-    display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  }
+  .stiker-action-bar { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .stiker-selected-preview { display: flex; gap: 6px; align-items: center; }
-  .stiker-selected-item {
-    width: 36px; height: 36px; border-radius: 8px;
-    background: var(--bg-dark); border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px; position: relative;
-  }
-  .stiker-selected-item .remove-x {
-    position: absolute; top: -4px; right: -4px;
-    width: 14px; height: 14px; border-radius: 50%;
-    background: var(--accent); color: white;
-    font-size: 8px; font-weight: 800;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-  }
-  .stiker-add-btn {
-    padding: 10px 24px; border-radius: 8px;
-    background: linear-gradient(135deg, #ff9632, #ff6b35);
-    color: white; font-weight: 700; font-size: 13px;
-    cursor: pointer; border: none; transition: all 0.2s;
-  }
+  .stiker-selected-item { width: 36px; height: 36px; border-radius: 8px; background: var(--bg-dark); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 20px; position: relative; }
+  .stiker-selected-item .remove-x { position: absolute; top: -4px; right: -4px; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); color: white; font-size: 8px; font-weight: 800; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .stiker-add-btn { padding: 10px 24px; border-radius: 8px; background: linear-gradient(135deg, #ff9632, #ff6b35); color: white; font-weight: 700; font-size: 13px; cursor: pointer; border: none; transition: all 0.2s; }
   .stiker-add-btn:hover { transform: scale(1.04); }
 
   /* ===== TOAST ===== */
-  .toast {
-    position: fixed; bottom: 24px; right: 24px;
-    background: #1e1e1e; border: 1px solid var(--border);
-    color: white; padding: 12px 20px; border-radius: 10px;
-    font-size: 13px; font-weight: 500;
-    display: flex; align-items: center; gap: 10px;
-    transform: translateY(80px); opacity: 0;
-    transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
-    z-index: 1000; max-width: 300px;
-  }
+  .toast { position: fixed; bottom: 24px; right: 24px; background: #1e1e1e; border: 1px solid var(--border); color: white; padding: 12px 20px; border-radius: 10px; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 10px; transform: translateY(80px); opacity: 0; transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1); z-index: 1000; max-width: 300px; }
   .toast.show { transform: translateY(0); opacity: 1; }
   .toast-icon { font-size: 18px; }
 
-  /* ===== SCROLLBAR ===== */
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: #555; }
 
-  /* ===== PROMO LAYOUT ===== */
   .promo-layout { display: grid; grid-template-columns: 1fr 320px; gap: 16px; }
   .promo-right { display: flex; flex-direction: column; gap: 14px; }
   @media (max-width: 900px) { .promo-layout { grid-template-columns: 1fr; } }
 
-  /* ===== TAMBAHAN: STUDIO MAIN PAGE LAYOUT ===== */
-  #page-main {
-    display: none;
-    flex-direction: row !important;
-    align-items: stretch !important;
-    justify-content: flex-start !important;
-    overflow: hidden;
-  }
+  /* ===== STUDIO MAIN PAGE ===== */
+  #page-main { display: none; flex-direction: row !important; align-items: stretch !important; justify-content: flex-start !important; overflow: hidden; }
   #page-main.active { display: flex; }
+  .studio-canvas { flex: 1; background: #050505; position: relative; display: flex; flex-direction: column; overflow: hidden; }
 
-  /* Preview Canvas Area */
-  .studio-canvas {
-    flex: 1;
-    background: #050505;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  .canvas-area {
-    flex: 1;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-
-  /* Kamera video element */
-  #cameraVideo {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: none;
-    border-radius: 0;
-  }
+  /* ===== 9:16 CANVAS AREA ===== */
+  .canvas-area { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #030303; }
+  .canvas-area::before { content: ''; position: absolute; inset: 0; background-image: repeating-conic-gradient(#111 0% 25%, #0d0d0d 0% 50%); background-size: 16px 16px; pointer-events: none; z-index: 0; }
+  .canvas-viewport { position: relative; aspect-ratio: 9 / 16; height: 100%; max-width: calc(100% - 0px); z-index: 1; overflow: hidden; box-shadow: 0 0 0 1px rgba(255,255,255,0.07), 0 4px 40px rgba(0,0,0,0.8); background: #000; flex-shrink: 0; }
+  #cameraVideo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: none; }
   #cameraVideo.active { display: block; }
-
-  /* Placeholder saat kamera mati */
-  .canvas-placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    z-index: 1;
-    pointer-events: none;
-  }
+  .canvas-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; z-index: 1; pointer-events: none; position: absolute; inset: 0; }
   .canvas-placeholder.hidden { display: none; }
   .canvas-placeholder .ph-icon { font-size: 56px; opacity: 0.15; }
-  .canvas-placeholder .ph-text { font-size: 14px; color: var(--text-muted); font-weight: 500; }
+  .canvas-placeholder .ph-text { font-size: 14px; color: var(--text-muted); font-weight: 500; text-align: center; }
+  .canvas-placeholder .ph-sub { font-size: 11px; color: var(--text-muted); opacity: 0.6; }
+  .canvas-res-label { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4); padding: 3px 10px; border-radius: 20px; z-index: 10; letter-spacing: 0.5px; pointer-events: none; }
 
-  /* Overlay layer: template background di atas video */
+  /* ===== TEMPLATE OVERLAY — BANNER ONLY, tidak menutupi kamera ===== */
+  /*
+   * FIX UTAMA: Template overlay sekarang hanya berupa banner tipis di atas/bawah
+   * canvas, TIDAK menutupi seluruh layar. Background solid dihapus.
+   * Kamera tetap terlihat jelas di belakang banner.
+   */
   #templateOverlay {
     position: absolute;
     inset: 0;
@@ -855,43 +475,51 @@
     opacity: 0;
     transition: opacity 0.4s;
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start;   /* banner di atas secara default */
     justify-content: stretch;
   }
   #templateOverlay.visible { opacity: 1; }
+
+  /* .template-overlay-bg DIHAPUS fungsinya — tidak lagi solid background gelap */
   .template-overlay-bg {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    inset: 0;
+    display: none; /* sembunyikan sepenuhnya — tidak perlu lagi */
   }
+
+  /* Banner content: hanya setinggi kontennya, pakai gradient lokal agar teks terbaca */
   .template-overlay-content {
     position: relative;
     z-index: 3;
     width: 100%;
-    padding: 20px;
-    background: linear-gradient(transparent, rgba(0,0,0,0.85));
+    /* Tidak lagi full-height — hanya setinggi konten */
+    padding: 16px 16px 24px;
+    /* Gradient hanya di area banner ini, memudar ke bawah → kamera tetap terlihat */
+    background: linear-gradient(to bottom,
+      rgba(0,0,0,0.80) 0%,
+      rgba(0,0,0,0.60) 50%,
+      rgba(0,0,0,0.00) 100%
+    );
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
   }
-  .tov-emoji { font-size: 36px; }
-  .tov-title { font-size: 20px; font-weight: 900; color: white; text-shadow: 0 2px 8px rgba(0,0,0,0.8); }
-  .tov-sub { font-size: 12px; color: rgba(255,255,255,0.7); }
+
+  /* Tambahkan strip warna aksen tipis di atas sesuai warna template */
+  .template-overlay-content::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--tmpl-accent-color, var(--accent));
+    border-radius: 0 0 2px 2px;
+  }
+
+  .tov-emoji { font-size: 32px; }
+  .tov-title { font-size: 19px; font-weight: 900; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.9); text-align: center; }
+  .tov-sub { font-size: 11px; color: rgba(255,255,255,0.8); text-align: center; text-shadow: 0 1px 4px rgba(0,0,0,0.8); }
 
   /* Promo overlay */
-  #promoOverlay {
-    position: absolute;
-    bottom: 70px;
-    right: 14px;
-    z-index: 5;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
-    pointer-events: none;
-    max-width: 240px;
-  }
+  #promoOverlay { position: absolute; bottom: 70px; right: 14px; z-index: 5; opacity: 0; transform: translateY(20px); transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); pointer-events: none; max-width: 240px; }
   #promoOverlay.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
   #promoOverlay .live-promo-widget { width: 230px; font-size: 11px; }
   #promoOverlay .fs-count-box { width: 26px; height: 26px; font-size: 13px; }
@@ -900,39 +528,15 @@
   #promoOverlay .cd-num { width: 40px; height: 40px; font-size: 18px; }
 
   /* Stiker overlay */
-  #stikerOverlay {
-    position: absolute;
-    top: 14px;
-    left: 14px;
-    z-index: 5;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    max-width: 160px;
-    pointer-events: none;
-  }
-  .canvas-stiker {
-    font-size: 38px;
-    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.8));
-    animation: stiker-float 3s ease-in-out infinite;
-  }
+  #stikerOverlay { position: absolute; top: 14px; left: 14px; z-index: 5; display: flex; flex-wrap: wrap; gap: 8px; max-width: 160px; pointer-events: none; }
+  .canvas-stiker { font-size: 38px; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.8)); animation: stiker-float 3s ease-in-out infinite; }
   .canvas-stiker:nth-child(2) { animation-delay: 0.5s; }
   .canvas-stiker:nth-child(3) { animation-delay: 1s; }
   .canvas-stiker:nth-child(4) { animation-delay: 1.5s; }
   .canvas-stiker:nth-child(5) { animation-delay: 2s; }
-  @keyframes stiker-float {
-    0%,100% { transform: translateY(0) rotate(-3deg); }
-    50% { transform: translateY(-6px) rotate(3deg); }
-  }
+  @keyframes stiker-float { 0%,100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-6px) rotate(3deg); } }
 
-  /* Animation overlay on canvas */
-  #animOverlay {
-    position: absolute;
-    inset: 0;
-    z-index: 6;
-    pointer-events: none;
-    display: none;
-  }
+  #animOverlay { position: absolute; inset: 0; z-index: 6; pointer-events: none; display: none; }
   #animOverlay.visible { display: block; }
   #animOverlay.anim-fade { animation: canvas-fade 1.5s infinite; }
   @keyframes canvas-fade { 0%,100%{opacity:1} 50%{opacity:0} }
@@ -942,153 +546,74 @@
   @keyframes canvas-pulse { 0%,100%{box-shadow:inset 0 0 0 0 rgba(37,244,238,0.3)} 50%{box-shadow:inset 0 0 0 12px rgba(37,244,238,0.3)} }
   #animOverlay.anim-glitch-s { animation: canvas-glitch 0.4s infinite; }
   @keyframes canvas-glitch { 0%{filter:none} 20%{filter:hue-rotate(90deg) saturate(2)} 40%{filter:none} 60%{filter:hue-rotate(200deg) saturate(2)} 80%{filter:none} }
-  #animOverlay.anim-scanline::after {
-    content:'';
-    position:absolute; inset:0;
-    background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 4px);
-    animation: scanline-move 4s linear infinite;
-  }
+  #animOverlay.anim-scanline::after { content:''; position:absolute; inset:0; background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 4px); animation: scanline-move 4s linear infinite; }
   @keyframes scanline-move { from{background-position:0 0} to{background-position:0 40px} }
 
-  /* Canvas bottom bar */
-  .canvas-bottom-bar {
-    height: 52px;
-    background: rgba(10,10,10,0.95);
-    border-top: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 16px;
-    gap: 8px;
-    z-index: 10;
-  }
-
-  .cam-btn {
-    display: flex; align-items: center; gap: 8px;
-    padding: 8px 16px; border-radius: 8px;
-    font-size: 13px; font-weight: 700;
-    cursor: pointer; border: none;
-    transition: all 0.2s;
-  }
-  .cam-btn.off {
-    background: var(--bg-card); color: var(--text-secondary);
-    border: 1px solid var(--border);
-  }
+  .canvas-bottom-bar { height: 52px; background: rgba(10,10,10,0.95); border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; gap: 8px; z-index: 10; flex-shrink: 0; }
+  .cam-btn { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; border: none; transition: all 0.2s; }
+  .cam-btn.off { background: var(--bg-card); color: var(--text-secondary); border: 1px solid var(--border); }
   .cam-btn.off:hover { background: var(--bg-card-hover); color: white; }
-  .cam-btn.on {
-    background: linear-gradient(135deg, #00c851, #00a040);
-    color: white;
-    box-shadow: 0 0 16px rgba(0,200,81,0.4);
-  }
+  .cam-btn.on { background: linear-gradient(135deg, #00c851, #00a040); color: white; box-shadow: 0 0 16px rgba(0,200,81,0.4); }
   .cam-btn.on:hover { transform: scale(1.03); }
-
-  .canvas-bottom-stats {
-    display: flex; align-items: center; gap: 12px;
-    font-size: 11px; color: var(--text-muted);
-  }
+  .canvas-bottom-stats { display: flex; align-items: center; gap: 12px; font-size: 11px; color: var(--text-muted); }
   .stat-dot { width: 6px; height: 6px; border-radius: 50%; background: #00c851; animation: blink-stat 1.5s infinite; }
   @keyframes blink-stat { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
-  .canvas-active-badges {
-    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
-  }
-  .active-badge {
-    font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px;
-    background: var(--bg-card); border: 1px solid var(--border);
-    color: var(--text-secondary); display: flex; align-items: center; gap: 4px;
-  }
+  .canvas-active-badges { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .active-badge { font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); display: flex; align-items: center; gap: 4px; }
   .active-badge.on { background: rgba(37,244,238,0.12); border-color: var(--accent2); color: var(--accent2); }
   .active-badge.promo-on { background: rgba(255,215,0,0.12); border-color: var(--gold); color: var(--gold); }
   .active-badge.tmpl-on { background: rgba(254,44,85,0.12); border-color: var(--accent); color: var(--accent); }
   .active-badge.stik-on { background: rgba(255,150,50,0.12); border-color: #ff9632; color: #ff9632; }
 
   /* Right panel */
-  .studio-right-panel {
-    width: 260px;
-    min-width: 260px;
-    background: var(--bg-panel);
-    border-left: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-  }
-
-  .rp-section {
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--border);
-  }
-  .rp-title {
-    font-size: 11px; font-weight: 700; letter-spacing: 1px;
-    text-transform: uppercase; color: var(--text-muted);
-    margin-bottom: 10px;
-  }
-
-  /* Scene mini preview */
-  .scene-preview-thumb {
-    width: 100%; height: 120px;
-    background: #050505;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    position: relative;
-    overflow: hidden;
-    display: flex; align-items: center; justify-content: center;
-  }
-  #miniCamVideo {
-    position: absolute; inset: 0; width: 100%; height: 100%;
-    object-fit: cover; display: none;
-  }
+  .studio-right-panel { width: 260px; min-width: 260px; background: var(--bg-panel); border-left: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; transition: width 0.3s ease, min-width 0.3s ease, border-color 0.3s; flex-shrink: 0; }
+  .sidebar-right-hidden .studio-right-panel { width: 0 !important; min-width: 0 !important; border-left-color: transparent; }
+  .right-inner { width: 260px; overflow-y: auto; height: 100%; }
+  .rp-section { padding: 14px 16px; border-bottom: 1px solid var(--border); }
+  .rp-title { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+  .scene-preview-thumb { width: 100%; aspect-ratio: 9/16; max-height: 150px; background: #050505; border-radius: 10px; border: 1px solid var(--border); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  #miniCamVideo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: none; }
   #miniCamVideo.active { display: block; }
   .scene-mini-placeholder { font-size: 28px; opacity: 0.15; }
 
-  /* Mini template overlay */
+  /* Mini template overlay — juga hanya banner tipis */
   #miniTemplateOverlay {
-    position: absolute; inset: 0; z-index: 2;
-    pointer-events: none; opacity: 0; transition: opacity 0.3s;
-    display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
-    padding: 8px;
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* banner di atas */
   }
   #miniTemplateOverlay.visible { opacity: 1; }
-  .mto-bg { position: absolute; inset: 0; }
-  .mto-text { position: relative; z-index: 3; font-size: 10px; font-weight: 800; color: white; text-align: center; text-shadow: 0 1px 4px rgba(0,0,0,0.9); }
-  .mto-emoji { position: relative; z-index: 3; font-size: 18px; }
-
-  /* Mini promo */
-  #miniPromoOverlay {
-    position: absolute; bottom: 6px; right: 6px; z-index: 5;
-    font-size: 8px; background: rgba(254,44,85,0.9);
-    color: white; font-weight: 800; padding: 2px 6px; border-radius: 4px;
-    display: none;
+  /* bg solid dihapus, pakai gradient lokal di content area saja */
+  .mto-bg { display: none; }
+  .mto-content-area {
+    width: 100%;
+    padding: 6px 4px 10px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 60%, transparent 100%);
+    display: flex; flex-direction: column; align-items: center; gap: 1px;
+    position: relative; z-index: 3;
   }
+  .mto-text { font-size: 10px; font-weight: 800; color: white; text-align: center; text-shadow: 0 1px 4px rgba(0,0,0,0.9); }
+  .mto-emoji { font-size: 16px; line-height: 1.2; }
+
+  #miniPromoOverlay { position: absolute; bottom: 6px; right: 6px; z-index: 5; font-size: 8px; background: rgba(254,44,85,0.9); color: white; font-weight: 800; padding: 2px 6px; border-radius: 4px; display: none; }
   #miniPromoOverlay.visible { display: block; }
-
-  /* Mini stiker */
-  #miniStikerOverlay {
-    position: absolute; top: 4px; left: 4px; z-index: 5;
-    display: flex; flex-wrap: wrap; gap: 3px; max-width: 80px;
-  }
+  #miniStikerOverlay { position: absolute; top: 4px; left: 4px; z-index: 5; display: flex; flex-wrap: wrap; gap: 3px; max-width: 80px; }
   .mini-stiker { font-size: 16px; line-height: 1; }
 
-  /* Layer list */
-  .layer-item {
-    display: flex; align-items: center; gap: 8px;
-    padding: 8px 10px; border-radius: 8px;
-    background: var(--bg-card); border: 1px solid var(--border);
-    margin-bottom: 6px; font-size: 12px;
-  }
+  .layer-item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 8px; background: var(--bg-card); border: 1px solid var(--border); margin-bottom: 6px; font-size: 12px; }
   .layer-item.active-layer { border-color: rgba(37,244,238,0.4); }
   .layer-icon { font-size: 16px; }
-  .layer-info { flex: 1; }
+  .layer-info { flex: 1; min-width: 0; }
   .layer-name { font-weight: 600; font-size: 12px; }
-  .layer-status { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
-  .layer-vis {
-    width: 20px; height: 20px; border-radius: 5px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 11px; cursor: pointer;
-    background: var(--bg-dark); color: var(--text-muted);
-    border: 1px solid var(--border);
-  }
-
-  /* Stats */
+  .layer-status { font-size: 10px; color: var(--text-muted); margin-top: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .layer-vis { width: 20px; height: 20px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 11px; cursor: pointer; background: var(--bg-dark); color: var(--text-muted); border: 1px solid var(--border); }
   .rp-stats { display: flex; flex-direction: column; gap: 8px; }
   .rp-stat-row { display: flex; justify-content: space-between; align-items: center; }
   .rp-stat-label { font-size: 12px; color: var(--text-secondary); }
@@ -1097,88 +622,83 @@
   .rp-stat-val.red { color: var(--accent); }
   .rp-stat-val.gold { color: var(--gold); }
 
-  /* Camera error */
-  #camError {
-    display: none;
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.92);
-    z-index: 10;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 12px;
-    text-align: center;
-    padding: 28px;
-  }
+  #camError { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.92); z-index: 10; align-items: center; justify-content: center; flex-direction: column; gap: 12px; text-align: center; padding: 28px; }
   #camError.visible { display: flex; }
   #camError .err-icon { font-size: 44px; }
   #camError .err-title { font-size: 15px; font-weight: 700; color: white; }
   #camError .err-msg { font-size: 12px; color: var(--text-secondary); line-height: 1.7; max-width: 320px; }
   #camError .err-steps { text-align: left; font-size: 12px; color: var(--text-secondary); line-height: 2; background: var(--bg-card); border-radius: 10px; padding: 12px 16px; border: 1px solid var(--border); }
-  #camError .err-retry {
-    margin-top: 4px; padding: 10px 28px; border-radius: 8px;
-    background: linear-gradient(135deg, #00c851, #00a040);
-    color: white; font-weight: 700; font-size: 13px;
-    cursor: pointer; border: none; transition: all 0.2s;
-  }
+  #camError .err-retry { margin-top: 4px; padding: 10px 28px; border-radius: 8px; background: linear-gradient(135deg, #00c851, #00a040); color: white; font-weight: 700; font-size: 13px; cursor: pointer; border: none; transition: all 0.2s; }
   #camError .err-retry:hover { transform: scale(1.04); }
+
+  /* ===== LAYOUT MANAGER PANEL ===== */
+  .layout-panel { background: var(--bg-card); border-radius: var(--radius); border: 1px solid var(--border); padding: 14px 16px; margin: 14px 16px 0; }
+  .layout-panel-title { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .layout-editor-canvas { position: relative; width: 100%; aspect-ratio: 9/16; max-height: 200px; background: #111; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 10px; user-select: none; }
+  .layout-editor-canvas .le-bg { position: absolute; inset: 0; background: linear-gradient(160deg, #0a0a0a, #111); }
+  .le-block { position: absolute; cursor: grab; border-radius: 6px; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 3px; border: 2px solid transparent; transition: border-color 0.15s, box-shadow 0.15s; user-select: none; touch-action: none; white-space: nowrap; padding: 0 6px; height: 28px; z-index: 2; }
+  .le-block:hover { border-color: rgba(255,255,255,0.3); box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+  .le-block:active { cursor: grabbing; }
+  .le-block.active { border-color: white; box-shadow: 0 0 0 2px rgba(255,255,255,0.2); z-index: 10; }
+  .le-block.cam  { background: rgba(0,200,81,0.25);  color: #00c851; }
+  .le-block.tmpl { background: rgba(254,44,85,0.25); color: #fe2c55; }
+  .le-block.stik { background: rgba(255,150,50,0.25);color: #ff9632; }
+  .le-block.promo{ background: rgba(255,215,0,0.25); color: #ffd700; }
+  .layout-presets { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+  .preset-btn { padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; background: var(--bg-dark); border: 1px solid var(--border); color: var(--text-secondary); cursor: pointer; transition: all 0.18s; }
+  .preset-btn:hover { background: var(--bg-card-hover); color: white; border-color: rgba(255,255,255,0.2); }
+  .preset-btn.active { background: rgba(254,44,85,0.15); border-color: var(--accent); color: var(--accent); }
+  .layout-hint { font-size: 10px; color: var(--text-muted); display: flex; align-items: center; gap: 4px; margin-top: 4px; }
 </style>
 </head>
 <body>
 
+<!-- SIDEBAR TOGGLE BUTTONS -->
+<div class="sidebar-toggle" id="toggleLeft" onclick="toggleLeftSidebar()" title="Sembunyikan/Tampilkan Sidebar">◀</div>
+<div class="sidebar-toggle" id="toggleRight" onclick="toggleRightSidebar()" title="Sembunyikan/Tampilkan Panel Kanan">▶</div>
+
 <!-- SIDEBAR -->
-<div class="sidebar">
-  <div class="sidebar-header">
-    <div class="tiktok-logo">🎵</div>
-    <div>
-      <div class="sidebar-title">TikTok LIVE Studio</div>
-      <div class="sidebar-sub">v3.5.0</div>
+<div class="sidebar" id="leftSidebar">
+  <div class="sidebar-inner">
+    <div class="sidebar-header">
+      <div class="tiktok-logo">🎵</div>
+      <div>
+        <div class="sidebar-title">TikTok LIVE Studio</div>
+        <div class="sidebar-sub">v3.5.0</div>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Studio</div>
+      <div class="sidebar-btn" onclick="showPage('main')"><span class="icon">🎬</span> Tampilan Studio</div>
+      <div class="sidebar-btn"><span class="icon">📷</span> Kamera</div>
+      <div class="sidebar-btn"><span class="icon">🎙️</span> Audio</div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Interaksi</div>
+      <div class="sidebar-btn"><span class="icon">🙋</span> Harapan Penonton</div>
+      <div class="sidebar-btn"><span class="icon">📖</span> Buku Panduan</div>
+      <div class="sidebar-btn"><span class="icon">🎮</span> Main Bareng</div>
+      <div class="sidebar-btn"><span class="icon">🎯</span> Target LIVE</div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Monetisasi</div>
+      <div class="sidebar-btn"><span class="icon">🤝</span> Kemitraan</div>
+      <div class="sidebar-btn"><span class="icon">⭐</span> Fan Club</div>
+      <div class="sidebar-btn"><span class="icon">📣</span> Promosikan</div>
+      <div class="sidebar-btn"><span class="icon">🎪</span> Acara LIVE</div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section"><div class="sidebar-section-label">Kreator</div></div>
+    <div class="fitur-editing-btn" onclick="showPage('fitur')" id="fiturBtn">
+      <span style="font-size:20px">🖼️</span>
+      <div>
+        <div>Fitur Editing</div>
+        <div style="font-size:10px;opacity:0.8;font-weight:400">Animation • Promo • Template • Stiker</div>
+      </div>
     </div>
   </div>
-
-  <div class="sidebar-section">
-    <div class="sidebar-section-label">Studio</div>
-    <div class="sidebar-btn" onclick="showPage('main')"><span class="icon">🎬</span> Tampilan Studio</div>
-    <div class="sidebar-btn"><span class="icon">📷</span> Kamera</div>
-    <div class="sidebar-btn"><span class="icon">🎙️</span> Audio</div>
-  </div>
-
-  <div class="sidebar-divider"></div>
-
-  <div class="sidebar-section">
-    <div class="sidebar-section-label">Interaksi</div>
-    <div class="sidebar-btn"><span class="icon">🙋</span> Harapan Penonton</div>
-    <div class="sidebar-btn"><span class="icon">📖</span> Buku Panduan</div>
-    <div class="sidebar-btn"><span class="icon">🎮</span> Main Bareng</div>
-    <div class="sidebar-btn"><span class="icon">🎯</span> Target LIVE</div>
-  </div>
-
-  <div class="sidebar-divider"></div>
-
-  <div class="sidebar-section">
-    <div class="sidebar-section-label">Monetisasi</div>
-    <div class="sidebar-btn"><span class="icon">🤝</span> Kemitraan</div>
-    <div class="sidebar-btn"><span class="icon">⭐</span> Fan Club</div>
-    <div class="sidebar-btn"><span class="icon">📣</span> Promosikan</div>
-    <div class="sidebar-btn"><span class="icon">🎪</span> Acara LIVE</div>
-  </div>
-
-  <div class="sidebar-divider"></div>
-
-  <div class="sidebar-section">
-    <div class="sidebar-section-label">Kreator</div>
-  </div>
-
-  <!-- Fitur Editing Button -->
-  <div class="fitur-editing-btn" onclick="showPage('fitur')" id="fiturBtn">
-    <span style="font-size:20px">🖼️</span>
-    <div>
-      <div>Fitur Editing</div>
-      <div style="font-size:10px;opacity:0.8;font-weight:400">Animation • Promo • Template • Stiker</div>
-    </div>
-  </div>
-
 </div>
 
 <!-- MAIN CONTENT -->
@@ -1192,180 +712,164 @@
     </div>
   </div>
 
-  <!-- PAGE: MAIN (STUDIO dengan Preview) -->
+  <!-- PAGE: MAIN STUDIO -->
   <div class="page active" id="page-main">
-    <!-- Canvas Preview Area -->
     <div class="studio-canvas">
       <div class="canvas-area">
-        <!-- Camera video -->
-        <video id="cameraVideo" autoplay muted playsinline></video>
-
-        <!-- Placeholder -->
-        <div class="canvas-placeholder" id="canvasPlaceholder">
-          <div class="ph-icon">🎥</div>
-          <div class="ph-text">Nyalakan kamera untuk mulai preview</div>
-        </div>
-
-        <!-- Template overlay di canvas -->
-        <div id="templateOverlay">
-          <div class="template-overlay-bg" id="templateOverlayBg"></div>
-          <div class="template-overlay-content">
-            <div class="tov-emoji" id="tovEmoji"></div>
-            <div class="tov-title" id="tovTitle"></div>
-            <div class="tov-sub" id="tovSub"></div>
+        <div class="canvas-viewport" id="canvasViewport">
+          <div class="canvas-res-label">1080 × 1920 · 9:16</div>
+          <video id="cameraVideo" autoplay muted playsinline></video>
+          <div class="canvas-placeholder" id="canvasPlaceholder">
+            <div class="ph-icon">🎥</div>
+            <div class="ph-text">Nyalakan kamera untuk preview</div>
+            <div class="ph-sub">Format 9:16 · 1080×1920</div>
           </div>
-        </div>
 
-        <!-- Promo overlay di canvas -->
-        <div id="promoOverlay"></div>
-
-        <!-- Stiker overlay di canvas -->
-        <div id="stikerOverlay"></div>
-
-        <!-- Animation overlay -->
-        <div id="animOverlay"></div>
-
-        <!-- Camera error -->
-        <div id="camError">
-          <div class="err-icon">📷</div>
-          <div class="err-title">Izinkan Akses Kamera</div>
-          <div class="err-msg">Browser meminta izin kamera. Ikuti langkah berikut:</div>
-          <div class="err-steps">
-            🔒 Klik ikon <b>kunci/kamera</b> di address bar<br>
-            📋 Pilih <b>"Izinkan"</b> untuk kamera<br>
-            🔄 Klik <b>Coba Lagi</b> di bawah ini
+          <!-- TEMPLATE OVERLAY: hanya banner di atas, tidak tutup kamera -->
+          <div id="templateOverlay">
+            <!-- template-overlay-bg dihapus (display:none via CSS) -->
+            <div class="template-overlay-bg" id="templateOverlayBg"></div>
+            <div class="template-overlay-content" id="templateOverlayContent">
+              <div class="tov-emoji" id="tovEmoji"></div>
+              <div class="tov-title" id="tovTitle"></div>
+              <div class="tov-sub" id="tovSub"></div>
+            </div>
           </div>
-          <button class="err-retry" onclick="retryCamera()">🔄 Coba Lagi</button>
-          <div id="camErrDetail" style="font-size:11px;color:var(--text-muted);margin-top:4px"></div>
+
+          <div id="promoOverlay"></div>
+          <div id="stikerOverlay"></div>
+          <div id="animOverlay"></div>
+          <div id="camError">
+            <div class="err-icon">📷</div>
+            <div class="err-title">Izinkan Akses Kamera</div>
+            <div class="err-msg">Browser meminta izin kamera. Ikuti langkah berikut:</div>
+            <div class="err-steps">
+              🔒 Klik ikon <b>kunci/kamera</b> di address bar<br>
+              📋 Pilih <b>"Izinkan"</b> untuk kamera<br>
+              🔄 Klik <b>Coba Lagi</b> di bawah ini
+            </div>
+            <button class="err-retry" onclick="retryCamera()">🔄 Coba Lagi</button>
+            <div id="camErrDetail" style="font-size:11px;color:var(--text-muted);margin-top:4px"></div>
+          </div>
         </div>
       </div>
-
-      <!-- Bottom bar kamera + status -->
       <div class="canvas-bottom-bar">
         <button class="cam-btn off" id="camBtn" onclick="toggleCamera()">
           <span id="camBtnIcon">📷</span>
           <span id="camBtnText">Nyalakan Kamera</span>
         </button>
-
         <div class="canvas-active-badges">
           <div class="active-badge" id="badgeAnim">✨ —</div>
           <div class="active-badge" id="badgePromo">🛒 —</div>
           <div class="active-badge" id="badgeTmpl">🖼️ —</div>
           <div class="active-badge" id="badgeStiker">🎭 —</div>
         </div>
-
         <div class="canvas-bottom-stats">
           <div class="stat-dot"></div>
-          <span id="canvasStats">1280×720 • 30fps</span>
+          <span id="canvasStats">1080×1920 · 9:16</span>
         </div>
       </div>
     </div>
 
     <!-- Right Panel -->
-    <div class="studio-right-panel">
-      <!-- Mini scene preview -->
-      <div class="rp-section">
-        <div class="rp-title">Scene Preview</div>
-        <div class="scene-preview-thumb">
-          <video id="miniCamVideo" autoplay muted playsinline></video>
-          <div class="scene-mini-placeholder" id="miniPlaceholder">🎬</div>
-          <div id="miniTemplateOverlay">
-            <div class="mto-bg" id="mtoBackground"></div>
-            <div class="mto-emoji" id="mtoEmoji"></div>
-            <div class="mto-text" id="mtoText"></div>
+    <div class="studio-right-panel" id="rightPanel">
+      <div class="right-inner">
+        <!-- Layout Manager -->
+        <div class="layout-panel">
+          <div class="layout-panel-title">⠿ Atur Posisi Layer</div>
+          <div class="layout-presets">
+            <div class="preset-btn active" id="preset-default" onclick="applyPreset('default',this)">Default</div>
+            <div class="preset-btn" id="preset-top" onclick="applyPreset('top',this)">Semua Atas</div>
+            <div class="preset-btn" id="preset-bottom" onclick="applyPreset('bottom',this)">Semua Bawah</div>
+            <div class="preset-btn" id="preset-split" onclick="applyPreset('split',this)">Split</div>
           </div>
-          <div id="miniPromoOverlay">⚡ Promo Aktif</div>
-          <div id="miniStikerOverlay"></div>
+          <div class="layout-editor-canvas" id="layoutCanvas">
+            <div class="le-bg"></div>
+            <div class="le-block cam"   id="lb-cam"   data-layer="cam">📷 Kamera</div>
+            <div class="le-block tmpl"  id="lb-tmpl"  data-layer="tmpl">🖼️ Template</div>
+            <div class="le-block stik"  id="lb-stik"  data-layer="stik">🎭 Stiker</div>
+            <div class="le-block promo" id="lb-promo"  data-layer="promo">🛒 Promo</div>
+          </div>
+          <div class="layout-hint">💡 Drag blok untuk atur posisi overlay di canvas</div>
         </div>
-      </div>
 
-      <!-- Layers -->
-      <div class="rp-section">
-        <div class="rp-title">Layers Aktif</div>
-        <div id="layerList">
-          <div class="layer-item">
-            <div class="layer-icon">📷</div>
-            <div class="layer-info">
-              <div class="layer-name">Kamera</div>
-              <div class="layer-status" id="layerCamStatus">Nonaktif</div>
+        <!-- Scene preview -->
+        <div class="rp-section">
+          <div class="rp-title">Scene Preview</div>
+          <div class="scene-preview-thumb">
+            <video id="miniCamVideo" autoplay muted playsinline></video>
+            <div class="scene-mini-placeholder" id="miniPlaceholder">🎬</div>
+            <div id="miniTemplateOverlay">
+              <!-- mto-bg tersembunyi, pakai mto-content-area untuk gradient lokal -->
+              <div class="mto-bg" id="mtoBackground"></div>
+              <div class="mto-content-area">
+                <div class="mto-emoji" id="mtoEmoji"></div>
+                <div class="mto-text" id="mtoText"></div>
+              </div>
             </div>
-            <div class="layer-vis">👁</div>
-          </div>
-          <div class="layer-item" id="layerAnimItem" style="opacity:0.4">
-            <div class="layer-icon">✨</div>
-            <div class="layer-info">
-              <div class="layer-name">Animation</div>
-              <div class="layer-status" id="layerAnimStatus">—</div>
-            </div>
-            <div class="layer-vis">👁</div>
-          </div>
-          <div class="layer-item" id="layerTmplItem" style="opacity:0.4">
-            <div class="layer-icon">🖼️</div>
-            <div class="layer-info">
-              <div class="layer-name">Template</div>
-              <div class="layer-status" id="layerTmplStatus">—</div>
-            </div>
-            <div class="layer-vis">👁</div>
-          </div>
-          <div class="layer-item" id="layerPromoItem" style="opacity:0.4">
-            <div class="layer-icon">🛒</div>
-            <div class="layer-info">
-              <div class="layer-name">Promosi</div>
-              <div class="layer-status" id="layerPromoStatus">—</div>
-            </div>
-            <div class="layer-vis">👁</div>
-          </div>
-          <div class="layer-item" id="layerStikerItem" style="opacity:0.4">
-            <div class="layer-icon">🎭</div>
-            <div class="layer-info">
-              <div class="layer-name">Stiker</div>
-              <div class="layer-status" id="layerStikerStatus">—</div>
-            </div>
-            <div class="layer-vis">👁</div>
+            <div id="miniPromoOverlay">⚡ Promo Aktif</div>
+            <div id="miniStikerOverlay"></div>
           </div>
         </div>
-      </div>
 
-      <!-- Stats -->
-      <div class="rp-section">
-        <div class="rp-title">Statistik LIVE</div>
-        <div class="rp-stats">
-          <div class="rp-stat-row">
-            <span class="rp-stat-label">👀 Penonton</span>
-            <span class="rp-stat-val green" id="statViewers">1,243</span>
-          </div>
-          <div class="rp-stat-row">
-            <span class="rp-stat-label">❤️ Like</span>
-            <span class="rp-stat-val red" id="statLikes">8,921</span>
-          </div>
-          <div class="rp-stat-row">
-            <span class="rp-stat-label">🛒 Pesanan</span>
-            <span class="rp-stat-val gold">47</span>
-          </div>
-          <div class="rp-stat-row">
-            <span class="rp-stat-label">💬 Komentar</span>
-            <span class="rp-stat-val" style="color:var(--accent2)">382</span>
-          </div>
-          <div class="rp-stat-row">
-            <span class="rp-stat-label">📶 Kualitas</span>
-            <span class="rp-stat-val green">Sangat Baik</span>
+        <!-- Layers -->
+        <div class="rp-section">
+          <div class="rp-title">Layers Aktif</div>
+          <div id="layerList">
+            <div class="layer-item">
+              <div class="layer-icon">📷</div>
+              <div class="layer-info"><div class="layer-name">Kamera</div><div class="layer-status" id="layerCamStatus">Nonaktif</div></div>
+              <div class="layer-vis">👁</div>
+            </div>
+            <div class="layer-item" id="layerAnimItem" style="opacity:0.4">
+              <div class="layer-icon">✨</div>
+              <div class="layer-info"><div class="layer-name">Animation</div><div class="layer-status" id="layerAnimStatus">—</div></div>
+              <div class="layer-vis">👁</div>
+            </div>
+            <div class="layer-item" id="layerTmplItem" style="opacity:0.4">
+              <div class="layer-icon">🖼️</div>
+              <div class="layer-info"><div class="layer-name">Template</div><div class="layer-status" id="layerTmplStatus">—</div></div>
+              <div class="layer-vis">👁</div>
+            </div>
+            <div class="layer-item" id="layerPromoItem" style="opacity:0.4">
+              <div class="layer-icon">🛒</div>
+              <div class="layer-info"><div class="layer-name">Promosi</div><div class="layer-status" id="layerPromoStatus">—</div></div>
+              <div class="layer-vis">👁</div>
+            </div>
+            <div class="layer-item" id="layerStikerItem" style="opacity:0.4">
+              <div class="layer-icon">🎭</div>
+              <div class="layer-info"><div class="layer-name">Stiker</div><div class="layer-status" id="layerStikerStatus">—</div></div>
+              <div class="layer-vis">👁</div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Quick Actions -->
-      <div class="rp-section">
-        <div class="rp-title">Aksi Cepat</div>
-        <div style="display:flex;flex-direction:column;gap:6px">
-          <div style="display:flex;gap:6px">
-            <button onclick="showPage('animation')" style="flex:1;padding:8px;background:rgba(37,244,238,0.1);border:1px solid rgba(37,244,238,0.3);border-radius:8px;color:var(--accent2);font-size:11px;font-weight:700;cursor:pointer">✨ Animasi</button>
-            <button onclick="showPage('scarcity')" style="flex:1;padding:8px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);border-radius:8px;color:var(--gold);font-size:11px;font-weight:700;cursor:pointer">🛒 Promo</button>
+        <!-- Stats -->
+        <div class="rp-section">
+          <div class="rp-title">Statistik LIVE</div>
+          <div class="rp-stats">
+            <div class="rp-stat-row"><span class="rp-stat-label">👀 Penonton</span><span class="rp-stat-val green" id="statViewers">1,243</span></div>
+            <div class="rp-stat-row"><span class="rp-stat-label">❤️ Like</span><span class="rp-stat-val red" id="statLikes">8,921</span></div>
+            <div class="rp-stat-row"><span class="rp-stat-label">🛒 Pesanan</span><span class="rp-stat-val gold">47</span></div>
+            <div class="rp-stat-row"><span class="rp-stat-label">💬 Komentar</span><span class="rp-stat-val" style="color:var(--accent2)">382</span></div>
+            <div class="rp-stat-row"><span class="rp-stat-label">📶 Kualitas</span><span class="rp-stat-val green">Sangat Baik</span></div>
           </div>
-          <div style="display:flex;gap:6px">
-            <button onclick="showPage('template')" style="flex:1;padding:8px;background:rgba(254,44,85,0.1);border:1px solid rgba(254,44,85,0.3);border-radius:8px;color:var(--accent);font-size:11px;font-weight:700;cursor:pointer">🖼️ Template</button>
-            <button onclick="showPage('stiker')" style="flex:1;padding:8px;background:rgba(255,150,50,0.1);border:1px solid rgba(255,150,50,0.3);border-radius:8px;color:#ff9632;font-size:11px;font-weight:700;cursor:pointer">🎭 Stiker</button>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="rp-section">
+          <div class="rp-title">Aksi Cepat</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;gap:6px">
+              <button onclick="showPage('animation')" style="flex:1;padding:8px;background:rgba(37,244,238,0.1);border:1px solid rgba(37,244,238,0.3);border-radius:8px;color:var(--accent2);font-size:11px;font-weight:700;cursor:pointer">✨ Animasi</button>
+              <button onclick="showPage('scarcity')" style="flex:1;padding:8px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);border-radius:8px;color:var(--gold);font-size:11px;font-weight:700;cursor:pointer">🛒 Promo</button>
+            </div>
+            <div style="display:flex;gap:6px">
+              <button onclick="showPage('template')" style="flex:1;padding:8px;background:rgba(254,44,85,0.1);border:1px solid rgba(254,44,85,0.3);border-radius:8px;color:var(--accent);font-size:11px;font-weight:700;cursor:pointer">🖼️ Template</button>
+              <button onclick="showPage('stiker')" style="flex:1;padding:8px;background:rgba(255,150,50,0.1);border:1px solid rgba(255,150,50,0.3);border-radius:8px;color:#ff9632;font-size:11px;font-weight:700;cursor:pointer">🎭 Stiker</button>
+            </div>
+            <button onclick="clearAll()" style="width:100%;padding:8px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;color:var(--text-muted);font-size:11px;font-weight:600;cursor:pointer;margin-top:4px">🗑️ Hapus Semua Efek</button>
           </div>
-          <button onclick="clearAll()" style="width:100%;padding:8px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;color:var(--text-muted);font-size:11px;font-weight:600;cursor:pointer;margin-top:4px">🗑️ Hapus Semua Efek</button>
         </div>
       </div>
     </div>
@@ -1373,46 +877,36 @@
 
   <!-- PAGE: FITUR EDITING HOME -->
   <div class="page" id="page-fitur">
-    <div class="page-header">
-      <h2>🖼️ Fitur Editing</h2>
-      <p>Tingkatkan LIVE kamu dengan animasi, promosi, template, dan stiker keren!</p>
-    </div>
-    <div class="feature-grid">
-      <div class="feature-card anim" onclick="showPage('animation')">
-        <div class="feature-icon anim">✨</div>
-        <div>
-          <div class="feature-name">Animation</div>
-          <div class="feature-desc">Fade black, kedip, slide, zoom, glitch, bounce dan efek gerakan keren lainnya</div>
-        </div>
-        <div class="feature-count">12 Efek</div>
-        <div class="feature-arrow">›</div>
+    <div style="padding:28px;display:flex;flex-direction:column;gap:24px">
+      <div class="page-header">
+        <h2>🖼️ Fitur Editing</h2>
+        <p>Tingkatkan LIVE kamu dengan animasi, promosi, template, dan stiker keren!</p>
       </div>
-      <div class="feature-card promo" onclick="showPage('scarcity')">
-        <div class="feature-icon promo">🛒</div>
-        <div>
-          <div class="feature-name">Scarcity Promotion</div>
-          <div class="feature-desc">Flash sale, potongan harga, countdown, tanggal kembar, stok terbatas untuk shop</div>
+      <div class="feature-grid">
+        <div class="feature-card anim" onclick="showPage('animation')">
+          <div class="feature-icon anim">✨</div>
+          <div><div class="feature-name">Animation</div><div class="feature-desc">Fade black, kedip, slide, zoom, glitch, bounce dan efek gerakan keren lainnya</div></div>
+          <div class="feature-count">12 Efek</div>
+          <div class="feature-arrow">›</div>
         </div>
-        <div class="feature-count">5 Tipe</div>
-        <div class="feature-arrow">›</div>
-      </div>
-      <div class="feature-card tmpl" onclick="showPage('template')">
-        <div class="feature-icon tmpl">🖼️</div>
-        <div>
-          <div class="feature-name">Template Background</div>
-          <div class="feature-desc">Template siap pakai: Flash Sale, Hari Gajian, Harbolnas, 11.11, Lebaran & lainnya</div>
+        <div class="feature-card promo" onclick="showPage('scarcity')">
+          <div class="feature-icon promo">🛒</div>
+          <div><div class="feature-name">Scarcity Promotion</div><div class="feature-desc">Flash sale, potongan harga, countdown, tanggal kembar, stok terbatas untuk shop</div></div>
+          <div class="feature-count">5 Tipe</div>
+          <div class="feature-arrow">›</div>
         </div>
-        <div class="feature-count">12 Template</div>
-        <div class="feature-arrow">›</div>
-      </div>
-      <div class="feature-card stikr" onclick="showPage('stiker')">
-        <div class="feature-icon stikr">🎭</div>
-        <div>
-          <div class="feature-name">Stiker</div>
-          <div class="feature-desc">Koleksi stiker lucu, promo, emote, dan dekoratif untuk mempercantik LIVE</div>
+        <div class="feature-card tmpl" onclick="showPage('template')">
+          <div class="feature-icon tmpl">🖼️</div>
+          <div><div class="feature-name">Template Background</div><div class="feature-desc">Template siap pakai: Flash Sale, Hari Gajian, Harbolnas, 11.11, Lebaran & lainnya</div></div>
+          <div class="feature-count">12 Template</div>
+          <div class="feature-arrow">›</div>
         </div>
-        <div class="feature-count">40+ Stiker</div>
-        <div class="feature-arrow">›</div>
+        <div class="feature-card stikr" onclick="showPage('stiker')">
+          <div class="feature-icon stikr">🎭</div>
+          <div><div class="feature-name">Stiker</div><div class="feature-desc">Koleksi stiker lucu, promo, emote, dan dekoratif untuk mempercantik LIVE</div></div>
+          <div class="feature-count">40+ Stiker</div>
+          <div class="feature-arrow">›</div>
+        </div>
       </div>
     </div>
   </div>
@@ -1421,10 +915,7 @@
   <div class="page" id="page-animation">
     <div class="sub-header">
       <div class="back-btn" onclick="showPage('fitur')">‹</div>
-      <div class="sub-header-text">
-        <h3>✨ Animation</h3>
-        <p>Hover kartu untuk preview • Klik untuk pilih</p>
-      </div>
+      <div class="sub-header-text"><h3>✨ Animation</h3><p>Hover kartu untuk preview • Klik untuk pilih</p></div>
     </div>
     <div style="padding:16px 28px 0">
       <div class="anim-categories">
@@ -1436,66 +927,18 @@
     </div>
     <div style="padding:16px 28px;flex:1;overflow-y:auto">
       <div class="anim-grid" id="animGrid">
-        <div class="anim-card" data-cat="transition" onclick="selectAnim(this,'Fade Black')">
-          <div class="anim-preview"><div class="demo-box fade">🌑</div></div>
-          <div class="anim-selected-badge">✓ Aktif</div>
-          <div class="anim-info"><div class="anim-name">Fade Black</div><div class="anim-tag">Transisi</div></div>
-        </div>
-        <div class="anim-card" data-cat="effect" onclick="selectAnim(this,'Blink')">
-          <div class="anim-preview"><div class="demo-box blink">💡</div></div>
-          <div class="anim-selected-badge">✓ Aktif</div>
-          <div class="anim-info"><div class="anim-name">Blink / Kedip</div><div class="anim-tag">Efek Khusus</div></div>
-        </div>
-        <div class="anim-card" data-cat="transition" onclick="selectAnim(this,'Slide In')">
-          <div class="anim-preview"><div class="demo-box slide-in">➡️</div></div>
-          <div class="anim-selected-badge">✓ Aktif</div>
-          <div class="anim-info"><div class="anim-name">Slide In</div><div class="anim-tag">Transisi</div></div>
-        </div>
-        <div class="anim-card" data-cat="transition" onclick="selectAnim(this,'Zoom In')">
-          <div class="anim-preview"><div class="demo-box zoom-in">🔍</div></div>
-          <div class="anim-selected-badge">✓ Aktif</div>
-          <div class="anim-info"><div class="anim-name">Zoom In</div><div class="anim-tag">Transisi</div></div>
-        </div>
-        <div class="anim-card" data-cat="motion" onclick="selectAnim(this,'Bounce')">
-          <div class="anim-preview"><div class="demo-box bounce">⚡</div></div>
-          <div class="anim-selected-badge">✓ Aktif</div>
-          <div class="anim-info"><div class="anim-name">Bounce</div><div class="anim-tag">Gerakan</div></div>
-        </div>
-        <div class="anim-card" data-cat="motion" onclick="selectAnim(this,'Shake')">
-          <div class="anim-preview"><div class="demo-box shake">📳</div></div>
-          <div class="anim-selected-badge">✓ Aktif</div>
-          <div class="anim-info"><div class="anim-name">Shake</div><div class="anim-tag">Gerakan</div></div>
-        </div>
-        <div class="anim-card" data-cat="motion" onclick="selectAnim(this,'Spin')">
-          <div class="anim-preview"><div class="demo-box spin">🌀</div></div>
-          <div class="anim-selected-badge">✓ Aktif</div>
-          <div class="anim-info"><div class="anim-name">Spin</div><div class="anim-tag">Gerakan</div></div>
-        </div>
-        <div class="anim-card" data-cat="effect" onclick="selectAnim(this,'Glitch')">
-          <div class="anim-preview"><div class="demo-box glitch">⚡</div></div>
-          <div class="anim-selected-badge">✓ Aktif</div>
-          <div class="anim-info"><div class="anim-name">Glitch</div><div class="anim-tag">Efek Khusus</div></div>
-        </div>
-        <div class="anim-card" data-cat="transition" onclick="selectAnim(this,'Flip 3D')">
-          <div class="anim-preview"><div class="demo-box flip">🔄</div></div>
-          <div class="anim-selected-badge">✓ Aktif</div>
-          <div class="anim-info"><div class="anim-name">Flip 3D</div><div class="anim-tag">Transisi</div></div>
-        </div>
-        <div class="anim-card" data-cat="motion" onclick="selectAnim(this,'Pulse')">
-          <div class="anim-preview"><div class="demo-box pulse">❤️</div></div>
-          <div class="anim-selected-badge">✓ Aktif</div>
-          <div class="anim-info"><div class="anim-name">Pulse</div><div class="anim-tag">Gerakan</div></div>
-        </div>
-        <div class="anim-card" data-cat="effect" onclick="selectAnim(this,'Typewriter')">
-          <div class="anim-preview"><div class="demo-box typewriter"></div></div>
-          <div class="anim-selected-badge">✓ Aktif</div>
-          <div class="anim-info"><div class="anim-name">Typewriter</div><div class="anim-tag">Efek Khusus</div></div>
-        </div>
-        <div class="anim-card" data-cat="motion" onclick="selectAnim(this,'Wave')">
-          <div class="anim-preview"><div class="demo-box wave">🌊</div></div>
-          <div class="anim-selected-badge">✓ Aktif</div>
-          <div class="anim-info"><div class="anim-name">Wave</div><div class="anim-tag">Gerakan</div></div>
-        </div>
+        <div class="anim-card" data-cat="transition" onclick="selectAnim(this,'Fade Black')"><div class="anim-preview"><div class="demo-box fade">🌑</div></div><div class="anim-selected-badge">✓ Aktif</div><div class="anim-info"><div class="anim-name">Fade Black</div><div class="anim-tag">Transisi</div></div></div>
+        <div class="anim-card" data-cat="effect" onclick="selectAnim(this,'Blink')"><div class="anim-preview"><div class="demo-box blink">💡</div></div><div class="anim-selected-badge">✓ Aktif</div><div class="anim-info"><div class="anim-name">Blink / Kedip</div><div class="anim-tag">Efek Khusus</div></div></div>
+        <div class="anim-card" data-cat="transition" onclick="selectAnim(this,'Slide In')"><div class="anim-preview"><div class="demo-box slide-in">➡️</div></div><div class="anim-selected-badge">✓ Aktif</div><div class="anim-info"><div class="anim-name">Slide In</div><div class="anim-tag">Transisi</div></div></div>
+        <div class="anim-card" data-cat="transition" onclick="selectAnim(this,'Zoom In')"><div class="anim-preview"><div class="demo-box zoom-in">🔍</div></div><div class="anim-selected-badge">✓ Aktif</div><div class="anim-info"><div class="anim-name">Zoom In</div><div class="anim-tag">Transisi</div></div></div>
+        <div class="anim-card" data-cat="motion" onclick="selectAnim(this,'Bounce')"><div class="anim-preview"><div class="demo-box bounce">⚡</div></div><div class="anim-selected-badge">✓ Aktif</div><div class="anim-info"><div class="anim-name">Bounce</div><div class="anim-tag">Gerakan</div></div></div>
+        <div class="anim-card" data-cat="motion" onclick="selectAnim(this,'Shake')"><div class="anim-preview"><div class="demo-box shake">📳</div></div><div class="anim-selected-badge">✓ Aktif</div><div class="anim-info"><div class="anim-name">Shake</div><div class="anim-tag">Gerakan</div></div></div>
+        <div class="anim-card" data-cat="motion" onclick="selectAnim(this,'Spin')"><div class="anim-preview"><div class="demo-box spin">🌀</div></div><div class="anim-selected-badge">✓ Aktif</div><div class="anim-info"><div class="anim-name">Spin</div><div class="anim-tag">Gerakan</div></div></div>
+        <div class="anim-card" data-cat="effect" onclick="selectAnim(this,'Glitch')"><div class="anim-preview"><div class="demo-box glitch">⚡</div></div><div class="anim-selected-badge">✓ Aktif</div><div class="anim-info"><div class="anim-name">Glitch</div><div class="anim-tag">Efek Khusus</div></div></div>
+        <div class="anim-card" data-cat="transition" onclick="selectAnim(this,'Flip 3D')"><div class="anim-preview"><div class="demo-box flip">🔄</div></div><div class="anim-selected-badge">✓ Aktif</div><div class="anim-info"><div class="anim-name">Flip 3D</div><div class="anim-tag">Transisi</div></div></div>
+        <div class="anim-card" data-cat="motion" onclick="selectAnim(this,'Pulse')"><div class="anim-preview"><div class="demo-box pulse">❤️</div></div><div class="anim-selected-badge">✓ Aktif</div><div class="anim-info"><div class="anim-name">Pulse</div><div class="anim-tag">Gerakan</div></div></div>
+        <div class="anim-card" data-cat="effect" onclick="selectAnim(this,'Typewriter')"><div class="anim-preview"><div class="demo-box typewriter"></div></div><div class="anim-selected-badge">✓ Aktif</div><div class="anim-info"><div class="anim-name">Typewriter</div><div class="anim-tag">Efek Khusus</div></div></div>
+        <div class="anim-card" data-cat="motion" onclick="selectAnim(this,'Wave')"><div class="anim-preview"><div class="demo-box wave">🌊</div></div><div class="anim-selected-badge">✓ Aktif</div><div class="anim-info"><div class="anim-name">Wave</div><div class="anim-tag">Gerakan</div></div></div>
       </div>
     </div>
     <div style="padding:0 28px 20px">
@@ -1510,131 +953,39 @@
   <div class="page" id="page-scarcity">
     <div class="sub-header">
       <div class="back-btn" onclick="showPage('fitur')">‹</div>
-      <div class="sub-header-text">
-        <h3>🛒 Scarcity Promotion</h3>
-        <p>Tampilkan promosi produk shop saat LIVE untuk dorong penjualan</p>
-      </div>
+      <div class="sub-header-text"><h3>🛒 Scarcity Promotion</h3><p>Tampilkan promosi produk shop saat LIVE untuk dorong penjualan</p></div>
     </div>
     <div style="padding:16px 28px;flex:1;overflow-y:auto">
       <div class="promo-layout">
         <div style="display:flex;flex-direction:column;gap:14px">
           <div class="promo-types">
-            <div class="promo-card selected" onclick="selectPromo(this,'flash-sale')" data-type="flash-sale">
-              <div class="promo-top">
-                <div class="promo-icon">⚡</div>
-                <div class="promo-badge-tag tag-hot">HOT</div>
-              </div>
-              <div class="promo-name">Flash Sale</div>
-              <div class="promo-desc">Harga spesial dengan timer countdown di keranjang kuning</div>
-            </div>
-            <div class="promo-card" onclick="selectPromo(this,'potongan')" data-type="potongan">
-              <div class="promo-top">
-                <div class="promo-icon">✂️</div>
-                <div class="promo-badge-tag tag-trend">TREND</div>
-              </div>
-              <div class="promo-name">Potongan Harga</div>
-              <div class="promo-desc">Tampilkan diskon % dan harga coret pada produk pilihan</div>
-            </div>
-            <div class="promo-card" onclick="selectPromo(this,'double-date')" data-type="double-date">
-              <div class="promo-top">
-                <div class="promo-icon">📅</div>
-                <div class="promo-badge-tag tag-hot">HOT</div>
-              </div>
-              <div class="promo-name">Tanggal Kembar</div>
-              <div class="promo-desc">Promo eksklusif 11.11, 12.12 dan tanggal kembar lainnya</div>
-            </div>
-            <div class="promo-card" onclick="selectPromo(this,'countdown')" data-type="countdown">
-              <div class="promo-top">
-                <div class="promo-icon">⏰</div>
-                <div class="promo-badge-tag tag-new">NEW</div>
-              </div>
-              <div class="promo-name">Countdown Timer</div>
-              <div class="promo-desc">Hitung mundur akhir promo untuk menciptakan urgensi</div>
-            </div>
-            <div class="promo-card" onclick="selectPromo(this,'stock')" data-type="stock">
-              <div class="promo-top">
-                <div class="promo-icon">📦</div>
-                <div class="promo-badge-tag tag-trend">TREND</div>
-              </div>
-              <div class="promo-name">Stok Terbatas</div>
-              <div class="promo-desc">Tampilkan sisa stok sedikit untuk mendorong pembelian cepat</div>
-            </div>
+            <div class="promo-card selected" onclick="selectPromo(this,'flash-sale')" data-type="flash-sale"><div class="promo-top"><div class="promo-icon">⚡</div><div class="promo-badge-tag tag-hot">HOT</div></div><div class="promo-name">Flash Sale</div><div class="promo-desc">Harga spesial dengan timer countdown di keranjang kuning</div></div>
+            <div class="promo-card" onclick="selectPromo(this,'potongan')" data-type="potongan"><div class="promo-top"><div class="promo-icon">✂️</div><div class="promo-badge-tag tag-trend">TREND</div></div><div class="promo-name">Potongan Harga</div><div class="promo-desc">Tampilkan diskon % dan harga coret pada produk pilihan</div></div>
+            <div class="promo-card" onclick="selectPromo(this,'double-date')" data-type="double-date"><div class="promo-top"><div class="promo-icon">📅</div><div class="promo-badge-tag tag-hot">HOT</div></div><div class="promo-name">Tanggal Kembar</div><div class="promo-desc">Promo eksklusif 11.11, 12.12 dan tanggal kembar lainnya</div></div>
+            <div class="promo-card" onclick="selectPromo(this,'countdown')" data-type="countdown"><div class="promo-top"><div class="promo-icon">⏰</div><div class="promo-badge-tag tag-new">NEW</div></div><div class="promo-name">Countdown Timer</div><div class="promo-desc">Hitung mundur akhir promo untuk menciptakan urgensi</div></div>
+            <div class="promo-card" onclick="selectPromo(this,'stock')" data-type="stock"><div class="promo-top"><div class="promo-icon">📦</div><div class="promo-badge-tag tag-trend">TREND</div></div><div class="promo-name">Stok Terbatas</div><div class="promo-desc">Tampilkan sisa stok sedikit untuk mendorong pembelian cepat</div></div>
           </div>
-
           <div class="promo-preview-wrapper">
-            <div class="promo-preview-header">
-              <span>👀 Preview Tampilan</span>
-              <div class="preview-device-select">
-                <div class="dev-btn active">Mobile</div>
-                <div class="dev-btn">Tablet</div>
-              </div>
-            </div>
+            <div class="promo-preview-header"><span>👀 Preview Tampilan</span><div class="preview-device-select"><div class="dev-btn active">Mobile</div><div class="dev-btn">Tablet</div></div></div>
             <div class="promo-preview-area" id="promoPreviewArea">
-              <!-- Default: Flash Sale -->
               <div class="live-promo-widget flash-sale-widget" id="promoPreview">
-                <div class="fs-top">
-                  <div class="fs-label">⚡ FLASH SALE</div>
-                  <div class="fs-countdown">
-                    <div class="fs-count-box" id="cd-h">02</div>
-                    <span class="fs-sep">:</span>
-                    <div class="fs-count-box" id="cd-m">30</div>
-                    <span class="fs-sep">:</span>
-                    <div class="fs-count-box" id="cd-s">00</div>
-                  </div>
-                </div>
-                <div class="fs-product">
-                  <div class="fs-img">👗</div>
-                  <div class="fs-info">
-                    <div class="fs-name">Dress Casual Korean Style</div>
-                    <div class="fs-price-row">
-                      <div class="fs-price-new">Rp45.000</div>
-                      <div class="fs-price-old">Rp120.000</div>
-                      <div class="fs-disc">-62%</div>
-                    </div>
-                    <div class="fs-stock">
-                      <div class="fs-stock-label">Stok tersisa</div>
-                      <div class="fs-bar"><div class="fs-bar-fill"></div></div>
-                      <div class="fs-bar-text">78% terjual • Sisa 22 pcs</div>
-                    </div>
-                  </div>
-                </div>
+                <div class="fs-top"><div class="fs-label">⚡ FLASH SALE</div><div class="fs-countdown"><div class="fs-count-box" id="cd-h">02</div><span class="fs-sep">:</span><div class="fs-count-box" id="cd-m">30</div><span class="fs-sep">:</span><div class="fs-count-box" id="cd-s">00</div></div></div>
+                <div class="fs-product"><div class="fs-img">👗</div><div class="fs-info"><div class="fs-name">Dress Casual Korean Style</div><div class="fs-price-row"><div class="fs-price-new">Rp45.000</div><div class="fs-price-old">Rp120.000</div><div class="fs-disc">-62%</div></div><div class="fs-stock"><div class="fs-stock-label">Stok tersisa</div><div class="fs-bar"><div class="fs-bar-fill"></div></div><div class="fs-bar-text">78% terjual • Sisa 22 pcs</div></div></div></div>
                 <button class="fs-btn">🛒 Masukkan Keranjang</button>
               </div>
             </div>
           </div>
         </div>
-
         <div class="promo-right">
           <div class="promo-config-panel">
             <div class="config-title">⚙️ Konfigurasi Promosi</div>
-            <div class="config-row">
-              <div class="config-label">Nama Produk</div>
-              <input class="config-input" value="Dress Casual Korean Style" placeholder="Nama produk...">
-            </div>
-            <div class="config-row">
-              <div class="config-label">Harga Asli (Rp)</div>
-              <input class="config-input" value="120000" placeholder="Harga asli...">
-            </div>
-            <div class="config-row">
-              <div class="config-label">Harga Promo (Rp)</div>
-              <input class="config-input" value="45000" placeholder="Harga promo...">
-            </div>
-            <div class="config-row">
-              <div class="config-label">Durasi (menit)</div>
-              <input class="config-input" value="150" placeholder="Durasi countdown...">
-            </div>
-            <div class="config-toggle-row">
-              <div class="config-toggle-label">Tampilkan stok tersisa</div>
-              <div class="toggle-switch on" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div>
-            </div>
-            <div class="config-toggle-row">
-              <div class="config-toggle-label">Auto update keranjang</div>
-              <div class="toggle-switch on" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div>
-            </div>
-            <div class="config-toggle-row">
-              <div class="config-toggle-label">Efek animasi</div>
-              <div class="toggle-switch" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div>
-            </div>
+            <div class="config-row"><div class="config-label">Nama Produk</div><input class="config-input" value="Dress Casual Korean Style" placeholder="Nama produk..."></div>
+            <div class="config-row"><div class="config-label">Harga Asli (Rp)</div><input class="config-input" value="120000" placeholder="Harga asli..."></div>
+            <div class="config-row"><div class="config-label">Harga Promo (Rp)</div><input class="config-input" value="45000" placeholder="Harga promo..."></div>
+            <div class="config-row"><div class="config-label">Durasi (menit)</div><input class="config-input" value="150" placeholder="Durasi countdown..."></div>
+            <div class="config-toggle-row"><div class="config-toggle-label">Tampilkan stok tersisa</div><div class="toggle-switch on" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div></div>
+            <div class="config-toggle-row"><div class="config-toggle-label">Auto update keranjang</div><div class="toggle-switch on" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div></div>
+            <div class="config-toggle-row"><div class="config-toggle-label">Efek animasi</div><div class="toggle-switch" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div></div>
             <button class="go-live-btn" onclick="activatePromoOnCanvas()">🚀 Aktifkan Promosi</button>
           </div>
         </div>
@@ -1646,10 +997,7 @@
   <div class="page" id="page-template">
     <div class="sub-header">
       <div class="back-btn" onclick="showPage('fitur')">‹</div>
-      <div class="sub-header-text">
-        <h3>🖼️ Template Background</h3>
-        <p>Pilih template background untuk mempercantik tampilan LIVE kamu</p>
-      </div>
+      <div class="sub-header-text"><h3>🖼️ Template Background</h3><p>Banner template muncul di atas canvas — kamera tetap terlihat</p></div>
     </div>
     <div style="padding:16px 28px 0">
       <div class="template-filters">
@@ -1661,9 +1009,7 @@
       </div>
     </div>
     <div style="padding:16px 28px;flex:1;overflow-y:auto">
-      <div class="template-grid" id="templateGrid">
-        <!-- Templates will be rendered by JS -->
-      </div>
+      <div class="template-grid" id="templateGrid"></div>
     </div>
     <div style="padding:0 28px 20px">
       <div class="tmpl-action-bar">
@@ -1677,10 +1023,7 @@
   <div class="page" id="page-stiker">
     <div class="sub-header">
       <div class="back-btn" onclick="showPage('fitur')">‹</div>
-      <div class="sub-header-text">
-        <h3>🎭 Stiker</h3>
-        <p>Klik untuk pilih stiker • Max 5 stiker aktif sekaligus</p>
-      </div>
+      <div class="sub-header-text"><h3>🎭 Stiker</h3><p>Klik untuk pilih stiker • Max 5 stiker aktif sekaligus</p></div>
     </div>
     <div style="padding:16px 28px 0">
       <div class="stiker-categories">
@@ -1699,9 +1042,7 @@
       <div class="stiker-action-bar">
         <div>
           <div style="font-size:12px;color:var(--text-secondary);margin-bottom:6px">Stiker Aktif (<span id="stikerCount">0</span>/5):</div>
-          <div class="stiker-selected-preview" id="stikerSelectedPreview">
-            <div style="font-size:12px;color:var(--text-muted)">Belum ada stiker dipilih</div>
-          </div>
+          <div class="stiker-selected-preview" id="stikerSelectedPreview"><div style="font-size:12px;color:var(--text-muted)">Belum ada stiker dipilih</div></div>
         </div>
         <button class="stiker-add-btn" onclick="applyStiker()">Tambah ke LIVE</button>
       </div>
@@ -1709,31 +1050,29 @@
   </div>
 </div>
 
-<!-- TOAST -->
-<div class="toast" id="toast">
-  <span class="toast-icon" id="toastIcon">✅</span>
-  <span id="toastMsg">Berhasil diterapkan!</span>
-</div>
+<div class="toast" id="toast"><span class="toast-icon" id="toastIcon">✅</span><span id="toastMsg">Berhasil!</span></div>
 
 <script>
+// ===== SIDEBAR TOGGLES =====
+function toggleLeftSidebar() {
+  document.body.classList.toggle('sidebar-left-hidden');
+  const btn = document.getElementById('toggleLeft');
+  btn.textContent = document.body.classList.contains('sidebar-left-hidden') ? '▶' : '◀';
+}
+function toggleRightSidebar() {
+  document.body.classList.toggle('sidebar-right-hidden');
+  const btn = document.getElementById('toggleRight');
+  btn.textContent = document.body.classList.contains('sidebar-right-hidden') ? '◀' : '▶';
+}
+
 // ===== PAGE NAV =====
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
-
-  const titles = {
-    main: 'TikTok LIVE Studio',
-    fitur: '🖼️ Fitur Editing',
-    animation: '✨ Animation',
-    scarcity: '🛒 Scarcity Promotion',
-    template: '🖼️ Template Background',
-    stiker: '🎭 Stiker'
-  };
+  const titles = { main:'TikTok LIVE Studio', fitur:'🖼️ Fitur Editing', animation:'✨ Animation', scarcity:'🛒 Scarcity Promotion', template:'🖼️ Template Background', stiker:'🎭 Stiker' };
   document.getElementById('topBarTitle').textContent = titles[id] || id;
-
   document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
-  const fiturBtn = document.getElementById('fiturBtn');
-  fiturBtn.style.outline = (id !== 'main') ? '2px solid rgba(255,255,255,0.3)' : 'none';
+  document.getElementById('fiturBtn').style.outline = (id !== 'main') ? '2px solid rgba(255,255,255,0.3)' : 'none';
 }
 
 // ===== TOAST =====
@@ -1751,138 +1090,77 @@ function showToast(msg, icon='✅') {
 let selectedAnim = null;
 function selectAnim(card, name) {
   document.querySelectorAll('.anim-card').forEach(c => c.classList.remove('selected'));
-  card.classList.add('selected');
-  selectedAnim = name;
+  card.classList.add('selected'); selectedAnim = name;
   document.getElementById('selectedAnimName').textContent = name;
 }
 function applyAnim() {
   if (!selectedAnim) { showToast('Pilih animasi dulu!', '⚠️'); return; }
-  applyAnimToCanvas(selectedAnim);
-  showToast(`✨ Animasi "${selectedAnim}" diterapkan!`);
+  applyAnimToCanvas(selectedAnim); showToast(`✨ Animasi "${selectedAnim}" diterapkan!`);
 }
 function filterAnim(btn, cat) {
-  document.querySelectorAll('.anim-cat-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('.anim-card').forEach(c => {
-    c.style.display = (cat === 'all' || c.dataset.cat === cat) ? 'block' : 'none';
-  });
+  document.querySelectorAll('.anim-cat-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active');
+  document.querySelectorAll('.anim-card').forEach(c => { c.style.display = (cat==='all'||c.dataset.cat===cat)?'block':'none'; });
 }
-
-// ===== ANIMATION ON CANVAS =====
-const animMap = {
-  'Fade Black': 'anim-fade',
-  'Blink': 'anim-blink',
-  'Pulse': 'anim-pulse-s',
-  'Glitch': 'anim-glitch-s',
-  'Typewriter': 'anim-scanline',
-  // Others show a scanline generic
-};
+const animMap = { 'Fade Black':'anim-fade','Blink':'anim-blink','Pulse':'anim-pulse-s','Glitch':'anim-glitch-s','Typewriter':'anim-scanline' };
 function applyAnimToCanvas(name) {
   const overlay = document.getElementById('animOverlay');
-  overlay.className = '';
-  overlay.classList.add('visible');
-  const cls = animMap[name] || 'anim-scanline';
-  overlay.classList.add(cls);
-  // Update badge
+  overlay.className = ''; overlay.classList.add('visible');
+  overlay.classList.add(animMap[name] || 'anim-scanline');
   const badge = document.getElementById('badgeAnim');
-  badge.textContent = '✨ ' + name;
-  badge.className = 'active-badge on';
-  // Update layer
-  document.getElementById('layerAnimItem').style.opacity = '1';
+  badge.textContent = '✨ ' + name; badge.className = 'active-badge on';
+  document.getElementById('layerAnimItem').style.opacity='1';
   document.getElementById('layerAnimItem').classList.add('active-layer');
   document.getElementById('layerAnimStatus').textContent = name;
 }
 
-// ===== SCARCITY PROMO =====
-// Countdown timer
+// ===== COUNTDOWN =====
 let countdownSecs = 9000;
 setInterval(() => {
   if (countdownSecs > 0) countdownSecs--;
-  const h = Math.floor(countdownSecs / 3600);
-  const m = Math.floor((countdownSecs % 3600) / 60);
-  const s = countdownSecs % 60;
-  const pad = n => String(n).padStart(2,'0');
-  const cdH = document.getElementById('cd-h');
-  const cdM = document.getElementById('cd-m');
-  const cdS = document.getElementById('cd-s');
-  if (cdH) { cdH.textContent = pad(h); cdM.textContent = pad(m); cdS.textContent = pad(s); }
+  const h=Math.floor(countdownSecs/3600), m=Math.floor((countdownSecs%3600)/60), s=countdownSecs%60;
+  const pad=n=>String(n).padStart(2,'0');
+  const cdH=document.getElementById('cd-h'), cdM=document.getElementById('cd-m'), cdS=document.getElementById('cd-s');
+  if (cdH) { cdH.textContent=pad(h); cdM.textContent=pad(m); cdS.textContent=pad(s); }
 }, 1000);
 
+// ===== PROMO WIDGETS =====
 const promoWidgets = {
-  'flash-sale': `<div class="live-promo-widget flash-sale-widget">
-    <div class="fs-top"><div class="fs-label">⚡ FLASH SALE</div>
-    <div class="fs-countdown"><div class="fs-count-box" id="cd-h">02</div><span class="fs-sep">:</span><div class="fs-count-box" id="cd-m">30</div><span class="fs-sep">:</span><div class="fs-count-box" id="cd-s">00</div></div></div>
-    <div class="fs-product"><div class="fs-img">👗</div><div class="fs-info">
-    <div class="fs-name">Dress Casual Korean Style</div>
-    <div class="fs-price-row"><div class="fs-price-new">Rp45.000</div><div class="fs-price-old">Rp120.000</div><div class="fs-disc">-62%</div></div>
-    <div class="fs-stock"><div class="fs-stock-label">Stok tersisa</div><div class="fs-bar"><div class="fs-bar-fill"></div></div><div class="fs-bar-text">78% terjual • Sisa 22 pcs</div></div>
-    </div></div><button class="fs-btn">🛒 Masukkan Keranjang</button></div>`,
-
-  'potongan': `<div class="live-promo-widget discount-widget">
-    <div class="dw-header"><div class="dw-label">✂️ DISKON SPESIAL</div><div class="dw-limited">⏰ Limited!</div></div>
-    <div class="dw-products">
-      <div class="dw-product"><div class="dw-img">👜</div><div class="dw-info"><div class="dw-name">Tas Shoulder Bag Premium</div><div class="dw-prices"><div class="dw-new">Rp89.000</div><div class="dw-old">Rp250.000</div><div class="dw-pct">-64%</div></div></div><div class="dw-add">+ Keranjang</div></div>
-      <div class="dw-product"><div class="dw-img">👟</div><div class="dw-info"><div class="dw-name">Sepatu Sneakers Casual</div><div class="dw-prices"><div class="dw-new">Rp125.000</div><div class="dw-old">Rp350.000</div><div class="dw-pct">-64%</div></div></div><div class="dw-add">+ Keranjang</div></div>
-    </div></div>`,
-
-  'double-date': `<div class="live-promo-widget double-date-widget">
-    <div class="dd-header"><div class="dd-date">12.12</div><div class="dd-year">2025</div><div class="dd-title">Hari Belanja Nasional 🎉</div></div>
-    <div class="dd-badges"><div class="dd-badge">Gratis Ongkir</div><div class="dd-badge">Diskon 70%</div><div class="dd-badge">Cashback 15%</div></div>
-    <div class="dd-products">
-      <div class="dd-prod"><div class="dd-prod-icon">💄</div><div class="dd-prod-price">Rp25k</div><div class="dd-prod-old">Rp85k</div><div class="dd-prod-disc">-71%</div></div>
-      <div class="dd-prod"><div class="dd-prod-icon">👗</div><div class="dd-prod-price">Rp45k</div><div class="dd-prod-old">Rp150k</div><div class="dd-prod-disc">-70%</div></div>
-      <div class="dd-prod"><div class="dd-prod-icon">🧴</div><div class="dd-prod-price">Rp32k</div><div class="dd-prod-old">Rp110k</div><div class="dd-prod-disc">-71%</div></div>
-    </div></div>`,
-
-  'countdown': `<div class="live-promo-widget countdown-widget">
-    <div class="cd-header"><div class="cd-title">⏰ PROMO BERAKHIR DALAM</div><div class="cd-subtitle">Jangan sampai kehabisan!</div></div>
-    <div class="cd-timer">
-      <div class="cd-unit"><div class="cd-num">02</div><div class="cd-label">JAM</div></div>
-      <div class="cd-sep">:</div>
-      <div class="cd-unit"><div class="cd-num">30</div><div class="cd-label">MENIT</div></div>
-      <div class="cd-sep">:</div>
-      <div class="cd-unit"><div class="cd-num">00</div><div class="cd-label">DETIK</div></div>
-    </div>
-    <div class="cd-offer"><div class="cd-offer-text">🔥 Diskon 70% + Gratis Ongkir</div><div class="cd-offer-sub">Berlaku untuk semua produk fashion</div></div></div>`,
-
-  'stock': `<div class="live-promo-widget stock-widget">
-    <div class="stock-header"><div class="stock-badge">⚠️ STOK TERBATAS</div></div>
-    <div class="stock-items">
-      <div class="stock-item"><div class="stock-img">👗</div><div class="stock-info"><div class="stock-name">Dress Korea - Size M</div><div class="stock-remaining">⚡ Sisa 3 pcs!</div></div><div class="stock-add">Ambil!</div></div>
-      <div class="stock-item"><div class="stock-img">👜</div><div class="stock-info"><div class="stock-name">Tas Bucket Premium</div><div class="stock-remaining">⚡ Sisa 5 pcs!</div></div><div class="stock-add">Ambil!</div></div>
-      <div class="stock-item"><div class="stock-img">💍</div><div class="stock-info"><div class="stock-name">Cincin Crystal Mewah</div><div class="stock-remaining">⚡ Sisa 2 pcs!</div></div><div class="stock-add">Ambil!</div></div>
-    </div></div>`
+  'flash-sale':`<div class="live-promo-widget flash-sale-widget"><div class="fs-top"><div class="fs-label">⚡ FLASH SALE</div><div class="fs-countdown"><div class="fs-count-box" id="cd-h">02</div><span class="fs-sep">:</span><div class="fs-count-box" id="cd-m">30</div><span class="fs-sep">:</span><div class="fs-count-box" id="cd-s">00</div></div></div><div class="fs-product"><div class="fs-img">👗</div><div class="fs-info"><div class="fs-name">Dress Casual Korean Style</div><div class="fs-price-row"><div class="fs-price-new">Rp45.000</div><div class="fs-price-old">Rp120.000</div><div class="fs-disc">-62%</div></div><div class="fs-stock"><div class="fs-stock-label">Stok tersisa</div><div class="fs-bar"><div class="fs-bar-fill"></div></div><div class="fs-bar-text">78% terjual • Sisa 22 pcs</div></div></div></div><button class="fs-btn">🛒 Masukkan Keranjang</button></div>`,
+  'potongan':`<div class="live-promo-widget discount-widget"><div class="dw-header"><div class="dw-label">✂️ DISKON SPESIAL</div><div class="dw-limited">⏰ Limited!</div></div><div class="dw-products"><div class="dw-product"><div class="dw-img">👜</div><div class="dw-info"><div class="dw-name">Tas Shoulder Bag Premium</div><div class="dw-prices"><div class="dw-new">Rp89.000</div><div class="dw-old">Rp250.000</div><div class="dw-pct">-64%</div></div></div><div class="dw-add">+ Keranjang</div></div><div class="dw-product"><div class="dw-img">👟</div><div class="dw-info"><div class="dw-name">Sepatu Sneakers Casual</div><div class="dw-prices"><div class="dw-new">Rp125.000</div><div class="dw-old">Rp350.000</div><div class="dw-pct">-64%</div></div></div><div class="dw-add">+ Keranjang</div></div></div></div>`,
+  'double-date':`<div class="live-promo-widget double-date-widget"><div class="dd-header"><div class="dd-date">12.12</div><div class="dd-year">2025</div><div class="dd-title">Hari Belanja Nasional 🎉</div></div><div class="dd-badges"><div class="dd-badge">Gratis Ongkir</div><div class="dd-badge">Diskon 70%</div><div class="dd-badge">Cashback 15%</div></div><div class="dd-products"><div class="dd-prod"><div class="dd-prod-icon">💄</div><div class="dd-prod-price">Rp25k</div><div class="dd-prod-old">Rp85k</div><div class="dd-prod-disc">-71%</div></div><div class="dd-prod"><div class="dd-prod-icon">👗</div><div class="dd-prod-price">Rp45k</div><div class="dd-prod-old">Rp150k</div><div class="dd-prod-disc">-70%</div></div><div class="dd-prod"><div class="dd-prod-icon">🧴</div><div class="dd-prod-price">Rp32k</div><div class="dd-prod-old">Rp110k</div><div class="dd-prod-disc">-71%</div></div></div></div>`,
+  'countdown':`<div class="live-promo-widget countdown-widget"><div class="cd-header"><div class="cd-title">⏰ PROMO BERAKHIR DALAM</div><div class="cd-subtitle">Jangan sampai kehabisan!</div></div><div class="cd-timer"><div class="cd-unit"><div class="cd-num">02</div><div class="cd-label">JAM</div></div><div class="cd-sep">:</div><div class="cd-unit"><div class="cd-num">30</div><div class="cd-label">MENIT</div></div><div class="cd-sep">:</div><div class="cd-unit"><div class="cd-num">00</div><div class="cd-label">DETIK</div></div></div><div class="cd-offer"><div class="cd-offer-text">🔥 Diskon 70% + Gratis Ongkir</div><div class="cd-offer-sub">Berlaku untuk semua produk fashion</div></div></div>`,
+  'stock':`<div class="live-promo-widget stock-widget"><div class="stock-header"><div class="stock-badge">⚠️ STOK TERBATAS</div></div><div class="stock-items"><div class="stock-item"><div class="stock-img">👗</div><div class="stock-info"><div class="stock-name">Dress Korea - Size M</div><div class="stock-remaining">⚡ Sisa 3 pcs!</div></div><div class="stock-add">Ambil!</div></div><div class="stock-item"><div class="stock-img">👜</div><div class="stock-info"><div class="stock-name">Tas Bucket Premium</div><div class="stock-remaining">⚡ Sisa 5 pcs!</div></div><div class="stock-add">Ambil!</div></div><div class="stock-item"><div class="stock-img">💍</div><div class="stock-info"><div class="stock-name">Cincin Crystal Mewah</div><div class="stock-remaining">⚡ Sisa 2 pcs!</div></div><div class="stock-add">Ambil!</div></div></div></div>`
 };
 
 let currentPromoType = 'flash-sale';
 function selectPromo(card, type) {
   document.querySelectorAll('.promo-card').forEach(c => c.classList.remove('selected'));
-  card.classList.add('selected');
-  currentPromoType = type;
+  card.classList.add('selected'); currentPromoType = type;
   document.getElementById('promoPreviewArea').innerHTML = promoWidgets[type];
 }
-
 function activatePromoOnCanvas() {
   const overlay = document.getElementById('promoOverlay');
-  overlay.innerHTML = promoWidgets[currentPromoType];
-  overlay.classList.add('visible');
-  // Update badge
+  overlay.innerHTML = promoWidgets[currentPromoType]; overlay.classList.add('visible');
   const typeLabels = {'flash-sale':'Flash Sale','potongan':'Diskon','double-date':'12.12','countdown':'Countdown','stock':'Stok Terbatas'};
   const badge = document.getElementById('badgePromo');
-  badge.textContent = '🛒 ' + (typeLabels[currentPromoType] || currentPromoType);
-  badge.className = 'active-badge promo-on';
-  // Mini indicator
+  badge.textContent = '🛒 ' + (typeLabels[currentPromoType]||currentPromoType); badge.className = 'active-badge promo-on';
   document.getElementById('miniPromoOverlay').classList.add('visible');
-  // Layer
-  document.getElementById('layerPromoItem').style.opacity = '1';
+  document.getElementById('layerPromoItem').style.opacity='1';
   document.getElementById('layerPromoItem').classList.add('active-layer');
-  document.getElementById('layerPromoStatus').textContent = typeLabels[currentPromoType] || currentPromoType;
+  document.getElementById('layerPromoStatus').textContent = typeLabels[currentPromoType]||currentPromoType;
+  applyLayerPositionToOverlay('promo', overlay);
   showToast('🛒 Promosi aktif di LIVE kamu!');
 }
-
 function toggleSwitch(el) { el.classList.toggle('on'); }
 
 // ===== TEMPLATES =====
+// Peta warna aksen untuk strip di atas banner
+const templateAccentColors = {
+  t1:'#fe2c55', t2:'#00c851', t3:'#6464ff', t4:'#fe2c55',
+  t5:'#ff6b35', t6:'#00c8c8', t7:'#ffd700', t8:'#c800c8',
+  t9:'#8888ff', t10:'#00c851', t11:'#6464aa', t12:'#ff6b00'
+};
+
 const templates = [
   { id:'t1', name:'Flash Sale Merah', cat:'sale', cls:'tmpl-flash-sale', badge:'badge-hot', badgeText:'HOT', title:'⚡ FLASH SALE', sub:'Harga terendah hari ini!', emoji:'🔥', bg:'linear-gradient(135deg,#1a0000,#3d0000)' },
   { id:'t2', name:'Hari Gajian Hijau', cat:'promo', cls:'tmpl-payday', badge:'badge-promo', badgeText:'PROMO', title:'💸 HARI GAJIAN', sub:'Belanja sekarang, bayar nanti!', emoji:'💰', bg:'linear-gradient(135deg,#001a00,#003d00)' },
@@ -1901,11 +1179,11 @@ const templates = [
 function renderTemplates(filter='all') {
   const grid = document.getElementById('templateGrid');
   grid.innerHTML = '';
-  templates.filter(t => filter==='all' || t.cat===filter).forEach(t => {
+  templates.filter(t => filter==='all'||t.cat===filter).forEach(t => {
     grid.innerHTML += `<div class="tmpl-card ${t.id===selectedTmpl?'selected':''}" data-cat="${t.cat}" data-id="${t.id}" onclick="selectTemplate(this,'${t.id}','${t.name}')">
       <div class="tmpl-bg ${t.cls}">
         <span class="tmpl-badge ${t.badge}">${t.badgeText}</span>
-        <div style="font-size:32px">${t.emoji}</div>
+        <div style="font-size:28px;position:relative;z-index:1">${t.emoji}</div>
         <div class="tmpl-title">${t.title}</div>
         <div class="tmpl-subtitle">${t.sub}</div>
       </div>
@@ -1915,45 +1193,50 @@ function renderTemplates(filter='all') {
   });
 }
 
-let selectedTmpl = null;
-let selectedTmplData = null;
+let selectedTmpl = null, selectedTmplData = null;
 function selectTemplate(card, id, name) {
   document.querySelectorAll('.tmpl-card').forEach(c => c.classList.remove('selected'));
-  card.classList.add('selected');
-  selectedTmpl = id;
-  selectedTmplData = templates.find(t => t.id === id);
+  card.classList.add('selected'); selectedTmpl = id;
+  selectedTmplData = templates.find(t => t.id===id);
   document.getElementById('selectedTmplName').textContent = name;
 }
 function filterTmpl(btn, cat) {
-  document.querySelectorAll('.tmpl-filter').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+  document.querySelectorAll('.tmpl-filter').forEach(b => b.classList.remove('active')); btn.classList.add('active');
   renderTemplates(cat);
 }
+
 function applyTemplate() {
-  if (!selectedTmpl || !selectedTmplData) { showToast('Pilih template dulu!', '⚠️'); return; }
+  if (!selectedTmpl||!selectedTmplData) { showToast('Pilih template dulu!','⚠️'); return; }
   const t = selectedTmplData;
-  // Apply to canvas overlay
   const overlay = document.getElementById('templateOverlay');
-  const bg = document.getElementById('templateOverlayBg');
-  bg.style.background = t.bg;
-  bg.style.opacity = '0.45';
+
+  // =====================================================================
+  // FIX: templateOverlayBg TIDAK lagi di-set sebagai solid background
+  // yang menutupi kamera. Elemen ini sekarang display:none via CSS.
+  // Warna aksen template diterapkan via CSS variable ke strip tipis di atas.
+  // =====================================================================
+  const content = document.getElementById('templateOverlayContent');
+  const accentColor = templateAccentColors[t.id] || 'var(--accent)';
+  content.style.setProperty('--tmpl-accent-color', accentColor);
+
+  // Update teks banner
   document.getElementById('tovEmoji').textContent = t.emoji;
   document.getElementById('tovTitle').textContent = t.title;
   document.getElementById('tovSub').textContent = t.sub;
+
+  // Tampilkan overlay (hanya banner tipis, kamera di bawahnya tetap terlihat)
   overlay.classList.add('visible');
-  // Apply to mini scene
+
+  // Mini preview: sama — hanya banner tipis
   const miniOverlay = document.getElementById('miniTemplateOverlay');
-  document.getElementById('mtoBackground').style.background = t.bg;
-  document.getElementById('mtoBackground').style.opacity = '0.5';
+  // mto-bg sudah display:none, langsung update teks
   document.getElementById('mtoEmoji').textContent = t.emoji;
   document.getElementById('mtoText').textContent = t.title;
   miniOverlay.classList.add('visible');
-  // Badge
+
   const badge = document.getElementById('badgeTmpl');
-  badge.textContent = '🖼️ ' + t.name;
-  badge.className = 'active-badge tmpl-on';
-  // Layer
-  document.getElementById('layerTmplItem').style.opacity = '1';
+  badge.textContent = '🖼️ ' + t.name; badge.className = 'active-badge tmpl-on';
+  document.getElementById('layerTmplItem').style.opacity='1';
   document.getElementById('layerTmplItem').classList.add('active-layer');
   document.getElementById('layerTmplStatus').textContent = t.name;
   showToast(`🖼️ Template "${t.name}" digunakan!`);
@@ -1992,83 +1275,60 @@ const stikersData = [
   { id:'s29', emoji:'❤️', name:'Love Live', cat:'live', count:'LIVE' },
   { id:'s30', emoji:'🎵', name:'TikTok Music', cat:'live', count:'LIVE' },
 ];
-
 let selectedStiker = [];
 
 function renderStiker(filter='all') {
-  const grid = document.getElementById('stikerGrid');
-  grid.innerHTML = '';
-  stikersData.filter(s => filter==='all' || s.cat===filter).forEach(s => {
-    const isSelected = selectedStiker.includes(s.id);
-    grid.innerHTML += `<div class="stiker-card ${isSelected?'selected':''}" data-id="${s.id}" onclick="toggleStiker(this,'${s.id}','${s.emoji}','${s.name}')">
+  const grid = document.getElementById('stikerGrid'); grid.innerHTML = '';
+  stikersData.filter(s => filter==='all'||s.cat===filter).forEach(s => {
+    const isSel = selectedStiker.includes(s.id);
+    grid.innerHTML += `<div class="stiker-card ${isSel?'selected':''}" data-id="${s.id}" onclick="toggleStiker(this,'${s.id}','${s.emoji}','${s.name}')">
       <div class="stiker-preview">${s.emoji}</div>
       <div class="stiker-info"><div class="stiker-name">${s.name}</div><div class="stiker-count">${s.count}</div></div>
     </div>`;
   });
 }
-
 function toggleStiker(card, id, emoji, name) {
   const idx = selectedStiker.indexOf(id);
-  if (idx > -1) {
-    selectedStiker.splice(idx, 1);
-    card.classList.remove('selected');
-  } else {
-    if (selectedStiker.length >= 5) { showToast('Maksimal 5 stiker aktif!', '⚠️'); return; }
-    selectedStiker.push(id);
-    card.classList.add('selected');
+  if (idx > -1) { selectedStiker.splice(idx,1); card.classList.remove('selected'); }
+  else {
+    if (selectedStiker.length >= 5) { showToast('Maksimal 5 stiker aktif!','⚠️'); return; }
+    selectedStiker.push(id); card.classList.add('selected');
   }
   updateStikerPreview();
 }
-
 function updateStikerPreview() {
   const preview = document.getElementById('stikerSelectedPreview');
-  const count = document.getElementById('stikerCount');
-  count.textContent = selectedStiker.length;
-  if (selectedStiker.length === 0) {
-    preview.innerHTML = '<div style="font-size:12px;color:var(--text-muted)">Belum ada stiker dipilih</div>';
-    return;
-  }
+  document.getElementById('stikerCount').textContent = selectedStiker.length;
+  if (!selectedStiker.length) { preview.innerHTML = '<div style="font-size:12px;color:var(--text-muted)">Belum ada stiker dipilih</div>'; return; }
   preview.innerHTML = selectedStiker.map(id => {
-    const s = stikersData.find(x => x.id===id);
+    const s = stikersData.find(x=>x.id===id);
     return `<div class="stiker-selected-item" title="${s.name}">${s.emoji}<span class="remove-x" onclick="removeStiker('${id}',event)">✕</span></div>`;
   }).join('');
 }
-
 function removeStiker(id, e) {
-  e.stopPropagation();
-  selectedStiker = selectedStiker.filter(x => x !== id);
-  renderStiker(currentStikerFilter);
-  updateStikerPreview();
+  e.stopPropagation(); selectedStiker = selectedStiker.filter(x=>x!==id);
+  renderStiker(currentStikerFilter); updateStikerPreview();
 }
-
 function filterStiker(btn, cat) {
-  document.querySelectorAll('.stiker-cat').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  currentStikerFilter = cat;
-  renderStiker(cat);
+  document.querySelectorAll('.stiker-cat').forEach(b => b.classList.remove('active')); btn.classList.add('active');
+  currentStikerFilter = cat; renderStiker(cat);
 }
 let currentStikerFilter = 'all';
-
 function applyStiker() {
-  if (selectedStiker.length === 0) { showToast('Pilih stiker dulu!', '⚠️'); return; }
-  // Apply to canvas overlay
+  if (!selectedStiker.length) { showToast('Pilih stiker dulu!','⚠️'); return; }
   const overlay = document.getElementById('stikerOverlay');
   overlay.innerHTML = selectedStiker.map(id => {
-    const s = stikersData.find(x => x.id === id);
+    const s = stikersData.find(x=>x.id===id);
     return `<div class="canvas-stiker" title="${s.name}">${s.emoji}</div>`;
   }).join('');
-  // Mini scene
-  const miniOverlay = document.getElementById('miniStikerOverlay');
-  miniOverlay.innerHTML = selectedStiker.map(id => {
-    const s = stikersData.find(x => x.id === id);
+  applyLayerPositionToOverlay('stik', overlay);
+  document.getElementById('miniStikerOverlay').innerHTML = selectedStiker.map(id => {
+    const s = stikersData.find(x=>x.id===id);
     return `<span class="mini-stiker">${s.emoji}</span>`;
   }).join('');
-  // Badge
   const badge = document.getElementById('badgeStiker');
-  badge.textContent = `🎭 ${selectedStiker.length} Stiker`;
-  badge.className = 'active-badge stik-on';
-  // Layer
-  document.getElementById('layerStikerItem').style.opacity = '1';
+  badge.textContent = `🎭 ${selectedStiker.length} Stiker`; badge.className = 'active-badge stik-on';
+  document.getElementById('layerStikerItem').style.opacity='1';
   document.getElementById('layerStikerItem').classList.add('active-layer');
   document.getElementById('layerStikerStatus').textContent = `${selectedStiker.length} aktif`;
   showToast(`🎭 ${selectedStiker.length} stiker ditambahkan ke LIVE!`);
@@ -2076,186 +1336,224 @@ function applyStiker() {
 
 // ===== CLEAR ALL =====
 function clearAll() {
-  // Template
   document.getElementById('templateOverlay').classList.remove('visible');
   document.getElementById('miniTemplateOverlay').classList.remove('visible');
-  document.getElementById('badgeTmpl').textContent = '🖼️ —';
-  document.getElementById('badgeTmpl').className = 'active-badge';
-  document.getElementById('layerTmplItem').style.opacity = '0.4';
-  document.getElementById('layerTmplItem').classList.remove('active-layer');
-  document.getElementById('layerTmplStatus').textContent = '—';
-  // Promo
+  document.getElementById('badgeTmpl').textContent='🖼️ —'; document.getElementById('badgeTmpl').className='active-badge';
+  document.getElementById('layerTmplItem').style.opacity='0.4'; document.getElementById('layerTmplItem').classList.remove('active-layer');
+  document.getElementById('layerTmplStatus').textContent='—';
   document.getElementById('promoOverlay').classList.remove('visible');
   document.getElementById('miniPromoOverlay').classList.remove('visible');
-  document.getElementById('badgePromo').textContent = '🛒 —';
-  document.getElementById('badgePromo').className = 'active-badge';
-  document.getElementById('layerPromoItem').style.opacity = '0.4';
-  document.getElementById('layerPromoItem').classList.remove('active-layer');
-  document.getElementById('layerPromoStatus').textContent = '—';
-  // Stiker
-  document.getElementById('stikerOverlay').innerHTML = '';
-  document.getElementById('miniStikerOverlay').innerHTML = '';
-  document.getElementById('badgeStiker').textContent = '🎭 —';
-  document.getElementById('badgeStiker').className = 'active-badge';
-  document.getElementById('layerStikerItem').style.opacity = '0.4';
-  document.getElementById('layerStikerItem').classList.remove('active-layer');
-  document.getElementById('layerStikerStatus').textContent = '—';
-  // Animation
-  const ao = document.getElementById('animOverlay');
-  ao.className = '';
-  document.getElementById('badgeAnim').textContent = '✨ —';
-  document.getElementById('badgeAnim').className = 'active-badge';
-  document.getElementById('layerAnimItem').style.opacity = '0.4';
-  document.getElementById('layerAnimItem').classList.remove('active-layer');
-  document.getElementById('layerAnimStatus').textContent = '—';
-  showToast('🗑️ Semua efek dihapus', '🗑️');
+  document.getElementById('badgePromo').textContent='🛒 —'; document.getElementById('badgePromo').className='active-badge';
+  document.getElementById('layerPromoItem').style.opacity='0.4'; document.getElementById('layerPromoItem').classList.remove('active-layer');
+  document.getElementById('layerPromoStatus').textContent='—';
+  document.getElementById('stikerOverlay').innerHTML='';
+  document.getElementById('miniStikerOverlay').innerHTML='';
+  document.getElementById('badgeStiker').textContent='🎭 —'; document.getElementById('badgeStiker').className='active-badge';
+  document.getElementById('layerStikerItem').style.opacity='0.4'; document.getElementById('layerStikerItem').classList.remove('active-layer');
+  document.getElementById('layerStikerStatus').textContent='—';
+  const ao = document.getElementById('animOverlay'); ao.className='';
+  document.getElementById('badgeAnim').textContent='✨ —'; document.getElementById('badgeAnim').className='active-badge';
+  document.getElementById('layerAnimItem').style.opacity='0.4'; document.getElementById('layerAnimItem').classList.remove('active-layer');
+  document.getElementById('layerAnimStatus').textContent='—';
+  showToast('🗑️ Semua efek dihapus','🗑️');
 }
 
 // ===== KAMERA =====
-let cameraStream = null;
-let cameraOn = false;
-
-async function toggleCamera() {
-  if (cameraOn) {
-    stopCamera();
-  } else {
-    await startCamera();
-  }
-}
-
-function retryCamera() {
-  document.getElementById('camError').classList.remove('visible');
-  startCamera();
-}
-
+let cameraStream = null, cameraOn = false;
+async function toggleCamera() { cameraOn ? stopCamera() : await startCamera(); }
+function retryCamera() { document.getElementById('camError').classList.remove('visible'); startCamera(); }
 async function startCamera() {
-  const btn = document.getElementById('camBtn');
-  const errDiv = document.getElementById('camError');
-  const errDetail = document.getElementById('camErrDetail');
-
-  // Cek apakah mediaDevices tersedia
+  const btn = document.getElementById('camBtn'), errDiv = document.getElementById('camError'), errDetail = document.getElementById('camErrDetail');
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    errDetail.textContent = 'Error: Browser tidak mendukung akses kamera. Gunakan Chrome/Firefox versi terbaru.';
-    errDiv.classList.add('visible');
-    showToast('Browser tidak mendukung kamera', '🚫');
-    return;
+    errDetail.textContent = 'Browser tidak mendukung akses kamera.'; errDiv.classList.add('visible');
+    showToast('Browser tidak mendukung kamera','🚫'); return;
   }
-
-  btn.disabled = true;
-  document.getElementById('camBtnText').textContent = 'Menghubungkan...';
-
+  btn.disabled = true; document.getElementById('camBtnText').textContent = 'Menghubungkan...';
   try {
-    // Coba dulu dengan constraints ideal, fallback ke minimal
     let stream;
     try {
       stream = await navigator.mediaDevices.getUserMedia({
-        video: { width: { ideal: 1280 }, height: { ideal: 720 }, facingMode: 'user' },
-        audio: false
+        video: { width:{ideal:1080}, height:{ideal:1920}, aspectRatio:{ideal:9/16}, facingMode:'user' }, audio: false
       });
     } catch(e) {
-      // Fallback: constraints minimal
       stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
     }
-
-    cameraStream = stream;
-    errDiv.classList.remove('visible');
-
-    const videoEl = document.getElementById('cameraVideo');
-    const miniVideoEl = document.getElementById('miniCamVideo');
-
-    videoEl.srcObject = stream;
-    miniVideoEl.srcObject = stream;
-
-    // Pastikan play setelah metadata loaded
+    cameraStream = stream; errDiv.classList.remove('visible');
+    const videoEl = document.getElementById('cameraVideo'), miniVideoEl = document.getElementById('miniCamVideo');
+    videoEl.srcObject = stream; miniVideoEl.srcObject = stream;
     videoEl.onloadedmetadata = () => { videoEl.play().catch(()=>{}); };
     miniVideoEl.onloadedmetadata = () => { miniVideoEl.play().catch(()=>{}); };
-
-    videoEl.classList.add('active');
-    miniVideoEl.classList.add('active');
-
+    videoEl.classList.add('active'); miniVideoEl.classList.add('active');
     document.getElementById('canvasPlaceholder').classList.add('hidden');
     document.getElementById('miniPlaceholder').style.display = 'none';
-
-    cameraOn = true;
-    btn.className = 'cam-btn on';
+    cameraOn = true; btn.className = 'cam-btn on';
     document.getElementById('camBtnIcon').textContent = '📹';
     document.getElementById('camBtnText').textContent = 'Kamera Aktif — Matikan';
-
-    // Info resolusi
-    const track = stream.getVideoTracks()[0];
-    const settings = track ? track.getSettings() : {};
-    const res = (settings.width && settings.height) ? `${settings.width}×${settings.height}` : '1280×720';
+    const track = stream.getVideoTracks()[0], settings = track ? track.getSettings() : {};
+    const res = (settings.width&&settings.height) ? `${settings.width}×${settings.height}` : '1080×1920';
     document.getElementById('layerCamStatus').textContent = `Aktif • ${res}`;
-    document.getElementById('canvasStats').textContent = `${res} • 30fps`;
-
+    document.getElementById('canvasStats').textContent = `${res} · 9:16`;
     showToast('📷 Kamera berhasil dinyalakan!');
-
   } catch(err) {
-    console.error('Camera error:', err);
-    let detail = err.message || err.name || 'Unknown error';
-    if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
-      detail = 'Izin kamera ditolak. Klik ikon kunci di address bar → Izinkan kamera.';
-    } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
-      detail = 'Tidak ada kamera ditemukan di perangkat ini.';
-    } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
-      detail = 'Kamera sedang digunakan aplikasi lain. Tutup aplikasi lain dan coba lagi.';
-    } else if (err.name === 'OverconstrainedError') {
-      detail = 'Resolusi kamera tidak didukung. Mencoba ulang...';
-    } else if (err.name === 'SecurityError') {
-      detail = 'Akses kamera diblokir karena alasan keamanan (perlu HTTPS atau localhost).';
-    }
-    errDetail.textContent = detail;
-    errDiv.classList.add('visible');
+    let detail = err.message||err.name||'Unknown';
+    if (err.name==='NotAllowedError'||err.name==='PermissionDeniedError') detail='Izin kamera ditolak. Klik ikon kunci di address bar → Izinkan kamera.';
+    else if (err.name==='NotFoundError') detail='Tidak ada kamera ditemukan di perangkat ini.';
+    else if (err.name==='NotReadableError') detail='Kamera sedang digunakan aplikasi lain. Tutup dan coba lagi.';
+    else if (err.name==='SecurityError') detail='Akses kamera diblokir (perlu HTTPS atau localhost).';
+    errDetail.textContent = detail; errDiv.classList.add('visible');
     document.getElementById('camBtnText').textContent = 'Nyalakan Kamera';
-    showToast('Gagal akses kamera — lihat petunjuk di layar', '⚠️');
+    showToast('Gagal akses kamera','⚠️');
   }
-
   btn.disabled = false;
 }
-
 function stopCamera() {
-  if (cameraStream) {
-    cameraStream.getTracks().forEach(t => t.stop());
-    cameraStream = null;
-  }
-  const videoEl = document.getElementById('cameraVideo');
-  const miniVideoEl = document.getElementById('miniCamVideo');
-  videoEl.srcObject = null;
-  miniVideoEl.srcObject = null;
-  videoEl.classList.remove('active');
-  miniVideoEl.classList.remove('active');
-
+  if (cameraStream) { cameraStream.getTracks().forEach(t=>t.stop()); cameraStream=null; }
+  const videoEl=document.getElementById('cameraVideo'), miniVideoEl=document.getElementById('miniCamVideo');
+  videoEl.srcObject=null; miniVideoEl.srcObject=null;
+  videoEl.classList.remove('active'); miniVideoEl.classList.remove('active');
   document.getElementById('canvasPlaceholder').classList.remove('hidden');
-  document.getElementById('miniPlaceholder').style.display = '';
+  document.getElementById('miniPlaceholder').style.display='';
   document.getElementById('camError').classList.remove('visible');
-
-  cameraOn = false;
-  const btn = document.getElementById('camBtn');
-  btn.className = 'cam-btn off';
-  document.getElementById('camBtnIcon').textContent = '📷';
-  document.getElementById('camBtnText').textContent = 'Nyalakan Kamera';
-  document.getElementById('layerCamStatus').textContent = 'Nonaktif';
-  document.getElementById('canvasStats').textContent = '— • —';
-  showToast('📷 Kamera dimatikan', '📷');
+  cameraOn=false;
+  document.getElementById('camBtn').className='cam-btn off';
+  document.getElementById('camBtnIcon').textContent='📷';
+  document.getElementById('camBtnText').textContent='Nyalakan Kamera';
+  document.getElementById('layerCamStatus').textContent='Nonaktif';
+  document.getElementById('canvasStats').textContent='1080×1920 · 9:16';
+  showToast('📷 Kamera dimatikan','📷');
 }
 
 // ===== LIVE STATS SIMULATION =====
 setInterval(() => {
-  const viewers = document.getElementById('statViewers');
-  const likes = document.getElementById('statLikes');
-  if (viewers) {
-    let v = parseInt(viewers.textContent.replace(',','')) + Math.floor(Math.random()*5 - 1);
-    viewers.textContent = v.toLocaleString();
-  }
-  if (likes) {
-    let l = parseInt(likes.textContent.replace(',','')) + Math.floor(Math.random()*10);
-    likes.textContent = l.toLocaleString();
-  }
+  const viewers=document.getElementById('statViewers'), likes=document.getElementById('statLikes');
+  if (viewers) { let v=parseInt(viewers.textContent.replace(/,/g,''))+Math.floor(Math.random()*5-1); viewers.textContent=v.toLocaleString(); }
+  if (likes)   { let l=parseInt(likes.textContent.replace(/,/g,''))+Math.floor(Math.random()*10); likes.textContent=l.toLocaleString(); }
 }, 3000);
+
+// ===== LAYOUT MANAGER =====
+const layerPositions = {
+  cam:   { x:50, y:50 },
+  tmpl:  { x:50, y:5  },
+  stik:  { x:8,  y:20 },
+  promo: { x:90, y:80 },
+};
+const presets = {
+  default: { tmpl:{x:50,y:5}, stik:{x:8,y:20}, promo:{x:90,y:80} },
+  top:     { tmpl:{x:50,y:5}, stik:{x:15,y:12}, promo:{x:75,y:12} },
+  bottom:  { tmpl:{x:50,y:85}, stik:{x:15,y:75}, promo:{x:75,y:80} },
+  split:   { tmpl:{x:50,y:5}, stik:{x:8,y:50}, promo:{x:85,y:50} },
+};
+function applyPreset(name, btn) {
+  const p = presets[name]; if (!p) return;
+  Object.keys(p).forEach(k => { layerPositions[k] = {...p[k]}; });
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderLayoutBlocks();
+  syncOverlaysToPositions();
+  showToast(`📐 Preset "${btn.textContent}" diterapkan!`);
+}
+function renderLayoutBlocks() {
+  const canvas = document.getElementById('layoutCanvas');
+  const cW = canvas.offsetWidth, cH = canvas.offsetHeight;
+  const blockDefs = [
+    { id:'lb-cam',  key:'cam',  moveable:false },
+    { id:'lb-tmpl', key:'tmpl', moveable:true },
+    { id:'lb-stik', key:'stik', moveable:true },
+    { id:'lb-promo',key:'promo',moveable:true },
+  ];
+  blockDefs.forEach(def => {
+    const el = document.getElementById(def.id); if (!el) return;
+    const pos = layerPositions[def.key];
+    const bW = el.offsetWidth || 90, bH = el.offsetHeight || 28;
+    el.style.left = (pos.x / 100 * cW - bW/2) + 'px';
+    el.style.top  = (pos.y / 100 * cH - bH/2) + 'px';
+    if (!def.moveable) { el.style.cursor = 'default'; el.style.opacity = '0.5'; }
+  });
+}
+function initDraggableBlocks() {
+  const canvas = document.getElementById('layoutCanvas');
+  const moveable = ['lb-tmpl','lb-stik','lb-promo'];
+  moveable.forEach(id => {
+    const el = document.getElementById(id); if (!el) return;
+    const key = el.dataset.layer;
+    let dragging = false, startX, startY, origLeft, origTop;
+    function onDown(e) {
+      e.preventDefault(); dragging = true;
+      document.querySelectorAll('.le-block').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      const pt = e.touches ? e.touches[0] : e;
+      startX = pt.clientX; startY = pt.clientY;
+      origLeft = el.offsetLeft; origTop = el.offsetTop;
+    }
+    function onMove(e) {
+      if (!dragging) return; e.preventDefault();
+      const pt = e.touches ? e.touches[0] : e;
+      const dx = pt.clientX - startX, dy = pt.clientY - startY;
+      const cW = canvas.offsetWidth, cH = canvas.offsetHeight;
+      const bW = el.offsetWidth, bH = el.offsetHeight;
+      let newLeft = Math.max(0, Math.min(cW-bW, origLeft + dx));
+      let newTop  = Math.max(0, Math.min(cH-bH, origTop  + dy));
+      el.style.left = newLeft + 'px'; el.style.top = newTop + 'px';
+      layerPositions[key].x = ((newLeft + bW/2) / cW) * 100;
+      layerPositions[key].y = ((newTop  + bH/2) / cH) * 100;
+      syncOverlaysToPositions();
+    }
+    function onUp() { if (!dragging) return; dragging = false; el.classList.remove('active'); }
+    el.addEventListener('mousedown', onDown);
+    el.addEventListener('touchstart', onDown, {passive:false});
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('touchmove', onMove, {passive:false});
+    window.addEventListener('mouseup', onUp);
+    window.addEventListener('touchend', onUp);
+  });
+}
+function syncOverlaysToPositions() {
+  const viewport = document.getElementById('canvasViewport');
+  const vW = viewport.offsetWidth, vH = viewport.offsetHeight;
+  // Template: banner di atas atau bawah bergantung posisi y
+  const tmplPos = layerPositions.tmpl;
+  const tmplOverlay = document.getElementById('templateOverlay');
+  const content = tmplOverlay.querySelector('.template-overlay-content');
+  if (tmplPos.y < 50) {
+    tmplOverlay.style.alignItems = 'flex-start';
+    if (content) content.style.background = 'linear-gradient(to bottom, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.60) 50%, rgba(0,0,0,0.00) 100%)';
+  } else {
+    tmplOverlay.style.alignItems = 'flex-end';
+    if (content) content.style.background = 'linear-gradient(to top, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.60) 50%, rgba(0,0,0,0.00) 100%)';
+  }
+  // Stiker
+  const stikPos = layerPositions.stik;
+  const stikerOverlay = document.getElementById('stikerOverlay');
+  stikerOverlay.style.position = 'absolute';
+  stikerOverlay.style.top  = (stikPos.y / 100 * vH) + 'px';
+  stikerOverlay.style.left = (stikPos.x / 100 * vW) + 'px';
+  stikerOverlay.style.right = 'auto'; stikerOverlay.style.bottom = 'auto';
+  // Promo
+  const promoPos = layerPositions.promo;
+  const promoOverlay = document.getElementById('promoOverlay');
+  promoOverlay.style.position = 'absolute';
+  promoOverlay.style.bottom = 'auto'; promoOverlay.style.right = 'auto';
+  promoOverlay.style.top    = (promoPos.y / 100 * vH) + 'px';
+  promoOverlay.style.left   = (promoPos.x / 100 * vW) + 'px';
+}
+function applyLayerPositionToOverlay(key, overlayEl) {
+  const viewport = document.getElementById('canvasViewport');
+  const vW = viewport.offsetWidth, vH = viewport.offsetHeight;
+  const pos = layerPositions[key];
+  overlayEl.style.position = 'absolute';
+  overlayEl.style.bottom = 'auto'; overlayEl.style.right = 'auto';
+  overlayEl.style.top  = (pos.y / 100 * vH) + 'px';
+  overlayEl.style.left = (pos.x / 100 * vW) + 'px';
+}
+function initLayoutManager() {
+  setTimeout(() => { renderLayoutBlocks(); initDraggableBlocks(); }, 100);
+  window.addEventListener('resize', () => { renderLayoutBlocks(); syncOverlaysToPositions(); });
+}
 
 // ===== INIT =====
 renderTemplates();
 renderStiker();
+initLayoutManager();
 </script>
 </body>
 </html>
