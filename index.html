@@ -1,150 +1,1486 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TikTok Live Studio - Scarcity Edition</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .preview-area {
-            width: 360px;
-            height: 640px; /* Rasio 9:16 TikTok */
-            background: #000;
-            position: relative;
-            overflow: hidden;
-        }
-        .scarcity-overlay {
-            position: absolute;
-            bottom: 100px;
-            left: 0;
-            width: 100%;
-            padding: 20px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.8));
-            color: white;
-            text-align: center;
-        }
-        .flash-sale-bg {
-            background: linear-gradient(45deg, #ff0000, #ff8c00);
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse {
-            0% { opacity: 0.9; }
-            50% { opacity: 1; transform: scale(1.02); }
-            100% { opacity: 0.9; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TikTok LIVE Studio - Fitur Editing</title>
+<link href="https://fonts.googleapis.com/css2?family=TT+Norms+Pro:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0a0a0a;
+    --bg-panel: #161616;
+    --bg-card: #1e1e1e;
+    --bg-card-hover: #252525;
+    --accent: #fe2c55;
+    --accent-glow: rgba(254,44,85,0.3);
+    --accent2: #25f4ee;
+    --gold: #FFD700;
+    --text-primary: #ffffff;
+    --text-secondary: #aaaaaa;
+    --text-muted: #666666;
+    --border: rgba(255,255,255,0.08);
+    --border-hover: rgba(254,44,85,0.4);
+    --radius: 14px;
+    --radius-sm: 8px;
+    --shadow: 0 8px 32px rgba(0,0,0,0.6);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+  }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar {
+    width: 260px;
+    min-width: 260px;
+    background: var(--bg-panel);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tiktok-logo {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, #fe2c55, #ff0050);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .sidebar-title { font-size: 13px; font-weight: 700; letter-spacing: 0.3px; }
+  .sidebar-sub { font-size: 10px; color: var(--text-muted); }
+
+  .sidebar-section { padding: 12px 16px 4px; }
+  .sidebar-section-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
+    color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;
+  }
+
+  .sidebar-btn {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px; border-radius: var(--radius-sm);
+    cursor: pointer; transition: all 0.2s;
+    color: var(--text-secondary); font-size: 13px; font-weight: 500;
+    margin-bottom: 2px;
+  }
+  .sidebar-btn:hover { background: var(--bg-card); color: var(--text-primary); }
+  .sidebar-btn.active { background: rgba(254,44,85,0.15); color: var(--accent); }
+  .sidebar-btn .icon { font-size: 16px; width: 20px; text-align: center; }
+
+  .sidebar-divider { height: 1px; background: var(--border); margin: 8px 16px; }
+
+  /* Fitur Editing highlight */
+  .fitur-editing-btn {
+    margin: 8px 12px;
+    background: linear-gradient(135deg, var(--accent), #ff6b8a);
+    color: white !important;
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 700; font-size: 13px;
+    transition: all 0.25s;
+    box-shadow: 0 4px 20px var(--accent-glow);
+  }
+  .fitur-editing-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 24px var(--accent-glow); }
+  .fitur-editing-btn.active { outline: 2px solid white; }
+
+  /* ===== MAIN CONTENT ===== */
+  .main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .top-bar {
+    height: 52px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px;
+    background: var(--bg-panel);
+  }
+
+  .top-bar-title { font-size: 14px; font-weight: 700; }
+  .live-badge {
+    background: var(--accent); color: white;
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    padding: 4px 10px; border-radius: 20px;
+    animation: pulse-badge 2s infinite;
+  }
+  @keyframes pulse-badge {
+    0%,100% { box-shadow: 0 0 0 0 var(--accent-glow); }
+    50% { box-shadow: 0 0 0 6px transparent; }
+  }
+
+  /* ===== PAGES ===== */
+  .page { display: none; flex: 1; overflow-y: auto; }
+  .page.active { display: flex; flex-direction: column; }
+
+  /* ===== FITUR EDITING HOME ===== */
+  #page-fitur {
+    padding: 28px;
+    gap: 24px;
+  }
+
+  .page-header { margin-bottom: 8px; }
+  .page-header h2 { font-size: 22px; font-weight: 800; }
+  .page-header p { color: var(--text-secondary); font-size: 13px; margin-top: 4px; }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .feature-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    cursor: pointer;
+    border: 1.5px solid var(--border);
+    transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    position: relative;
+    overflow: hidden;
+    display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
+  }
+  .feature-card::before {
+    content:''; position:absolute; inset:0;
+    background: var(--card-glow, transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .feature-card:hover { transform: translateY(-4px); border-color: var(--border-hover); }
+  .feature-card:hover::before { opacity: 1; }
+
+  .feature-card.anim { --card-glow: radial-gradient(circle at top left, rgba(37,244,238,0.08), transparent 60%); }
+  .feature-card.promo { --card-glow: radial-gradient(circle at top left, rgba(255,215,0,0.08), transparent 60%); }
+  .feature-card.tmpl { --card-glow: radial-gradient(circle at top left, rgba(254,44,85,0.08), transparent 60%); }
+  .feature-card.stikr { --card-glow: radial-gradient(circle at top left, rgba(255,150,50,0.08), transparent 60%); }
+
+  .feature-card:hover.anim { border-color: rgba(37,244,238,0.4); }
+  .feature-card:hover.promo { border-color: rgba(255,215,0,0.4); }
+  .feature-card:hover.tmpl { border-color: rgba(254,44,85,0.4); }
+  .feature-card:hover.stikr { border-color: rgba(255,150,50,0.4); }
+
+  .feature-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+  }
+  .feature-icon.anim { background: rgba(37,244,238,0.15); }
+  .feature-icon.promo { background: rgba(255,215,0,0.15); }
+  .feature-icon.tmpl { background: rgba(254,44,85,0.15); }
+  .feature-icon.stikr { background: rgba(255,150,50,0.15); }
+
+  .feature-name { font-size: 15px; font-weight: 700; }
+  .feature-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .feature-count {
+    font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px;
+    background: var(--border); color: var(--text-muted);
+  }
+  .feature-arrow {
+    position: absolute; right: 16px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px; color: var(--text-muted);
+    transition: transform 0.2s, color 0.2s;
+  }
+  .feature-card:hover .feature-arrow { transform: translateY(-50%) translateX(4px); color: var(--text-primary); }
+
+  /* ===== SUB PAGE HEADER ===== */
+  .sub-header {
+    padding: 20px 28px 0;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .back-btn {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: var(--bg-card); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 18px; transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .back-btn:hover { background: var(--bg-card-hover); border-color: rgba(255,255,255,0.2); }
+  .sub-header-text h3 { font-size: 18px; font-weight: 800; }
+  .sub-header-text p { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+
+  /* ===== ANIMATION PAGE ===== */
+  #page-animation { padding: 20px 28px 28px; gap: 20px; flex-direction: column; }
+
+  .anim-categories {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    padding-bottom: 4px;
+  }
+  .anim-cat-btn {
+    padding: 7px 16px; border-radius: 20px;
+    background: var(--bg-card); border: 1.5px solid var(--border);
+    color: var(--text-secondary); font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .anim-cat-btn:hover, .anim-cat-btn.active {
+    background: rgba(37,244,238,0.15);
+    border-color: var(--accent2); color: var(--accent2);
+  }
+
+  .anim-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 14px;
+  }
+
+  .anim-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    border: 1.5px solid var(--border);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+  }
+  .anim-card:hover { border-color: var(--accent2); transform: translateY(-3px); }
+  .anim-card.selected { border-color: var(--accent2); box-shadow: 0 0 0 2px rgba(37,244,238,0.3); }
+
+  .anim-preview {
+    height: 110px;
+    background: #111;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .anim-preview .demo-box {
+    width: 60px; height: 60px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+  }
+
+  /* Animation demos */
+  .anim-card:hover .demo-box.fade { animation: demo-fade 1.2s infinite; }
+  @keyframes demo-fade { 0%,100%{opacity:1} 50%{opacity:0.1} }
+
+  .anim-card:hover .demo-box.blink { animation: demo-blink 0.6s infinite; }
+  @keyframes demo-blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+
+  .anim-card:hover .demo-box.slide-in { animation: demo-slide 1.2s infinite; }
+  @keyframes demo-slide { 0%{transform:translateX(-80px);opacity:0} 40%,60%{transform:translateX(0);opacity:1} 100%{transform:translateX(80px);opacity:0} }
+
+  .anim-card:hover .demo-box.zoom-in { animation: demo-zoom 1.2s infinite; }
+  @keyframes demo-zoom { 0%{transform:scale(0);opacity:0} 50%{transform:scale(1);opacity:1} 80%,100%{transform:scale(1);opacity:1} }
+
+  .anim-card:hover .demo-box.bounce { animation: demo-bounce 1s infinite; }
+  @keyframes demo-bounce { 0%,100%{transform:translateY(0)} 30%{transform:translateY(-20px)} 60%{transform:translateY(-10px)} }
+
+  .anim-card:hover .demo-box.shake { animation: demo-shake 0.5s infinite; }
+  @keyframes demo-shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-10px)} 75%{transform:translateX(10px)} }
+
+  .anim-card:hover .demo-box.spin { animation: demo-spin 1s linear infinite; }
+  @keyframes demo-spin { to{transform:rotate(360deg)} }
+
+  .anim-card:hover .demo-box.glitch {
+    animation: demo-glitch 0.3s infinite;
+  }
+  @keyframes demo-glitch {
+    0%{transform:translate(0)} 20%{transform:translate(-3px,2px);filter:hue-rotate(90deg)}
+    40%{transform:translate(3px,-2px)} 60%{transform:translate(-2px,3px);filter:hue-rotate(180deg)}
+    80%{transform:translate(2px,-1px)} 100%{transform:translate(0)}
+  }
+
+  .anim-card:hover .demo-box.flip { animation: demo-flip 1.2s infinite; }
+  @keyframes demo-flip { 0%,100%{transform:rotateY(0)} 50%{transform:rotateY(180deg)} }
+
+  .anim-card:hover .demo-box.pulse { animation: demo-pulse 0.8s infinite; }
+  @keyframes demo-pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.3)} }
+
+  .anim-card:hover .demo-box.typewriter::after {
+    content: 'LIVE'; animation: demo-type 1.5s steps(4) infinite;
+    font-size: 14px; font-weight: 800; color: white;
+  }
+  .demo-box.typewriter { background: #111; border: 2px solid var(--accent2); }
+  @keyframes demo-type { from{width:0} to{width:100%} }
+
+  .anim-card:hover .demo-box.wave { animation: demo-wave 1s ease-in-out infinite; }
+  @keyframes demo-wave { 0%,100%{transform:skewX(0)} 25%{transform:skewX(-10deg)} 75%{transform:skewX(10deg)} }
+
+  .anim-info { padding: 10px 12px; }
+  .anim-name { font-size: 13px; font-weight: 600; }
+  .anim-tag { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+  .anim-selected-badge {
+    position: absolute; top: 8px; right: 8px;
+    background: var(--accent2); color: #000;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 20px;
+    display: none;
+  }
+  .anim-card.selected .anim-selected-badge { display: block; }
+
+  .anim-apply-bar {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px;
+  }
+  .anim-apply-info { font-size: 13px; color: var(--text-secondary); }
+  .anim-apply-info strong { color: var(--accent2); }
+  .apply-btn {
+    padding: 9px 24px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent2), #00c2bc);
+    color: #000; font-weight: 700; font-size: 13px;
+    cursor: pointer; border: none; transition: all 0.2s;
+  }
+  .apply-btn:hover { transform: scale(1.04); }
+
+  /* ===== SCARCITY PROMOTION PAGE ===== */
+  #page-scarcity { padding: 20px 28px 28px; flex-direction: column; gap: 20px; }
+
+  .promo-types {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+  }
+
+  .promo-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    border: 1.5px solid var(--border);
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .promo-card:hover { transform: translateY(-3px); border-color: rgba(255,215,0,0.4); }
+  .promo-card.selected { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(255,215,0,0.2); }
+
+  .promo-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .promo-icon { font-size: 28px; }
+  .promo-badge-tag {
+    font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+  .tag-hot { background: rgba(254,44,85,0.2); color: var(--accent); }
+  .tag-new { background: rgba(37,244,238,0.2); color: var(--accent2); }
+  .tag-trend { background: rgba(255,215,0,0.2); color: var(--gold); }
+
+  .promo-name { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .promo-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  /* Live Preview Panel */
+  .promo-preview-wrapper {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .promo-preview-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .promo-preview-header span { font-size: 13px; font-weight: 600; }
+  .preview-device-select {
+    display: flex; gap: 6px;
+  }
+  .dev-btn {
+    padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 500;
+    background: var(--bg-dark); border: 1px solid var(--border);
+    cursor: pointer; color: var(--text-secondary); transition: all 0.2s;
+  }
+  .dev-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+  .promo-preview-area {
+    padding: 20px;
+    background: #0d0d0d;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 200px;
+  }
+
+  /* Promo Display Cards */
+  .live-promo-widget {
+    background: #111;
+    border-radius: 12px;
+    padding: 14px;
+    width: 280px;
+    border: 1px solid #222;
+    font-family: 'Outfit', sans-serif;
+  }
+
+  .flash-sale-widget {
+    background: linear-gradient(135deg, #1a0a0a, #0a0a0a);
+    border: 1px solid #ff3333;
+  }
+  .fs-top {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .fs-label {
+    background: var(--accent); color: white;
+    font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 4px;
+    letter-spacing: 1px; text-transform: uppercase;
+    animation: flash-pulse 1s infinite;
+  }
+  @keyframes flash-pulse { 0%,100%{opacity:1} 50%{opacity:0.7} }
+  .fs-countdown { display: flex; gap: 4px; align-items: center; }
+  .fs-count-box {
+    background: var(--accent); color: white;
+    font-size: 16px; font-weight: 800;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 4px; font-feature-settings: 'tnum';
+  }
+  .fs-sep { color: var(--accent); font-weight: 800; }
+  .fs-product { display: flex; gap: 10px; align-items: center; }
+  .fs-img {
+    width: 60px; height: 60px; border-radius: 8px;
+    background: linear-gradient(135deg, #333, #222);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; flex-shrink: 0;
+  }
+  .fs-info .fs-name { font-size: 13px; font-weight: 600; }
+  .fs-price-row { display: flex; gap: 8px; align-items: center; margin-top: 4px; }
+  .fs-price-new { color: var(--accent); font-size: 18px; font-weight: 800; }
+  .fs-price-old { color: #666; font-size: 12px; text-decoration: line-through; }
+  .fs-disc { background: var(--accent); color: white; font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+  .fs-stock { margin-top: 8px; }
+  .fs-stock-label { font-size: 11px; color: #888; margin-bottom: 4px; }
+  .fs-bar { height: 6px; border-radius: 3px; background: #222; overflow: hidden; }
+  .fs-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), #ff6b6b); width: 78%; }
+  .fs-bar-text { font-size: 10px; color: #888; margin-top: 3px; }
+  .fs-btn {
+    margin-top: 10px; width: 100%; padding: 10px;
+    background: linear-gradient(135deg, var(--accent), #ff6b8a);
+    color: white; font-weight: 700; font-size: 13px;
+    border-radius: 8px; text-align: center; cursor: pointer;
+    border: none;
+  }
+
+  /* Scarcity Stock Widget */
+  .stock-widget {
+    background: linear-gradient(135deg, #0a0f1a, #0a0a0a);
+    border: 1px solid #334;
+  }
+  .stock-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .stock-badge {
+    background: #ff6b35; color: white; font-size: 11px; font-weight: 800;
+    padding: 3px 10px; border-radius: 4px; animation: flash-pulse 1.5s infinite;
+  }
+  .stock-items { display: flex; flex-direction: column; gap: 8px; }
+  .stock-item { display: flex; align-items: center; gap: 10px; }
+  .stock-img { width: 44px; height: 44px; border-radius: 6px; background: #222; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .stock-info { flex: 1; }
+  .stock-name { font-size: 12px; font-weight: 600; }
+  .stock-remaining { font-size: 11px; color: #ff6b35; font-weight: 700; }
+  .stock-add { background: #ff6b35; color: white; font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 6px; cursor: pointer; white-space: nowrap; }
+
+  /* Countdown Widget */
+  .countdown-widget {
+    background: linear-gradient(135deg, #0a0a1a, #0a0a0a);
+    border: 1px solid #226;
+  }
+  .cd-header { text-align: center; margin-bottom: 12px; }
+  .cd-title { font-size: 13px; font-weight: 700; color: var(--gold); }
+  .cd-subtitle { font-size: 11px; color: #888; margin-top: 2px; }
+  .cd-timer { display: flex; justify-content: center; gap: 8px; margin-bottom: 12px; }
+  .cd-unit { text-align: center; }
+  .cd-num {
+    background: #111; border: 1px solid #333;
+    font-size: 24px; font-weight: 800; color: var(--gold);
+    width: 50px; height: 50px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 8px; font-feature-settings: 'tnum';
+  }
+  .cd-label { font-size: 9px; color: #666; margin-top: 4px; text-align: center; }
+  .cd-sep { font-size: 24px; font-weight: 800; color: var(--gold); padding-top: 8px; }
+  .cd-offer { background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.2); border-radius: 8px; padding: 10px; text-align: center; }
+  .cd-offer-text { font-size: 12px; font-weight: 700; color: var(--gold); }
+  .cd-offer-sub { font-size: 11px; color: #888; margin-top: 2px; }
+
+  /* Tanggal Kembar Widget */
+  .double-date-widget {
+    background: linear-gradient(135deg, #1a0a1a, #0a0a0a);
+    border: 1px solid #624;
+    text-align: center;
+  }
+  .dd-header { margin-bottom: 12px; }
+  .dd-date { font-size: 36px; font-weight: 900; color: var(--accent); letter-spacing: 2px; }
+  .dd-year { font-size: 11px; color: #888; }
+  .dd-title { font-size: 14px; font-weight: 800; color: white; margin-top: 4px; }
+  .dd-badges { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-bottom: 12px; }
+  .dd-badge { background: rgba(254,44,85,0.15); border: 1px solid rgba(254,44,85,0.3); color: var(--accent); font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
+  .dd-products { display: flex; gap: 8px; justify-content: center; }
+  .dd-prod { background: #111; border-radius: 8px; padding: 8px; text-align: center; }
+  .dd-prod-icon { font-size: 24px; margin-bottom: 4px; }
+  .dd-prod-price { font-size: 13px; font-weight: 800; color: var(--accent); }
+  .dd-prod-old { font-size: 10px; color: #555; text-decoration: line-through; }
+  .dd-prod-disc { background: var(--accent); color: white; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-top: 3px; display: inline-block; }
+
+  /* Potongan Harga Widget */
+  .discount-widget {
+    background: linear-gradient(135deg, #0a120a, #0a0a0a);
+    border: 1px solid #162;
+  }
+  .dw-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .dw-label { background: #00c851; color: white; font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 4px; }
+  .dw-limited { font-size: 11px; color: #00c851; animation: flash-pulse 1s infinite; }
+  .dw-products { display: flex; flex-direction: column; gap: 8px; }
+  .dw-product { display: flex; align-items: center; gap: 10px; background: #111; border-radius: 8px; padding: 8px; }
+  .dw-img { width: 44px; height: 44px; border-radius: 6px; background: #222; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .dw-info { flex: 1; }
+  .dw-name { font-size: 12px; font-weight: 600; }
+  .dw-prices { display: flex; align-items: center; gap: 6px; margin-top: 3px; }
+  .dw-new { color: #00c851; font-size: 15px; font-weight: 800; }
+  .dw-old { color: #555; font-size: 11px; text-decoration: line-through; }
+  .dw-pct { background: rgba(0,200,81,0.2); color: #00c851; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+  .dw-add { background: #00c851; color: white; font-size: 11px; font-weight: 700; padding: 6px 12px; border-radius: 6px; cursor: pointer; white-space: nowrap; }
+
+  .promo-config-panel {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 18px;
+  }
+  .config-title { font-size: 14px; font-weight: 700; margin-bottom: 14px; }
+  .config-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+  .config-label { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
+  .config-input {
+    background: var(--bg-dark);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: white;
+    font-size: 13px;
+    padding: 9px 12px;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: 'Outfit', sans-serif;
+    width: 100%;
+  }
+  .config-input:focus { border-color: var(--accent); }
+  .config-toggle-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .config-toggle-label { font-size: 13px; }
+  .toggle-switch {
+    width: 40px; height: 22px; border-radius: 11px; background: #333;
+    position: relative; cursor: pointer; transition: background 0.2s;
+  }
+  .toggle-switch.on { background: var(--accent); }
+  .toggle-knob {
+    width: 18px; height: 18px; border-radius: 50%; background: white;
+    position: absolute; top: 2px; left: 2px;
+    transition: transform 0.2s;
+  }
+  .toggle-switch.on .toggle-knob { transform: translateX(18px); }
+  .go-live-btn {
+    width: 100%; padding: 12px;
+    background: linear-gradient(135deg, var(--gold), #ffb300);
+    color: #000; font-weight: 800; font-size: 14px;
+    border-radius: 10px; border: none; cursor: pointer;
+    transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .go-live-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,215,0,0.3); }
+
+  /* ===== TEMPLATE BACKGROUND PAGE ===== */
+  #page-template { padding: 20px 28px 28px; flex-direction: column; gap: 20px; }
+
+  .template-filters { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tmpl-filter {
+    padding: 7px 16px; border-radius: 20px;
+    background: var(--bg-card); border: 1.5px solid var(--border);
+    color: var(--text-secondary); font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .tmpl-filter:hover, .tmpl-filter.active {
+    background: rgba(254,44,85,0.15); border-color: var(--accent); color: var(--accent);
+  }
+
+  .template-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+  }
+
+  .tmpl-card {
+    border-radius: var(--radius);
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.25s;
+    position: relative;
+  }
+  .tmpl-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.2); }
+  .tmpl-card.selected { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-glow); }
+
+  .tmpl-bg {
+    height: 140px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 12px;
+    position: relative; overflow: hidden;
+  }
+
+  /* Template Backgrounds */
+  .tmpl-flash-sale { background: linear-gradient(135deg, #1a0000, #3d0000, #1a0000); }
+  .tmpl-flash-sale::before { content:''; position:absolute; inset:0; background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,0,0,0.05) 10px, rgba(255,0,0,0.05) 20px); }
+
+  .tmpl-payday { background: linear-gradient(135deg, #001a00, #003d00, #001a00); }
+  .tmpl-payday::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse at 50% 100%, rgba(0,200,0,0.15), transparent 70%); }
+
+  .tmpl-countdown { background: linear-gradient(135deg, #00001a, #00003d, #00001a); }
+  .tmpl-countdown::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse at 50% 0%, rgba(100,100,255,0.2), transparent 70%); }
+
+  .tmpl-double11 { background: linear-gradient(135deg, #1a000d, #3d0020, #1a000d); }
+  .tmpl-double12 { background: linear-gradient(135deg, #1a0d00, #3d2000, #1a0d00); }
+  .tmpl-harbolnas { background: linear-gradient(135deg, #001a1a, #003d3d, #001a1a); }
+  .tmpl-lebaran { background: linear-gradient(135deg, #1a1700, #3d3800, #1a1700); }
+  .tmpl-birthday { background: linear-gradient(135deg, #1a001a, #3d003d, #1a001a); }
+  .tmpl-new-year { background: linear-gradient(135deg, #0a0a0a, #1a1a2e, #0a0a0a); }
+  .tmpl-weekend { background: linear-gradient(135deg, #0a1a00, #15360d, #0a1a00); }
+  .tmpl-midnight { background: linear-gradient(135deg, #0a0a1a, #0a001a, #0a0a1a); }
+  .tmpl-mega-sale { background: linear-gradient(135deg, #1a0a00, #3d1500, #1a0a00); }
+
+  .tmpl-title {
+    font-size: 15px; font-weight: 900; color: white;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+    z-index: 1; position: relative;
+  }
+  .tmpl-subtitle { font-size: 10px; color: rgba(255,255,255,0.7); margin-top: 4px; z-index: 1; position: relative; }
+  .tmpl-badge {
+    position: absolute; top: 8px; right: 8px; z-index: 2;
+    font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 10px;
+  }
+  .badge-hot { background: var(--accent); color: white; }
+  .badge-new { background: var(--accent2); color: #000; }
+  .badge-promo { background: var(--gold); color: #000; }
+
+  .tmpl-info { background: var(--bg-card); padding: 10px 12px; }
+  .tmpl-name { font-size: 13px; font-weight: 600; }
+  .tmpl-meta { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+  .tmpl-selected-overlay {
+    position: absolute; inset: 0; background: rgba(254,44,85,0.3);
+    display: none; align-items: center; justify-content: center;
+    font-size: 32px;
+  }
+  .tmpl-card.selected .tmpl-selected-overlay { display: flex; }
+
+  .tmpl-action-bar {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 14px 18px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .tmpl-action-info { font-size: 13px; color: var(--text-secondary); }
+  .tmpl-action-info strong { color: var(--accent); }
+  .tmpl-use-btn {
+    padding: 10px 28px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent), #ff6b8a);
+    color: white; font-weight: 700; font-size: 13px;
+    cursor: pointer; border: none; transition: all 0.2s;
+  }
+  .tmpl-use-btn:hover { transform: scale(1.04); }
+
+  /* ===== STIKER PAGE ===== */
+  #page-stiker { padding: 20px 28px 28px; flex-direction: column; gap: 20px; }
+
+  .stiker-categories { display: flex; gap: 8px; flex-wrap: wrap; }
+  .stiker-cat {
+    padding: 7px 16px; border-radius: 20px;
+    background: var(--bg-card); border: 1.5px solid var(--border);
+    color: var(--text-secondary); font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .stiker-cat:hover, .stiker-cat.active {
+    background: rgba(255,150,50,0.15); border-color: #ff9632; color: #ff9632;
+  }
+
+  .stiker-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+  }
+
+  .stiker-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    border: 2px solid transparent;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-align: center;
+  }
+  .stiker-card:hover { transform: translateY(-3px) scale(1.02); border-color: rgba(255,150,50,0.4); }
+  .stiker-card.selected { border-color: #ff9632; box-shadow: 0 0 0 2px rgba(255,150,50,0.2); }
+
+  .stiker-preview {
+    height: 100px; padding: 8px;
+    background: #111;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 52px;
+    transition: transform 0.2s;
+  }
+  .stiker-card:hover .stiker-preview { transform: scale(1.15); }
+
+  .stiker-info { padding: 8px; background: var(--bg-card); }
+  .stiker-name { font-size: 11px; font-weight: 600; }
+  .stiker-count { font-size: 10px; color: var(--text-muted); }
+
+  .stiker-action-bar {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 14px 18px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .stiker-selected-preview { display: flex; gap: 6px; align-items: center; }
+  .stiker-selected-item {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--bg-dark); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; position: relative;
+  }
+  .stiker-selected-item .remove-x {
+    position: absolute; top: -4px; right: -4px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--accent); color: white;
+    font-size: 8px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .stiker-add-btn {
+    padding: 10px 24px; border-radius: 8px;
+    background: linear-gradient(135deg, #ff9632, #ff6b35);
+    color: white; font-weight: 700; font-size: 13px;
+    cursor: pointer; border: none; transition: all 0.2s;
+  }
+  .stiker-add-btn:hover { transform: scale(1.04); }
+
+  /* ===== TOAST ===== */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: #1e1e1e; border: 1px solid var(--border);
+    color: white; padding: 12px 20px; border-radius: 10px;
+    font-size: 13px; font-weight: 500;
+    display: flex; align-items: center; gap: 10px;
+    transform: translateY(80px); opacity: 0;
+    transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    z-index: 1000; max-width: 300px;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast-icon { font-size: 18px; }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+  /* ===== PROMO LAYOUT ===== */
+  .promo-layout { display: grid; grid-template-columns: 1fr 320px; gap: 16px; }
+  .promo-right { display: flex; flex-direction: column; gap: 14px; }
+  @media (max-width: 900px) { .promo-layout { grid-template-columns: 1fr; } }
+</style>
 </head>
-<body class="bg-gray-900 text-white font-sans">
+<body>
 
-    <div class="flex h-screen">
-        <!-- Sidebar Kontrol -->
-        <aside class="w-1/3 bg-gray-800 p-6 overflow-y-auto border-r border-gray-700">
-            <h1 class="text-2xl font-bold mb-6 text-pink-500">Live Scarcity Editor</h1>
-            
-            <!-- Pengaturan Template -->
-            <div class="mb-8">
-                <label class="block text-sm font-medium mb-2">Pilih Template Scarcity</label>
-                <select id="templateSelect" class="w-full bg-gray-700 p-2 rounded border border-gray-600 outline-none" onchange="updateTemplate()">
-                    <option value="flash-sale">⚡ Flash Sale (Urgent)</option>
-                    <option value="promo-gajian">💰 Promo Tanggal Muda/Gajian</option>
-                    <option value="tanggal-tua">📉 Promo Penyelamat Tanggal Tua</option>
-                    <option value="custom">🎨 Custom Design</option>
-                </select>
-            </div>
-
-            <!-- Editor Konten -->
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium mb-1">Judul Promo</label>
-                    <input type="text" id="promoTitle" value="FLASH SALE TERBATAS!" class="w-full bg-gray-700 p-2 rounded outline-none" oninput="syncPreview()">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1">Sub-teks (Call to Action)</label>
-                    <input type="text" id="promoSub" value="Hanya untuk 10 orang pertama!" class="w-full bg-gray-700 p-2 rounded outline-none" oninput="syncPreview()">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1">Warna Background</label>
-                    <input type="color" id="bgColor" value="#ff0000" class="w-full h-10 bg-gray-700 p-1 rounded cursor-pointer" oninput="syncPreview()">
-                </div>
-            </div>
-
-            <button class="w-full mt-8 bg-pink-600 hover:bg-pink-700 text-white py-3 rounded-lg font-bold transition" onclick="alert('Sinkronisasi ke TikTok Studio Berhasil!')">
-                Terapkan ke Live Stream
-            </button>
-        </aside>
-
-        <!-- Preview Area (Monitor) -->
-        <main class="flex-1 flex flex-col items-center justify-center bg-black p-4">
-            <h2 class="mb-4 text-gray-400 text-sm uppercase tracking-widest">Live Preview (Capture this window)</h2>
-            
-            <div id="livePreview" class="preview-area shadow-2xl border-4 border-gray-800 rounded-xl">
-                <!-- Simuasi Video Background -->
-                <div id="dynamicBg" class="absolute inset-0 flash-sale-bg flex items-center justify-center opacity-50">
-                    <span class="text-4xl font-black text-white italic opacity-20">SALE! SALE! SALE!</span>
-                </div>
-
-                <!-- Konten Promo -->
-                <div class="scarcity-overlay">
-                    <h3 id="previewTitle" class="text-2xl font-black uppercase mb-1 tracking-tighter">FLASH SALE TERBATAS!</h3>
-                    <p id="previewSub" class="text-sm font-light text-gray-200">Hanya untuk 10 orang pertama!</p>
-                    
-                    <div class="mt-4 bg-yellow-400 text-black font-bold py-1 px-3 rounded inline-block text-xs animate-bounce">
-                        STOK TERSISA: <span id="stockCount">12</span>
-                    </div>
-                </div>
-
-                <!-- Simulasi Chat/UI TikTok -->
-                <div class="absolute top-4 left-4 flex items-center space-x-2">
-                    <div class="w-10 h-10 bg-gray-500 rounded-full border-2 border-white"></div>
-                    <div>
-                        <div class="text-xs font-bold">User_Streamer</div>
-                        <div class="bg-black/40 text-[10px] px-2 rounded-full">1.2k Penonton</div>
-                    </div>
-                </div>
-            </div>
-        </main>
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="tiktok-logo">🎵</div>
+    <div>
+      <div class="sidebar-title">TikTok LIVE Studio</div>
+      <div class="sidebar-sub">v3.5.0</div>
     </div>
+  </div>
 
-    <script>
-        function syncPreview() {
-            const title = document.getElementById('promoTitle').value;
-            const sub = document.getElementById('promoSub').value;
-            const color = document.getElementById('bgColor').value;
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Studio</div>
+    <div class="sidebar-btn" onclick="showPage('main')"><span class="icon">🎬</span> Tampilan Studio</div>
+    <div class="sidebar-btn"><span class="icon">📷</span> Kamera</div>
+    <div class="sidebar-btn"><span class="icon">🎙️</span> Audio</div>
+  </div>
 
-            document.getElementById('previewTitle').innerText = title;
-            document.getElementById('previewSub').innerText = sub;
-            document.getElementById('dynamicBg').style.background = `linear-gradient(45deg, ${color}, #000)`;
-        }
+  <div class="sidebar-divider"></div>
 
-        function updateTemplate() {
-            const template = document.getElementById('templateSelect').value;
-            const titleInput = document.getElementById('promoTitle');
-            const subInput = document.getElementById('promoSub');
-            const colorInput = document.getElementById('bgColor');
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Interaksi</div>
+    <div class="sidebar-btn"><span class="icon">🙋</span> Harapan Penonton</div>
+    <div class="sidebar-btn"><span class="icon">📖</span> Buku Panduan</div>
+    <div class="sidebar-btn"><span class="icon">🎮</span> Main Bareng</div>
+    <div class="sidebar-btn"><span class="icon">🎯</span> Target LIVE</div>
+  </div>
 
-            if (template === 'flash-sale') {
-                titleInput.value = "⚡ FLASH SALE ⚡";
-                subInput.value = "Habis dalam 05:00 Menit!";
-                colorInput.value = "#ff0000";
-            } else if (template === 'promo-gajian') {
-                titleInput.value = "💰 PROMO GAJIAN";
-                subInput.value = "Diskon up to 70% Khusus Hari Ini";
-                colorInput.value = "#008000";
-            } else if (template === 'tanggal-tua') {
-                titleInput.value = "📉 SOLUSI TANGGAL TUA";
-                subInput.value = "Beli 1 Gratis 1 - Tetap Hemat!";
-                colorInput.value = "#4b0082";
-            }
-            
-            syncPreview();
-        }
+  <div class="sidebar-divider"></div>
 
-        // Simulasi Stok Berkurang
-        setInterval(() => {
-            let stock = document.getElementById('stockCount');
-            let current = parseInt(stock.innerText);
-            if(current > 1) stock.innerText = current - 1;
-        }, 8000);
-    </script>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Monetisasi</div>
+    <div class="sidebar-btn"><span class="icon">🤝</span> Kemitraan</div>
+    <div class="sidebar-btn"><span class="icon">⭐</span> Fan Club</div>
+    <div class="sidebar-btn"><span class="icon">📣</span> Promosikan</div>
+    <div class="sidebar-btn"><span class="icon">🎪</span> Acara LIVE</div>
+  </div>
+
+  <div class="sidebar-divider"></div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Kreator</div>
+  </div>
+
+  <!-- Fitur Editing Button -->
+  <div class="fitur-editing-btn" onclick="showPage('fitur')" id="fiturBtn">
+    <span style="font-size:20px">🖼️</span>
+    <div>
+      <div>Fitur Editing</div>
+      <div style="font-size:10px;opacity:0.8;font-weight:400">Animation • Promo • Template • Stiker</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+  <div class="top-bar">
+    <div class="top-bar-title" id="topBarTitle">TikTok LIVE Studio</div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="font-size:12px;color:var(--text-secondary)">FPS: 60 • CPU: 2.36%</div>
+      <div class="live-badge">● LIVE</div>
+      <div style="font-size:12px;color:var(--gold)">⭐ 93 &nbsp; $0.35</div>
+    </div>
+  </div>
+
+  <!-- PAGE: MAIN -->
+  <div class="page active" id="page-main" style="align-items:center;justify-content:center;gap:16px">
+    <div style="text-align:center;color:var(--text-muted)">
+      <div style="font-size:64px;margin-bottom:16px">🎥</div>
+      <div style="font-size:18px;font-weight:700;color:var(--text-secondary)">Tampilan Studio</div>
+      <div style="font-size:13px;margin-top:8px">Pilih <strong style="color:var(--accent)">Fitur Editing</strong> di sidebar untuk mulai</div>
+    </div>
+  </div>
+
+  <!-- PAGE: FITUR EDITING HOME -->
+  <div class="page" id="page-fitur">
+    <div class="page-header">
+      <h2>🖼️ Fitur Editing</h2>
+      <p>Tingkatkan LIVE kamu dengan animasi, promosi, template, dan stiker keren!</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card anim" onclick="showPage('animation')">
+        <div class="feature-icon anim">✨</div>
+        <div>
+          <div class="feature-name">Animation</div>
+          <div class="feature-desc">Fade black, kedip, slide, zoom, glitch, bounce dan efek gerakan keren lainnya</div>
+        </div>
+        <div class="feature-count">12 Efek</div>
+        <div class="feature-arrow">›</div>
+      </div>
+      <div class="feature-card promo" onclick="showPage('scarcity')">
+        <div class="feature-icon promo">🛒</div>
+        <div>
+          <div class="feature-name">Scarcity Promotion</div>
+          <div class="feature-desc">Flash sale, potongan harga, countdown, tanggal kembar, stok terbatas untuk shop</div>
+        </div>
+        <div class="feature-count">5 Tipe</div>
+        <div class="feature-arrow">›</div>
+      </div>
+      <div class="feature-card tmpl" onclick="showPage('template')">
+        <div class="feature-icon tmpl">🖼️</div>
+        <div>
+          <div class="feature-name">Template Background</div>
+          <div class="feature-desc">Template siap pakai: Flash Sale, Hari Gajian, Harbolnas, 11.11, Lebaran & lainnya</div>
+        </div>
+        <div class="feature-count">12 Template</div>
+        <div class="feature-arrow">›</div>
+      </div>
+      <div class="feature-card stikr" onclick="showPage('stiker')">
+        <div class="feature-icon stikr">🎭</div>
+        <div>
+          <div class="feature-name">Stiker</div>
+          <div class="feature-desc">Koleksi stiker lucu, promo, emote, dan dekoratif untuk mempercantik LIVE</div>
+        </div>
+        <div class="feature-count">40+ Stiker</div>
+        <div class="feature-arrow">›</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE: ANIMATION -->
+  <div class="page" id="page-animation">
+    <div class="sub-header">
+      <div class="back-btn" onclick="showPage('fitur')">‹</div>
+      <div class="sub-header-text">
+        <h3>✨ Animation</h3>
+        <p>Hover kartu untuk preview • Klik untuk pilih</p>
+      </div>
+    </div>
+    <div style="padding:16px 28px 0">
+      <div class="anim-categories">
+        <div class="anim-cat-btn active" onclick="filterAnim(this,'all')">Semua</div>
+        <div class="anim-cat-btn" onclick="filterAnim(this,'transition')">Transisi</div>
+        <div class="anim-cat-btn" onclick="filterAnim(this,'motion')">Gerakan</div>
+        <div class="anim-cat-btn" onclick="filterAnim(this,'effect')">Efek Khusus</div>
+      </div>
+    </div>
+    <div style="padding:16px 28px;flex:1;overflow-y:auto">
+      <div class="anim-grid" id="animGrid">
+        <div class="anim-card" data-cat="transition" onclick="selectAnim(this,'Fade Black')">
+          <div class="anim-preview"><div class="demo-box fade">🌑</div></div>
+          <div class="anim-selected-badge">✓ Aktif</div>
+          <div class="anim-info"><div class="anim-name">Fade Black</div><div class="anim-tag">Transisi</div></div>
+        </div>
+        <div class="anim-card" data-cat="effect" onclick="selectAnim(this,'Blink')">
+          <div class="anim-preview"><div class="demo-box blink">💡</div></div>
+          <div class="anim-selected-badge">✓ Aktif</div>
+          <div class="anim-info"><div class="anim-name">Blink / Kedip</div><div class="anim-tag">Efek Khusus</div></div>
+        </div>
+        <div class="anim-card" data-cat="transition" onclick="selectAnim(this,'Slide In')">
+          <div class="anim-preview"><div class="demo-box slide-in">➡️</div></div>
+          <div class="anim-selected-badge">✓ Aktif</div>
+          <div class="anim-info"><div class="anim-name">Slide In</div><div class="anim-tag">Transisi</div></div>
+        </div>
+        <div class="anim-card" data-cat="transition" onclick="selectAnim(this,'Zoom In')">
+          <div class="anim-preview"><div class="demo-box zoom-in">🔍</div></div>
+          <div class="anim-selected-badge">✓ Aktif</div>
+          <div class="anim-info"><div class="anim-name">Zoom In</div><div class="anim-tag">Transisi</div></div>
+        </div>
+        <div class="anim-card" data-cat="motion" onclick="selectAnim(this,'Bounce')">
+          <div class="anim-preview"><div class="demo-box bounce">⚡</div></div>
+          <div class="anim-selected-badge">✓ Aktif</div>
+          <div class="anim-info"><div class="anim-name">Bounce</div><div class="anim-tag">Gerakan</div></div>
+        </div>
+        <div class="anim-card" data-cat="motion" onclick="selectAnim(this,'Shake')">
+          <div class="anim-preview"><div class="demo-box shake">📳</div></div>
+          <div class="anim-selected-badge">✓ Aktif</div>
+          <div class="anim-info"><div class="anim-name">Shake</div><div class="anim-tag">Gerakan</div></div>
+        </div>
+        <div class="anim-card" data-cat="motion" onclick="selectAnim(this,'Spin')">
+          <div class="anim-preview"><div class="demo-box spin">🌀</div></div>
+          <div class="anim-selected-badge">✓ Aktif</div>
+          <div class="anim-info"><div class="anim-name">Spin</div><div class="anim-tag">Gerakan</div></div>
+        </div>
+        <div class="anim-card" data-cat="effect" onclick="selectAnim(this,'Glitch')">
+          <div class="anim-preview"><div class="demo-box glitch">⚡</div></div>
+          <div class="anim-selected-badge">✓ Aktif</div>
+          <div class="anim-info"><div class="anim-name">Glitch</div><div class="anim-tag">Efek Khusus</div></div>
+        </div>
+        <div class="anim-card" data-cat="transition" onclick="selectAnim(this,'Flip 3D')">
+          <div class="anim-preview"><div class="demo-box flip">🔄</div></div>
+          <div class="anim-selected-badge">✓ Aktif</div>
+          <div class="anim-info"><div class="anim-name">Flip 3D</div><div class="anim-tag">Transisi</div></div>
+        </div>
+        <div class="anim-card" data-cat="motion" onclick="selectAnim(this,'Pulse')">
+          <div class="anim-preview"><div class="demo-box pulse">❤️</div></div>
+          <div class="anim-selected-badge">✓ Aktif</div>
+          <div class="anim-info"><div class="anim-name">Pulse</div><div class="anim-tag">Gerakan</div></div>
+        </div>
+        <div class="anim-card" data-cat="effect" onclick="selectAnim(this,'Typewriter')">
+          <div class="anim-preview"><div class="demo-box typewriter"></div></div>
+          <div class="anim-selected-badge">✓ Aktif</div>
+          <div class="anim-info"><div class="anim-name">Typewriter</div><div class="anim-tag">Efek Khusus</div></div>
+        </div>
+        <div class="anim-card" data-cat="motion" onclick="selectAnim(this,'Wave')">
+          <div class="anim-preview"><div class="demo-box wave">🌊</div></div>
+          <div class="anim-selected-badge">✓ Aktif</div>
+          <div class="anim-info"><div class="anim-name">Wave</div><div class="anim-tag">Gerakan</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:0 28px 20px">
+      <div class="anim-apply-bar">
+        <div class="anim-apply-info">Animasi terpilih: <strong id="selectedAnimName">—</strong></div>
+        <button class="apply-btn" onclick="applyAnim()">Terapkan ke LIVE</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE: SCARCITY PROMOTION -->
+  <div class="page" id="page-scarcity">
+    <div class="sub-header">
+      <div class="back-btn" onclick="showPage('fitur')">‹</div>
+      <div class="sub-header-text">
+        <h3>🛒 Scarcity Promotion</h3>
+        <p>Tampilkan promosi produk shop saat LIVE untuk dorong penjualan</p>
+      </div>
+    </div>
+    <div style="padding:16px 28px;flex:1;overflow-y:auto">
+      <div class="promo-layout">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div class="promo-types">
+            <div class="promo-card selected" onclick="selectPromo(this,'flash-sale')" data-type="flash-sale">
+              <div class="promo-top">
+                <div class="promo-icon">⚡</div>
+                <div class="promo-badge-tag tag-hot">HOT</div>
+              </div>
+              <div class="promo-name">Flash Sale</div>
+              <div class="promo-desc">Harga spesial dengan timer countdown di keranjang kuning</div>
+            </div>
+            <div class="promo-card" onclick="selectPromo(this,'potongan')" data-type="potongan">
+              <div class="promo-top">
+                <div class="promo-icon">✂️</div>
+                <div class="promo-badge-tag tag-trend">TREND</div>
+              </div>
+              <div class="promo-name">Potongan Harga</div>
+              <div class="promo-desc">Tampilkan diskon % dan harga coret pada produk pilihan</div>
+            </div>
+            <div class="promo-card" onclick="selectPromo(this,'double-date')" data-type="double-date">
+              <div class="promo-top">
+                <div class="promo-icon">📅</div>
+                <div class="promo-badge-tag tag-hot">HOT</div>
+              </div>
+              <div class="promo-name">Tanggal Kembar</div>
+              <div class="promo-desc">Promo eksklusif 11.11, 12.12 dan tanggal kembar lainnya</div>
+            </div>
+            <div class="promo-card" onclick="selectPromo(this,'countdown')" data-type="countdown">
+              <div class="promo-top">
+                <div class="promo-icon">⏰</div>
+                <div class="promo-badge-tag tag-new">NEW</div>
+              </div>
+              <div class="promo-name">Countdown Timer</div>
+              <div class="promo-desc">Hitung mundur akhir promo untuk menciptakan urgensi</div>
+            </div>
+            <div class="promo-card" onclick="selectPromo(this,'stock')" data-type="stock">
+              <div class="promo-top">
+                <div class="promo-icon">📦</div>
+                <div class="promo-badge-tag tag-trend">TREND</div>
+              </div>
+              <div class="promo-name">Stok Terbatas</div>
+              <div class="promo-desc">Tampilkan sisa stok sedikit untuk mendorong pembelian cepat</div>
+            </div>
+          </div>
+
+          <div class="promo-preview-wrapper">
+            <div class="promo-preview-header">
+              <span>👀 Preview Tampilan</span>
+              <div class="preview-device-select">
+                <div class="dev-btn active">Mobile</div>
+                <div class="dev-btn">Tablet</div>
+              </div>
+            </div>
+            <div class="promo-preview-area" id="promoPreviewArea">
+              <!-- Default: Flash Sale -->
+              <div class="live-promo-widget flash-sale-widget" id="promoPreview">
+                <div class="fs-top">
+                  <div class="fs-label">⚡ FLASH SALE</div>
+                  <div class="fs-countdown">
+                    <div class="fs-count-box" id="cd-h">02</div>
+                    <span class="fs-sep">:</span>
+                    <div class="fs-count-box" id="cd-m">30</div>
+                    <span class="fs-sep">:</span>
+                    <div class="fs-count-box" id="cd-s">00</div>
+                  </div>
+                </div>
+                <div class="fs-product">
+                  <div class="fs-img">👗</div>
+                  <div class="fs-info">
+                    <div class="fs-name">Dress Casual Korean Style</div>
+                    <div class="fs-price-row">
+                      <div class="fs-price-new">Rp45.000</div>
+                      <div class="fs-price-old">Rp120.000</div>
+                      <div class="fs-disc">-62%</div>
+                    </div>
+                    <div class="fs-stock">
+                      <div class="fs-stock-label">Stok tersisa</div>
+                      <div class="fs-bar"><div class="fs-bar-fill"></div></div>
+                      <div class="fs-bar-text">78% terjual • Sisa 22 pcs</div>
+                    </div>
+                  </div>
+                </div>
+                <button class="fs-btn">🛒 Masukkan Keranjang</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="promo-right">
+          <div class="promo-config-panel">
+            <div class="config-title">⚙️ Konfigurasi Promosi</div>
+            <div class="config-row">
+              <div class="config-label">Nama Produk</div>
+              <input class="config-input" value="Dress Casual Korean Style" placeholder="Nama produk...">
+            </div>
+            <div class="config-row">
+              <div class="config-label">Harga Asli (Rp)</div>
+              <input class="config-input" value="120000" placeholder="Harga asli...">
+            </div>
+            <div class="config-row">
+              <div class="config-label">Harga Promo (Rp)</div>
+              <input class="config-input" value="45000" placeholder="Harga promo...">
+            </div>
+            <div class="config-row">
+              <div class="config-label">Durasi (menit)</div>
+              <input class="config-input" value="150" placeholder="Durasi countdown...">
+            </div>
+            <div class="config-toggle-row">
+              <div class="config-toggle-label">Tampilkan stok tersisa</div>
+              <div class="toggle-switch on" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div>
+            </div>
+            <div class="config-toggle-row">
+              <div class="config-toggle-label">Auto update keranjang</div>
+              <div class="toggle-switch on" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div>
+            </div>
+            <div class="config-toggle-row">
+              <div class="config-toggle-label">Efek animasi</div>
+              <div class="toggle-switch" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div>
+            </div>
+            <button class="go-live-btn" onclick="showToast('🛒 Promosi aktif di LIVE kamu!')">🚀 Aktifkan Promosi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE: TEMPLATE BACKGROUND -->
+  <div class="page" id="page-template">
+    <div class="sub-header">
+      <div class="back-btn" onclick="showPage('fitur')">‹</div>
+      <div class="sub-header-text">
+        <h3>🖼️ Template Background</h3>
+        <p>Pilih template background untuk mempercantik tampilan LIVE kamu</p>
+      </div>
+    </div>
+    <div style="padding:16px 28px 0">
+      <div class="template-filters">
+        <div class="tmpl-filter active" onclick="filterTmpl(this,'all')">Semua</div>
+        <div class="tmpl-filter" onclick="filterTmpl(this,'sale')">Flash Sale</div>
+        <div class="tmpl-filter" onclick="filterTmpl(this,'event')">Event</div>
+        <div class="tmpl-filter" onclick="filterTmpl(this,'promo')">Promo</div>
+        <div class="tmpl-filter" onclick="filterTmpl(this,'holiday')">Hari Raya</div>
+      </div>
+    </div>
+    <div style="padding:16px 28px;flex:1;overflow-y:auto">
+      <div class="template-grid" id="templateGrid">
+        <!-- Templates will be rendered by JS -->
+      </div>
+    </div>
+    <div style="padding:0 28px 20px">
+      <div class="tmpl-action-bar">
+        <div class="tmpl-action-info">Template dipilih: <strong id="selectedTmplName">—</strong></div>
+        <button class="tmpl-use-btn" onclick="applyTemplate()">Gunakan Template</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE: STIKER -->
+  <div class="page" id="page-stiker">
+    <div class="sub-header">
+      <div class="back-btn" onclick="showPage('fitur')">‹</div>
+      <div class="sub-header-text">
+        <h3>🎭 Stiker</h3>
+        <p>Klik untuk pilih stiker • Max 5 stiker aktif sekaligus</p>
+      </div>
+    </div>
+    <div style="padding:16px 28px 0">
+      <div class="stiker-categories">
+        <div class="stiker-cat active" onclick="filterStiker(this,'all')">Semua</div>
+        <div class="stiker-cat" onclick="filterStiker(this,'promo')">Promo</div>
+        <div class="stiker-cat" onclick="filterStiker(this,'emote')">Emote</div>
+        <div class="stiker-cat" onclick="filterStiker(this,'dekorasi')">Dekorasi</div>
+        <div class="stiker-cat" onclick="filterStiker(this,'lucu')">Lucu</div>
+        <div class="stiker-cat" onclick="filterStiker(this,'live')">LIVE</div>
+      </div>
+    </div>
+    <div style="padding:16px 28px;flex:1;overflow-y:auto">
+      <div class="stiker-grid" id="stikerGrid"></div>
+    </div>
+    <div style="padding:0 28px 20px">
+      <div class="stiker-action-bar">
+        <div>
+          <div style="font-size:12px;color:var(--text-secondary);margin-bottom:6px">Stiker Aktif (<span id="stikerCount">0</span>/5):</div>
+          <div class="stiker-selected-preview" id="stikerSelectedPreview">
+            <div style="font-size:12px;color:var(--text-muted)">Belum ada stiker dipilih</div>
+          </div>
+        </div>
+        <button class="stiker-add-btn" onclick="applyStiker()">Tambah ke LIVE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toastIcon">✅</span>
+  <span id="toastMsg">Berhasil diterapkan!</span>
+</div>
+
+<script>
+// ===== PAGE NAV =====
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+
+  const titles = {
+    main: 'TikTok LIVE Studio',
+    fitur: '🖼️ Fitur Editing',
+    animation: '✨ Animation',
+    scarcity: '🛒 Scarcity Promotion',
+    template: '🖼️ Template Background',
+    stiker: '🎭 Stiker'
+  };
+  document.getElementById('topBarTitle').textContent = titles[id] || id;
+
+  document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
+  const fiturBtn = document.getElementById('fiturBtn');
+  fiturBtn.style.outline = (id !== 'main') ? '2px solid rgba(255,255,255,0.3)' : 'none';
+}
+
+// ===== TOAST =====
+let toastTimeout;
+function showToast(msg, icon='✅') {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  document.getElementById('toastIcon').textContent = icon;
+  t.classList.add('show');
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ===== ANIMATION =====
+let selectedAnim = null;
+function selectAnim(card, name) {
+  document.querySelectorAll('.anim-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  selectedAnim = name;
+  document.getElementById('selectedAnimName').textContent = name;
+}
+function applyAnim() {
+  if (!selectedAnim) { showToast('Pilih animasi dulu!', '⚠️'); return; }
+  showToast(`✨ Animasi "${selectedAnim}" diterapkan!`);
+}
+function filterAnim(btn, cat) {
+  document.querySelectorAll('.anim-cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.anim-card').forEach(c => {
+    c.style.display = (cat === 'all' || c.dataset.cat === cat) ? 'block' : 'none';
+  });
+}
+
+// ===== SCARCITY PROMO =====
+// Countdown timer
+let countdownSecs = 9000;
+setInterval(() => {
+  if (countdownSecs > 0) countdownSecs--;
+  const h = Math.floor(countdownSecs / 3600);
+  const m = Math.floor((countdownSecs % 3600) / 60);
+  const s = countdownSecs % 60;
+  const pad = n => String(n).padStart(2,'0');
+  const cdH = document.getElementById('cd-h');
+  const cdM = document.getElementById('cd-m');
+  const cdS = document.getElementById('cd-s');
+  if (cdH) { cdH.textContent = pad(h); cdM.textContent = pad(m); cdS.textContent = pad(s); }
+}, 1000);
+
+const promoWidgets = {
+  'flash-sale': `<div class="live-promo-widget flash-sale-widget">
+    <div class="fs-top"><div class="fs-label">⚡ FLASH SALE</div>
+    <div class="fs-countdown"><div class="fs-count-box" id="cd-h">02</div><span class="fs-sep">:</span><div class="fs-count-box" id="cd-m">30</div><span class="fs-sep">:</span><div class="fs-count-box" id="cd-s">00</div></div></div>
+    <div class="fs-product"><div class="fs-img">👗</div><div class="fs-info">
+    <div class="fs-name">Dress Casual Korean Style</div>
+    <div class="fs-price-row"><div class="fs-price-new">Rp45.000</div><div class="fs-price-old">Rp120.000</div><div class="fs-disc">-62%</div></div>
+    <div class="fs-stock"><div class="fs-stock-label">Stok tersisa</div><div class="fs-bar"><div class="fs-bar-fill"></div></div><div class="fs-bar-text">78% terjual • Sisa 22 pcs</div></div>
+    </div></div><button class="fs-btn">🛒 Masukkan Keranjang</button></div>`,
+
+  'potongan': `<div class="live-promo-widget discount-widget">
+    <div class="dw-header"><div class="dw-label">✂️ DISKON SPESIAL</div><div class="dw-limited">⏰ Limited!</div></div>
+    <div class="dw-products">
+      <div class="dw-product"><div class="dw-img">👜</div><div class="dw-info"><div class="dw-name">Tas Shoulder Bag Premium</div><div class="dw-prices"><div class="dw-new">Rp89.000</div><div class="dw-old">Rp250.000</div><div class="dw-pct">-64%</div></div></div><div class="dw-add">+ Keranjang</div></div>
+      <div class="dw-product"><div class="dw-img">👟</div><div class="dw-info"><div class="dw-name">Sepatu Sneakers Casual</div><div class="dw-prices"><div class="dw-new">Rp125.000</div><div class="dw-old">Rp350.000</div><div class="dw-pct">-64%</div></div></div><div class="dw-add">+ Keranjang</div></div>
+    </div></div>`,
+
+  'double-date': `<div class="live-promo-widget double-date-widget">
+    <div class="dd-header"><div class="dd-date">12.12</div><div class="dd-year">2025</div><div class="dd-title">Hari Belanja Nasional 🎉</div></div>
+    <div class="dd-badges"><div class="dd-badge">Gratis Ongkir</div><div class="dd-badge">Diskon 70%</div><div class="dd-badge">Cashback 15%</div></div>
+    <div class="dd-products">
+      <div class="dd-prod"><div class="dd-prod-icon">💄</div><div class="dd-prod-price">Rp25k</div><div class="dd-prod-old">Rp85k</div><div class="dd-prod-disc">-71%</div></div>
+      <div class="dd-prod"><div class="dd-prod-icon">👗</div><div class="dd-prod-price">Rp45k</div><div class="dd-prod-old">Rp150k</div><div class="dd-prod-disc">-70%</div></div>
+      <div class="dd-prod"><div class="dd-prod-icon">🧴</div><div class="dd-prod-price">Rp32k</div><div class="dd-prod-old">Rp110k</div><div class="dd-prod-disc">-71%</div></div>
+    </div></div>`,
+
+  'countdown': `<div class="live-promo-widget countdown-widget">
+    <div class="cd-header"><div class="cd-title">⏰ PROMO BERAKHIR DALAM</div><div class="cd-subtitle">Jangan sampai kehabisan!</div></div>
+    <div class="cd-timer">
+      <div class="cd-unit"><div class="cd-num">02</div><div class="cd-label">JAM</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><div class="cd-num">30</div><div class="cd-label">MENIT</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><div class="cd-num">00</div><div class="cd-label">DETIK</div></div>
+    </div>
+    <div class="cd-offer"><div class="cd-offer-text">🔥 Diskon 70% + Gratis Ongkir</div><div class="cd-offer-sub">Berlaku untuk semua produk fashion</div></div></div>`,
+
+  'stock': `<div class="live-promo-widget stock-widget">
+    <div class="stock-header"><div class="stock-badge">⚠️ STOK TERBATAS</div></div>
+    <div class="stock-items">
+      <div class="stock-item"><div class="stock-img">👗</div><div class="stock-info"><div class="stock-name">Dress Korea - Size M</div><div class="stock-remaining">⚡ Sisa 3 pcs!</div></div><div class="stock-add">Ambil!</div></div>
+      <div class="stock-item"><div class="stock-img">👜</div><div class="stock-info"><div class="stock-name">Tas Bucket Premium</div><div class="stock-remaining">⚡ Sisa 5 pcs!</div></div><div class="stock-add">Ambil!</div></div>
+      <div class="stock-item"><div class="stock-img">💍</div><div class="stock-info"><div class="stock-name">Cincin Crystal Mewah</div><div class="stock-remaining">⚡ Sisa 2 pcs!</div></div><div class="stock-add">Ambil!</div></div>
+    </div></div>`
+};
+
+function selectPromo(card, type) {
+  document.querySelectorAll('.promo-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  document.getElementById('promoPreviewArea').innerHTML = promoWidgets[type];
+}
+
+function toggleSwitch(el) { el.classList.toggle('on'); }
+
+// ===== TEMPLATES =====
+const templates = [
+  { id:'t1', name:'Flash Sale Merah', cat:'sale', cls:'tmpl-flash-sale', badge:'badge-hot', badgeText:'HOT', title:'⚡ FLASH SALE', sub:'Harga terendah hari ini!', emoji:'🔥' },
+  { id:'t2', name:'Hari Gajian Hijau', cat:'promo', cls:'tmpl-payday', badge:'badge-promo', badgeText:'PROMO', title:'💸 HARI GAJIAN', sub:'Belanja sekarang, bayar nanti!', emoji:'💰' },
+  { id:'t3', name:'Countdown Biru', cat:'event', cls:'tmpl-countdown', badge:'badge-new', badgeText:'NEW', title:'⏰ COUNTDOWN', sub:'Waktu terbatas!', emoji:'⏱️' },
+  { id:'t4', name:'11.11 Pink', cat:'event', cls:'tmpl-double11', badge:'badge-hot', badgeText:'HOT', title:'11.11 SALE', sub:'Tanggal kembar, harga kembar murah!', emoji:'🎉' },
+  { id:'t5', name:'12.12 Orange', cat:'event', cls:'tmpl-double12', badge:'badge-hot', badgeText:'HOT', title:'12.12 SALE', sub:'Harbolnas terbesar!', emoji:'🛍️' },
+  { id:'t6', name:'Harbolnas Teal', cat:'sale', cls:'tmpl-harbolnas', badge:'badge-promo', badgeText:'SALE', title:'🛒 HARBOLNAS', sub:'Hari Belanja Online Nasional', emoji:'🎊' },
+  { id:'t7', name:'Lebaran Gold', cat:'holiday', cls:'tmpl-lebaran', badge:'badge-promo', badgeText:'LEBARAN', title:'🌙 LEBARAN SALE', sub:'Promo spesial Hari Raya', emoji:'🎁' },
+  { id:'t8', name:'Birthday Ungu', cat:'event', cls:'tmpl-birthday', badge:'badge-new', badgeText:'NEW', title:'🎂 BIRTHDAY SALE', sub:'Ulang tahun toko kami!', emoji:'🎈' },
+  { id:'t9', name:'New Year Dark', cat:'holiday', cls:'tmpl-new-year', badge:'badge-hot', badgeText:'2026', title:'🎆 NEW YEAR SALE', sub:'Rayakan tahun baru dengan belanja!', emoji:'🥂' },
+  { id:'t10', name:'Weekend Hijau', cat:'promo', cls:'tmpl-weekend', badge:'badge-promo', badgeText:'PROMO', title:'🎯 WEEKEND SALE', sub:'Promo sabtu & minggu!', emoji:'🤑' },
+  { id:'t11', name:'Midnight Dark', cat:'sale', cls:'tmpl-midnight', badge:'badge-new', badgeText:'NEW', title:'🌙 MIDNIGHT SALE', sub:'Belanja tengah malam lebih hemat', emoji:'🌚' },
+  { id:'t12', name:'Mega Sale Orange', cat:'sale', cls:'tmpl-mega-sale', badge:'badge-hot', badgeText:'MEGA', title:'🔥 MEGA SALE', sub:'Diskon hingga 90%!', emoji:'💥' },
+];
+
+function renderTemplates(filter='all') {
+  const grid = document.getElementById('templateGrid');
+  grid.innerHTML = '';
+  templates.filter(t => filter==='all' || t.cat===filter).forEach(t => {
+    grid.innerHTML += `<div class="tmpl-card ${t.id===selectedTmpl?'selected':''}" data-cat="${t.cat}" data-id="${t.id}" onclick="selectTemplate(this,'${t.id}','${t.name}')">
+      <div class="tmpl-bg ${t.cls}">
+        <span class="tmpl-badge ${t.badge}">${t.badgeText}</span>
+        <div style="font-size:32px">${t.emoji}</div>
+        <div class="tmpl-title">${t.title}</div>
+        <div class="tmpl-subtitle">${t.sub}</div>
+      </div>
+      <div class="tmpl-selected-overlay">✓</div>
+      <div class="tmpl-info"><div class="tmpl-name">${t.name}</div><div class="tmpl-meta">${t.cat.charAt(0).toUpperCase()+t.cat.slice(1)}</div></div>
+    </div>`;
+  });
+}
+
+let selectedTmpl = null;
+function selectTemplate(card, id, name) {
+  document.querySelectorAll('.tmpl-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  selectedTmpl = id;
+  document.getElementById('selectedTmplName').textContent = name;
+}
+function filterTmpl(btn, cat) {
+  document.querySelectorAll('.tmpl-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTemplates(cat);
+}
+function applyTemplate() {
+  if (!selectedTmpl) { showToast('Pilih template dulu!', '⚠️'); return; }
+  showToast(`🖼️ Template "${document.getElementById('selectedTmplName').textContent}" digunakan!`);
+}
+
+// ===== STIKER =====
+const stikersData = [
+  { id:'s1', emoji:'🔥', name:'Lagi Panas', cat:'promo', count:'Promo' },
+  { id:'s2', emoji:'⚡', name:'Flash Sale', cat:'promo', count:'Sale' },
+  { id:'s3', emoji:'💸', name:'Murah Banget', cat:'promo', count:'Promo' },
+  { id:'s4', emoji:'🎉', name:'Giveaway!', cat:'promo', count:'Event' },
+  { id:'s5', emoji:'🛒', name:'Keranjang', cat:'promo', count:'Shop' },
+  { id:'s6', emoji:'💯', name:'Terpercaya', cat:'promo', count:'Trust' },
+  { id:'s7', emoji:'😂', name:'Ngakak', cat:'emote', count:'Emote' },
+  { id:'s8', emoji:'🥰', name:'Sayang', cat:'emote', count:'Emote' },
+  { id:'s9', emoji:'😍', name:'Keren Banget', cat:'emote', count:'Emote' },
+  { id:'s10', emoji:'🙏', name:'Makasih', cat:'emote', count:'Emote' },
+  { id:'s11', emoji:'👍', name:'Mantap', cat:'emote', count:'Emote' },
+  { id:'s12', emoji:'💪', name:'Semangat', cat:'emote', count:'Emote' },
+  { id:'s13', emoji:'🌟', name:'Bintang', cat:'dekorasi', count:'Deko' },
+  { id:'s14', emoji:'✨', name:'Kilap', cat:'dekorasi', count:'Deko' },
+  { id:'s15', emoji:'🎀', name:'Pita Cantik', cat:'dekorasi', count:'Deko' },
+  { id:'s16', emoji:'🌈', name:'Pelangi', cat:'dekorasi', count:'Deko' },
+  { id:'s17', emoji:'💎', name:'Berlian', cat:'dekorasi', count:'Deko' },
+  { id:'s18', emoji:'🎊', name:'Confetti', cat:'dekorasi', count:'Deko' },
+  { id:'s19', emoji:'🐱', name:'Kucing Lucu', cat:'lucu', count:'Lucu' },
+  { id:'s20', emoji:'🦊', name:'Rubah', cat:'lucu', count:'Lucu' },
+  { id:'s21', emoji:'🐸', name:'Kodok Viral', cat:'lucu', count:'Lucu' },
+  { id:'s22', emoji:'🦋', name:'Kupu-kupu', cat:'lucu', count:'Lucu' },
+  { id:'s23', emoji:'🐨', name:'Koala Imut', cat:'lucu', count:'Lucu' },
+  { id:'s24', emoji:'🎭', name:'Drama Queen', cat:'lucu', count:'Lucu' },
+  { id:'s25', emoji:'📡', name:'LIVE On Air', cat:'live', count:'LIVE' },
+  { id:'s26', emoji:'🎙️', name:'Host LIVE', cat:'live', count:'LIVE' },
+  { id:'s27', emoji:'📸', name:'Live Camera', cat:'live', count:'LIVE' },
+  { id:'s28', emoji:'💬', name:'Chat Yuk!', cat:'live', count:'LIVE' },
+  { id:'s29', emoji:'❤️', name:'Love Live', cat:'live', count:'LIVE' },
+  { id:'s30', emoji:'🎵', name:'TikTok Music', cat:'live', count:'LIVE' },
+];
+
+let selectedStiker = [];
+
+function renderStiker(filter='all') {
+  const grid = document.getElementById('stikerGrid');
+  grid.innerHTML = '';
+  stikersData.filter(s => filter==='all' || s.cat===filter).forEach(s => {
+    const isSelected = selectedStiker.includes(s.id);
+    grid.innerHTML += `<div class="stiker-card ${isSelected?'selected':''}" data-id="${s.id}" onclick="toggleStiker(this,'${s.id}','${s.emoji}','${s.name}')">
+      <div class="stiker-preview">${s.emoji}</div>
+      <div class="stiker-info"><div class="stiker-name">${s.name}</div><div class="stiker-count">${s.count}</div></div>
+    </div>`;
+  });
+}
+
+function toggleStiker(card, id, emoji, name) {
+  const idx = selectedStiker.indexOf(id);
+  if (idx > -1) {
+    selectedStiker.splice(idx, 1);
+    card.classList.remove('selected');
+  } else {
+    if (selectedStiker.length >= 5) { showToast('Maksimal 5 stiker aktif!', '⚠️'); return; }
+    selectedStiker.push(id);
+    card.classList.add('selected');
+  }
+  updateStikerPreview();
+}
+
+function updateStikerPreview() {
+  const preview = document.getElementById('stikerSelectedPreview');
+  const count = document.getElementById('stikerCount');
+  count.textContent = selectedStiker.length;
+  if (selectedStiker.length === 0) {
+    preview.innerHTML = '<div style="font-size:12px;color:var(--text-muted)">Belum ada stiker dipilih</div>';
+    return;
+  }
+  preview.innerHTML = selectedStiker.map(id => {
+    const s = stikersData.find(x => x.id===id);
+    return `<div class="stiker-selected-item" title="${s.name}">${s.emoji}<span class="remove-x" onclick="removeStiker('${id}',event)">✕</span></div>`;
+  }).join('');
+}
+
+function removeStiker(id, e) {
+  e.stopPropagation();
+  selectedStiker = selectedStiker.filter(x => x !== id);
+  renderStiker(currentStikerFilter);
+  updateStikerPreview();
+}
+
+function filterStiker(btn, cat) {
+  document.querySelectorAll('.stiker-cat').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentStikerFilter = cat;
+  renderStiker(cat);
+}
+let currentStikerFilter = 'all';
+
+function applyStiker() {
+  if (selectedStiker.length === 0) { showToast('Pilih stiker dulu!', '⚠️'); return; }
+  showToast(`🎭 ${selectedStiker.length} stiker ditambahkan ke LIVE!`);
+}
+
+// ===== INIT =====
+renderTemplates();
+renderStiker();
+</script>
 </body>
 </html>
